@@ -1,0 +1,8 @@
+# ninja log v5
+2	834	1654872241086857000	CMakeFiles/horseracingC.dir/Layer.cpp.o	9125e1c901691c5a
+0	855	1654872241107917900	CMakeFiles/horseracingC.dir/Component.cpp.o	8c3cd64a8c41620c
+7	964	1654872241217208700	CMakeFiles/horseracingC.dir/main.cpp.o	a7a8737bfb1dac1b
+855	1586	1654872241839025100	CMakeFiles/horseracingC.dir/Menu.cpp.o	ebe185173fa200c7
+965	1611	1654872241863998300	CMakeFiles/horseracingC.dir/propertyManager.cpp.o	540e94ffabb6c5d3
+841	1958	1654872242205896800	CMakeFiles/horseracingC.dir/Game.cpp.o	86da55e3684caaa1
+1959	2197	1654872242448976200	horseracingC	2e998881c3018682
