@@ -45,10 +45,10 @@ void Layer::move(float offsetX, float offsetY)
   mTileR.move(oX,oY);
   mTileL.move(oX,oY);
 
-  if (this->getPosition().x > 400)//MATHY
-    this->setPosition(-400, mposition.y); //MATHY
-  else if (this->getPosition().x < -400)//MATHY
-    this->setPosition(400, mposition.y); //MATHY
+  if (this->getPosition().x > 400)
+    this->setPosition(-400, mposition.y);
+  else if (this->getPosition().x < -400)
+    this->setPosition(400, mposition.y);
 
   mposition= mTile.getPosition();
 

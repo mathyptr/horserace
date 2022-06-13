@@ -3,7 +3,7 @@
 void Game::processEvent()
 {
   sf::Event event;
-  //events handler bad and slow. just using for closing the window
+
   while (window.pollEvent(event))
     if (event.type == sf::Event::Closed)
       window.close();
@@ -14,27 +14,23 @@ void Game::processEvent()
 
 void Game::render()
 {
-  //clear old, draw new and show
-  window.clear();
+    window.clear();
 
-  window.draw(layerTop); //Mathy
-  window.draw(layerAtmo); //Mathy
-  window.draw(layerCenter); //Mathy
-  window.draw(layerBottom); //Mathy
-
+    window.draw(layerTop);
+    window.draw(layerAtmo);
+    window.draw(layerCenter);
+    window.draw(layerBottom);
 
     window.draw(mmenu);
 
+    window.draw(layerFront);
 
-
-  window.draw(layerFront); //Mathy
-
-  window.display();
+    window.display();
 }
 
 void Game::Run()
 {
-  while (window.isOpen())
+  while (window.isOpen()&&!gameerrorstate)
   {
     processEvent();
     render();
@@ -60,27 +56,34 @@ sf::Color  Game::getColor(std::string color)
 }
 
 void Game::loadResources()
-{  
-  icon.loadFromFile("img/icon.png");
+{
+  gameerrorstate=true;
+  if(mdbm.getStatus()==0)
+  {
+      icon.loadFromFile("img/icon.png");
 
-  toppic.loadFromFile(mdbm.getChallProperty(TOP_PIC)); 
-  bottompic.loadFromFile(mdbm.getChallProperty(BOTTOM_PIC));
-  centerpic.loadFromFile(mdbm.getChallProperty(CENTER_PIC));
-  atmopic.loadFromFile(mdbm.getChallProperty(ATMO_PIC));
-  frontpic.loadFromFile(mdbm.getChallProperty(FRONT_PIC));
-  soundchall=mdbm.getChallProperty(SOUND_CHALL);
+      toppic.loadFromFile(mdbm.getChallProperty(TOP_PIC));
+      bottompic.loadFromFile(mdbm.getChallProperty(BOTTOM_PIC));
+      centerpic.loadFromFile(mdbm.getChallProperty(CENTER_PIC));
+      atmopic.loadFromFile(mdbm.getChallProperty(ATMO_PIC));
+      frontpic.loadFromFile(mdbm.getChallProperty(FRONT_PIC));
+      soundchall=mdbm.getChallProperty(SOUND_CHALL);
 
 
-  font.loadFromFile(mdbm.getChallProperty(FONT_TYPE));
-  std::string fontSize=mdbm.getChallProperty(FONT_SIZE);
-  std::string fontColor=mdbm.getChallProperty(FONT_COLOR);
+      font.loadFromFile(mdbm.getChallProperty(FONT_TYPE));
+      std::string fontSize=mdbm.getChallProperty(FONT_SIZE);
+      std::string fontColor=mdbm.getChallProperty(FONT_COLOR);
 
-  testBase.setFont(font);
-  testBase.setCharacterSize(std::stoi(fontSize));
-  testBase.setColor(getColor(fontColor));
+      testBase.setFont(font);
+      testBase.setCharacterSize(std::stoi(fontSize));
+      testBase.setColor(getColor(fontColor));
 
-  if (!buffersound.loadFromFile(soundchall))
-      nosound=true;
+      if (!buffersound.loadFromFile(soundchall))
+          nosound=true;
+      gameerrorstate=false;
+
+  }
+
 }
 
 void Game::getNextChall()
@@ -89,30 +92,29 @@ void Game::getNextChall()
 
     std::string actchallstr;
     actchallstr=mdbm.getActualChall(std::to_string(actchall));
-//  mdbm.setChall("DESERT");
+
     mdbm.setChall(actchallstr);
 
-
     loadResources();
+    if(!gameerrorstate)
+        InitLayer();
     playSound();
-    InitLayer();
 }
 
 void Game::InitLayer()
 {
 
-    layerAtmo.Init(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(0, 0, 800,180),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));//MATHY
-    layerBottom.Init(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));//MATHY
-    layerTop.Init(toppic,TOP_SPEED_FACTOR,sf::IntRect(0, 0, 800,480),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));//MATHY
-    layerCenter.Init(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(0, 280, 800, 250),sf::Vector2f(static_cast<float>(0),static_cast<float>(285)));//MATHY
-    layerFront.Init(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));//MATHY
+    layerAtmo.Init(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(0, 0, 800,180),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));
+    layerBottom.Init(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));
+    layerTop.Init(toppic,TOP_SPEED_FACTOR,sf::IntRect(0, 0, 800,480),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));
+    layerCenter.Init(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(0, 280, 800, 250),sf::Vector2f(static_cast<float>(0),static_cast<float>(285)));
+    layerFront.Init(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));
 
-
-    layerBottom.setPosition(0,472); //MATHY
-    layerCenter.setPosition(0,285); //MATHY
-    layerTop.setPosition(0,0); //MATHY
-    layerAtmo.setPosition(0,0); //MATHY
-    layerFront.setPosition(0,472); //MATHY
+    layerBottom.setPosition(0,472);
+    layerCenter.setPosition(0,285);
+    layerTop.setPosition(0,0);
+    layerAtmo.setPosition(0,0);
+    layerFront.setPosition(0,472);
 
 }
 
@@ -131,7 +133,7 @@ void Game:: stopSound()
 
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
-  actchall=1;
+    actchall=1;
 
     std::string actchallstr;
     actchallstr=mdbm.getActualChall(std::to_string(actchall));
@@ -139,22 +141,22 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
     mdbm.setChall(actchallstr);
 
 
-  winstate=false;
-  window.setMouseCursorVisible(false);
-  window.setFramerateLimit(60);
+    winstate=false;
+    window.setMouseCursorVisible(false);
+    window.setFramerateLimit(60);
 
-  loadResources();
+    loadResources();
+    if(!gameerrorstate)
+    {
+        InitLayer();
 
-  playSound();
+        playSound();
 
-  InitLayer();
+        window.setIcon(icon.getSize().x, icon.getSize().y,icon.getPixelsPtr());
 
+        gameview.setCenter(GVIEW_X/2,GVIEW_Y/2);
+        gameview.setSize(sf::Vector2f(GVIEW_X,GVIEW_Y));
 
-  window.setIcon(icon.getSize().x, icon.getSize().y,icon.getPixelsPtr());
-
-  gameview.setCenter(GVIEW_X/2,GVIEW_Y/2);
-  gameview.setSize(sf::Vector2f(GVIEW_X,GVIEW_Y));
-  mmenu.Init(testBase, gameview.getCenter());
-
-
+        mmenu.Init(testBase, gameview.getCenter());
+    }
 };

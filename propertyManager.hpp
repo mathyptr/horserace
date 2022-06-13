@@ -36,6 +36,7 @@ public:
     void setChall(std::string actChall);
     std::string getChall();
     int Connect() ;
+    int getStatus();
     void Close() ;
     void Query() ;
     std::string  getChallProperty(std::string  prop);

@@ -19,7 +19,7 @@ propertyManager::propertyManager()
 
 int propertyManager::Connect()
 {
- mstatus = sqlite3_open("./mydb.db", &mdb);
+ mstatus = sqlite3_open_v2("./mydb.db", &mdb,SQLITE_OPEN_READWRITE,NULL);
    if(mstatus!= SQLITE_OK)
         //database failed to open
 //		root << log4cpp::Priority::ERROR << "Database failed to open" ;
@@ -28,6 +28,12 @@ int propertyManager::Connect()
             cout << "Database opened" << endl;
    return mstatus;
 }
+
+int propertyManager::getStatus()
+{
+    mstatus=Connect();
+}
+
 
 void propertyManager::setChall(std::string actChall)
 {
@@ -42,7 +48,7 @@ std::string  propertyManager::getChall()
 
 void propertyManager::Query()
 {
-   int rc;
+    int rc;
 	char *sql;
 	char *zErrMsg = 0;
 
@@ -55,22 +61,21 @@ void propertyManager::Query()
     if(mstatus!= SQLITE_OK)
         //database failed to open
 //		root << log4cpp::Priority::ERROR << "Database failed to open" ;
-        cout << "Database failed to open" << endl;
+        cout << "Database failed to insert data" << endl;
     else
     {
         //your database code here
 //    sqlite3_exec(mdb, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 
-
-   // Execute SQL statement 
-   rc = sqlite3_exec(mdb, sql, callback, 0, &zErrMsg);
+// Execute SQL statement
+       rc = sqlite3_exec(mdb, sql, callback, 0, &zErrMsg);
    
-   if( rc != SQLITE_OK ){
-      cout<<"SQL error:"<<zErrMsg<<"\n";
-      sqlite3_free(zErrMsg);
-   } else {
-      cout<<"Records created successfully\n";
-   }
+       if( rc != SQLITE_OK ){
+          cout<<"SQL error:"<<zErrMsg<<"\n";
+          sqlite3_free(zErrMsg);
+       } else {
+          cout<<"Records created successfully\n";
+        }
 //   sqlite3_exec(mdb, "END TRANSACTION;", NULL, NULL, NULL);
 
     }
@@ -90,23 +95,23 @@ std::string   propertyManager::getChallProperty(std::string propName)
     if(mstatus!= SQLITE_OK)
         //database failed to open
 //		root << log4cpp::Priority::ERROR << "Database failed to open" ;
-        cout << "Database failed to open" << endl;
+        cout << "Database failed to read data" << endl;
     else
     {
         //your database code here
 //    sqlite3_exec(mdb, "BEGIN TRANSACTION;", NULL, NULL, NULL);
 
    // Execute SQL statement 
-      rc=sqlite3_prepare_v2(mdb, sql.c_str(), -1, &stmt, 0);  
-      if (rc != SQLITE_OK) 
-         cout<<"SQL error, Failed to fetch data: "<< sqlite3_errmsg(mdb);
-      else  {
-         cout<<"Records read successfully\n";
-      }
+        rc=sqlite3_prepare_v2(mdb, sql.c_str(), -1, &stmt, 0);
+        if (rc != SQLITE_OK)
+             cout<<"SQL error, Failed to fetch data: "<< sqlite3_errmsg(mdb);
+        else  {
+             cout<<"Records read successfully\n";
+        }
 //   sqlite3_exec(mdb, "END TRANSACTION;", NULL, NULL, NULL);
-      rc = sqlite3_step(stmt);
+        rc = sqlite3_step(stmt);
    
-      if (rc != SQLITE_DONE) {
+        if (rc != SQLITE_DONE) {
 /*      int i;
 		int num_cols = sqlite3_column_count(stmt);
       for (i = 0; i < num_cols; i++)
@@ -130,7 +135,7 @@ std::string   propertyManager::getChallProperty(std::string propName)
          
 		}
       */
-      prop=(char *)sqlite3_column_text(stmt, 0);
+          prop=(char *)sqlite3_column_text(stmt, 0);
 
 //       cout<< sqlite3_column_text(stmt, 0);
      }
@@ -165,7 +170,7 @@ std::string   propertyManager::sendQuery(std::string sql)
     if(mstatus!= SQLITE_OK)
         //database failed to open
 //		root << log4cpp::Priority::ERROR << "Database failed to open" ;
-        cout << "Database failed to open" << endl;
+        cout << "Database failed to read data" << endl;
     else
     {
         //your database code here

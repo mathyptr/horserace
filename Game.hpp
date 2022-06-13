@@ -101,6 +101,7 @@ private:
 
   bool winstate;
   bool gameoverstate;
+  bool gameerrorstate;
 
   sf::Font font;
   sf::Text testBase;
