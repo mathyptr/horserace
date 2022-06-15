@@ -16,32 +16,32 @@ public:
     void move(float offsX, float offsY);
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    sf::Texture     mtexture;
-    sf::Vector2f    mposition;
+    sf::Texture     texture;
+    sf::Vector2f    position;
 
     const float     mSpeedPerSecond;
     float           mDistanceTravelled;
     const float     mMaximumDistance;
-    sf::Font mfont;
-    sf::Text mtestBase;
-    sf::Text mBottomLeft;
-    sf::Text mTopRight;
-    sf::Text mBottomCenter;
-    sf::Text mTopCenter;
-    sf::Text mBottomRight;
-    sf::Text mTopLeft;
-    sf::String mBottomLeftLabel;
-    sf::String mTopRightLabel;
-    sf::String mBottomCenterLabel;
-    sf::String mTopCenterLabel;
-    sf::String mBottomRightLabel;
-    sf::String mTopLeftLabel;
-    sf::Vector2f mTopLeftPosition;
-    sf::Vector2f mTopCenterPosition;
-    sf::Vector2f mTopRightPosition;
-    sf::Vector2f mBottomLeftPosition;
-    sf::Vector2f mBottomCenterPosition;
-    sf::Vector2f mBottomRightPosition;
+    sf::Font font;
+    sf::Text testBase;
+    sf::Text BottomLeft;
+    sf::Text TopRight;
+    sf::Text BottomCenter;
+    sf::Text TopCenter;
+    sf::Text BottomRight;
+    sf::Text TopLeft;
+    sf::String BottomLeftLabel;
+    sf::String TopRightLabel;
+    sf::String BottomCenterLabel;
+    sf::String TopCenterLabel;
+    sf::String BottomRightLabel;
+    sf::String TopLeftLabel;
+    sf::Vector2f TopLeftPosition;
+    sf::Vector2f TopCenterPosition;
+    sf::Vector2f TopRightPosition;
+    sf::Vector2f BottomLeftPosition;
+    sf::Vector2f BottomCenterPosition;
+    sf::Vector2f BottomRightPosition;
 
 
 };

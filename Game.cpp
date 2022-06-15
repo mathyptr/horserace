@@ -54,23 +54,19 @@ sf::Color  Game::getColor(std::string color)
 void Game::loadResources()
 {
   gameerrorstate=true;
-  if(mdbm.getStatus()==0)
+  if(propmgr.getStatus()==0)
   {
       icon.loadFromFile("img/icon.png");
 
-//      soundchall=mdbm.getChallProperty(SOUND_CHALL);
 
-      font.loadFromFile(mdbm.getChallProperty(FONT_TYPE));
-      std::string fontSize=mdbm.getChallProperty(FONT_SIZE);
-      std::string fontColor=mdbm.getChallProperty(FONT_COLOR);
+      font.loadFromFile(propmgr.getChallProperty(FONT_TYPE));
+      std::string fontSize=propmgr.getChallProperty(FONT_SIZE);
+      std::string fontColor=propmgr.getChallProperty(FONT_COLOR);
 
       testBase.setFont(font);
       testBase.setCharacterSize(std::stoi(fontSize));
       testBase.setColor(getColor(fontColor));
 
-/*      if (!buffersound.loadFromFile(soundchall))
-          nosound=true;
-          */
       gameerrorstate=false;
 
   }
@@ -82,22 +78,19 @@ void Game::getNextChall()
     actchall++;
 
     std::string actchallstr;
-    actchallstr=mdbm.getActualChall(std::to_string(actchall));
+    actchallstr=propmgr.getActualChall(std::to_string(actchall));
 
-    mdbm.setChall(actchallstr);
+    propmgr.setChall(actchallstr);
 
     loadResources();
     if(!gameerrorstate)
-        chall.Init(mdbm);
+        chall.Init(propmgr);
     playSound();
 }
 
 
 void Game:: playSound()
 {
-/*    sound.setBuffer(buffersound);
-    sound.setLoop(true);
-    sound.play();*/
     chall.playSound();
 
 }
@@ -115,9 +108,8 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
     actchall=1;
 
     std::string actchallstr;
-    actchallstr=mdbm.getActualChall(std::to_string(actchall));
-//  mdbm.setChall("DESERT");
-    mdbm.setChall(actchallstr);
+    actchallstr=propmgr.getActualChall(std::to_string(actchall));
+    propmgr.setChall(actchallstr);
 
 
     winstate=false;
@@ -127,7 +119,7 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
     loadResources();
     if(!gameerrorstate)
     {
-        chall.Init(mdbm);
+        chall.Init(propmgr);
 
         playSound();
 

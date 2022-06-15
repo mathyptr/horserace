@@ -8,129 +8,128 @@ Menu::Menu():
 {
   
 
-  mfont.loadFromFile("font/default_font.ttf");
+  font.loadFromFile("font/default_font.ttf");
 
 
   sf::Color ccol=sf::Color::Red;
   unsigned int csize=24;
 
-  mtestBase.setFont(mfont);
-  mtestBase.setCharacterSize(csize);
-  mtestBase.setColor(ccol);
+  testBase.setFont(font);
+  testBase.setCharacterSize(csize);
+  testBase.setColor(ccol);
 
 
-  mBottomLeftLabel="";
-  mTopRightLabel="";
-  mBottomCenterLabel="";
-  mTopCenterLabel="";
-  mBottomRightLabel="";
-  mTopLeftLabel="";
+  BottomLeftLabel="";
+  TopRightLabel="";
+  BottomCenterLabel="";
+  TopCenterLabel="";
+  BottomRightLabel="";
+  TopLeftLabel="";
 
 
-  mTopLeftPosition=sf::Vector2f(-390,-300);
-  mTopCenterPosition=sf::Vector2f(-120,-300);
-  mTopRightPosition=sf::Vector2f(240,-300);
-  mBottomLeftPosition=sf::Vector2f(-390,270);
-  mBottomCenterPosition=sf::Vector2f(-120,270);
-  mBottomRightPosition=sf::Vector2f(280,270);
+  TopLeftPosition=sf::Vector2f(-390,-300);
+  TopCenterPosition=sf::Vector2f(-120,-300);
+  TopRightPosition=sf::Vector2f(240,-300);
+  BottomLeftPosition=sf::Vector2f(-390,270);
+  BottomCenterPosition=sf::Vector2f(-120,270);
+  BottomRightPosition=sf::Vector2f(280,270);
   
-  mBottomLeft.setFont(mfont); // font is a sf::Font
-  mBottomLeft.setString("");
-  mBottomLeft.setCharacterSize(csize);
-  mBottomLeft.setColor(ccol);
+  BottomLeft.setFont(font); // font is a sf::Font
+  BottomLeft.setString("");
+  BottomLeft.setCharacterSize(csize);
+  BottomLeft.setColor(ccol);
 
-  mTopRight.setFont(mfont); // font is a sf::Font
-  mTopRight.setString("");
-  mTopRight.setCharacterSize(csize);
-  mTopRight.setColor(ccol);
+  TopRight.setFont(font); // font is a sf::Font
+  TopRight.setString("");
+  TopRight.setCharacterSize(csize);
+  TopRight.setColor(ccol);
 
-  mBottomCenter.setFont(mfont); // font is a sf::Font
-  mBottomCenter.setString("");
-  mBottomCenter.setCharacterSize(csize);
-  mBottomCenter.setColor(ccol);
+  BottomCenter.setFont(font); // font is a sf::Font
+  BottomCenter.setString("");
+  BottomCenter.setCharacterSize(csize);
+  BottomCenter.setColor(ccol);
 
-  mTopCenter.setFont(mfont); // font is a sf::Font
-  mTopCenter.setString("");
-  mTopCenter.setCharacterSize(csize);
-  mTopCenter.setColor(ccol);
+  TopCenter.setFont(font); // font is a sf::Font
+  TopCenter.setString("");
+  TopCenter.setCharacterSize(csize);
+  TopCenter.setColor(ccol);
 
-  mBottomRight.setFont(mfont); // font is a sf::Font
+  BottomRight.setFont(font); // font is a sf::Font
 //  mBottomRight.setString("Level: " + std::to_string(0));
-  mBottomRight.setString("");
-  mBottomRight.setCharacterSize(csize);
-  mBottomRight.setColor(ccol);
+  BottomRight.setString("");
+  BottomRight.setCharacterSize(csize);
+  BottomRight.setColor(ccol);
 
-  mTopLeft.setFont(mfont); // font is a sf::Font
-  mTopLeft.setString("");
-  mTopLeft.setCharacterSize(csize);
-  mTopLeft.setColor(ccol);
+  TopLeft.setFont(font); // font is a sf::Font
+  TopLeft.setString("");
+  TopLeft.setCharacterSize(csize);
+  TopLeft.setColor(ccol);
 
 
 }
 
-void Menu::Init(sf::Text testBase, const sf::Vector2f& position) 
+void Menu::Init(sf::Text testBase, const sf::Vector2f& pos)
 {
 
 //  mfont.loadFromFile(font);
   //mfont=font;
-  mtestBase=testBase;
-  mfont=*mtestBase.getFont();
-  unsigned int csize=mtestBase.getCharacterSize();
-  sf::Color ccol=mtestBase.getColor();
+  testBase=testBase;
+  font=*testBase.getFont();
+  unsigned int csize=testBase.getCharacterSize();
+  sf::Color ccol=testBase.getColor();
 
 
 
-  mposition=position;
+  position=pos;
 
-  mBottomLeftLabel="";
-  mTopRightLabel="";
-  mBottomCenterLabel="";
-  mTopCenterLabel="";
-  mBottomRightLabel="";
-  mTopLeftLabel="";
+  BottomLeftLabel="";
+  TopRightLabel="";
+  BottomCenterLabel="";
+  TopCenterLabel="";
+  BottomRightLabel="";
+  TopLeftLabel="";
 
 
-  mTopLeftPosition=sf::Vector2f(-390,-300);
-  mTopCenterPosition=sf::Vector2f(-120,-300);
-  mTopRightPosition=sf::Vector2f(240,-300);
-  mBottomLeftPosition=sf::Vector2f(-390,270);
-  mBottomCenterPosition=sf::Vector2f(-120,270);
-  mBottomRightPosition=sf::Vector2f(280,270);
+  TopLeftPosition=sf::Vector2f(-390,-300);
+  TopCenterPosition=sf::Vector2f(-120,-300);
+  TopRightPosition=sf::Vector2f(240,-300);
+  BottomLeftPosition=sf::Vector2f(-390,270);
+  BottomCenterPosition=sf::Vector2f(-120,270);
+  BottomRightPosition=sf::Vector2f(280,270);
 
   setPosition(position);
  
   
-  mBottomLeft.setString("");
-  mBottomLeft.setFont(mfont);
-  mBottomLeft.setCharacterSize(csize);
-  mBottomLeft.setColor(ccol);
+  BottomLeft.setString("");
+  BottomLeft.setFont(font);
+  BottomLeft.setCharacterSize(csize);
+  BottomLeft.setColor(ccol);
 
-  mTopRight.setString("");
-  mTopRight.setFont(mfont);
-  mTopRight.setCharacterSize(csize);
-  mTopRight.setColor(ccol);
+  TopRight.setString("");
+  TopRight.setFont(font);
+  TopRight.setCharacterSize(csize);
+  TopRight.setColor(ccol);
 
-  mBottomCenter.setString("");
-  mBottomCenter.setFont(mfont);
-  mBottomCenter.setCharacterSize(csize);
-  mBottomCenter.setColor(ccol);
+  BottomCenter.setString("");
+  BottomCenter.setFont(font);
+  BottomCenter.setCharacterSize(csize);
+  BottomCenter.setColor(ccol);
   
-  mTopCenter.setString("");
-  mTopCenter.setFont(mfont);
-  mTopCenter.setCharacterSize(csize);
-  mTopCenter.setColor(ccol);
+  TopCenter.setString("");
+  TopCenter.setFont(font);
+  TopCenter.setCharacterSize(csize);
+  TopCenter.setColor(ccol);
 
-  mBottomRight.setString("");
-  mBottomRight.setFont(mfont);
-  mBottomRight.setCharacterSize(csize);
-  mBottomRight.setColor(ccol);
-//  mBottomRight.setString("Level: " + std::to_string(0));
-  mBottomRight.setString("");
+  BottomRight.setString("");
+  BottomRight.setFont(font);
+  BottomRight.setCharacterSize(csize);
+  BottomRight.setColor(ccol);
+  BottomRight.setString("");
 
-  mTopLeft.setString("");
-  mTopLeft.setFont(mfont);
-  mTopLeft.setCharacterSize(csize);
-  mTopLeft.setColor(ccol);
+  TopLeft.setString("");
+  TopLeft.setFont(font);
+  TopLeft.setCharacterSize(csize);
+  TopLeft.setColor(ccol);
 
 
 }
@@ -139,53 +138,50 @@ void Menu::Init(sf::Text testBase, const sf::Vector2f& position)
 
 void Menu::UpdateText( const sf::String &showEnemiesLeft, const  sf::String &livesLeft, const sf::String &bombsExploded,  const sf::String &timeRemaining, const sf::String &showLevel, const sf::String &speedometer)
 {
-  
-  mBottomLeft.setString(showEnemiesLeft);
-  mTopRight.setString(livesLeft);
-  mBottomCenter.setString(bombsExploded);
-  mTopCenter.setString(timeRemaining);
-  mBottomRight.setString(showLevel);
-  mTopLeft.setString(speedometer);
+  BottomLeft.setString(showEnemiesLeft);
+  TopRight.setString(livesLeft);
+  BottomCenter.setString(bombsExploded);
+  TopCenter.setString(timeRemaining);
+  BottomRight.setString(showLevel);
+  TopLeft.setString(speedometer);
 
 }
 
 
 sf::Vector2f Menu::getPosition()
 {
-  return mposition;
+  return position;
 }
 
 void Menu::setPosition(sf::Vector2f pos)
 {
 
 
-  mposition=pos;
-  mBottomLeft.setPosition(mposition+mBottomLeftPosition);
-  mTopRight.setPosition(mposition+mTopRightPosition);
-  mBottomCenter.setPosition(mposition+mBottomCenterPosition);
-  mTopCenter.setPosition(mposition+mTopCenterPosition);
-  mBottomRight.setPosition(mposition+mBottomRightPosition);
-  mTopLeft.setPosition(mposition+mTopLeftPosition);
+  position=pos;
+  BottomLeft.setPosition(position+BottomLeftPosition);
+  TopRight.setPosition(position+TopRightPosition);
+  BottomCenter.setPosition(position+BottomCenterPosition);
+  TopCenter.setPosition(position+TopCenterPosition);
+  BottomRight.setPosition(position+BottomRightPosition);
+  TopLeft.setPosition(position+TopLeftPosition);
 }
 
 
 void Menu::move(float offsX, float offsY)
 {
-  mposition.x=offsX;
-  mposition.y=offsY;
+  position.x=offsX;
+  position.y=offsY;
 }
 
 
 void Menu::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
 
-  target.draw(mBottomLeft,  states);
-  target.draw(mTopRight);
-  target.draw(mBottomCenter);
-  target.draw(mTopCenter);
-  target.draw(mBottomRight);
-  target.draw(mTopLeft);
+  target.draw(BottomLeft,  states);
+  target.draw(TopRight);
+  target.draw(BottomCenter);
+  target.draw(TopCenter);
+  target.draw(BottomRight);
+  target.draw(TopLeft);
 
 }
-
-

@@ -77,7 +77,7 @@ public:
 
 private:
   unsigned int actchall;
-  propertyManager mdbm;
+  propertyManager propmgr;
   sf::RenderWindow window;
   sf::View gameview;
 

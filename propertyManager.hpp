@@ -44,9 +44,9 @@ public:
 
 
 private:
-  sqlite3* mdb;
-  int mstatus;
-  std::string  mactChall;
+  sqlite3* db;
+  int status;
+  std::string  actChall;
   std::string   sendQuery(std::string sql);
 };
 #endif

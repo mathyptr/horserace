@@ -18,7 +18,7 @@ class Challenge : public sf::Drawable
 {
 public:
     Challenge();
-    void Init(propertyManager dbm) ;
+    void Init(propertyManager propmanager) ;
     void playSound();
     void stopSound();
 
@@ -31,19 +31,14 @@ private:
     unsigned int zlevel_Max;
     sf::Color getColor(std::string color);
 
-    sf::Texture     mtexture;
-    sf::Vector2f    mposition;
+    sf::Texture     texture;
+    sf::Vector2f    position;
 
     sf::Texture centerpic;
     sf::Texture bottompic;
     sf::Texture toppic;
     sf::Texture atmopic;
     sf::Texture frontpic;
-
-
-    Component       mTile;
-    Component       mTileR;
-    Component       mTileL;
 
 
     Layer layerBottom;
@@ -60,7 +55,7 @@ private:
     sf::Font font;
     sf::Text testBase;
 
-    propertyManager mdbm;
+    propertyManager propmgr;
 
     unsigned int    mspeedFactor;
 };

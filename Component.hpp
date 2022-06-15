@@ -14,8 +14,8 @@ public:
 
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
-    sf::Texture     mtexture;
-    sf::Sprite      mSprite;
+    sf::Texture     texture;
+    sf::Sprite      Sprite;
 
 };
 #endif

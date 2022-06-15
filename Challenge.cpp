@@ -7,9 +7,9 @@ Challenge::Challenge()
     zlevel_Max=0;
 }
 
-void Challenge::Init(propertyManager dbm)
+void Challenge::Init(propertyManager propmanager)
 {
-    mdbm=dbm;
+    propmgr=propmanager;
     loadResources();
     InitLayer();
 }
@@ -35,19 +35,19 @@ sf::Color  Challenge::getColor(std::string color)
 void Challenge::loadResources()
 {
 
-    if(mdbm.getStatus()==0)
+    if(propmgr.getStatus()==0)
     {
-        toppic.loadFromFile(mdbm.getChallProperty(TOP_PIC));
-        bottompic.loadFromFile(mdbm.getChallProperty(BOTTOM_PIC));
-        centerpic.loadFromFile(mdbm.getChallProperty(CENTER_PIC));
-        atmopic.loadFromFile(mdbm.getChallProperty(ATMO_PIC));
-        frontpic.loadFromFile(mdbm.getChallProperty(FRONT_PIC));
-        soundchall=mdbm.getChallProperty(SOUND_CHALL);
+        toppic.loadFromFile(propmgr.getChallProperty(TOP_PIC));
+        bottompic.loadFromFile(propmgr.getChallProperty(BOTTOM_PIC));
+        centerpic.loadFromFile(propmgr.getChallProperty(CENTER_PIC));
+        atmopic.loadFromFile(propmgr.getChallProperty(ATMO_PIC));
+        frontpic.loadFromFile(propmgr.getChallProperty(FRONT_PIC));
+        soundchall=propmgr.getChallProperty(SOUND_CHALL);
 
 
-        font.loadFromFile(mdbm.getChallProperty(FONT_TYPE));
-        std::string fontSize=mdbm.getChallProperty(FONT_SIZE);
-        std::string fontColor=mdbm.getChallProperty(FONT_COLOR);
+        font.loadFromFile(propmgr.getChallProperty(FONT_TYPE));
+        std::string fontSize=propmgr.getChallProperty(FONT_SIZE);
+        std::string fontColor=propmgr.getChallProperty(FONT_COLOR);
 
         testBase.setFont(font);
         testBase.setCharacterSize(std::stoi(fontSize));

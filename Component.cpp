@@ -6,35 +6,35 @@ Component::Component()
   
 }
 
-void Component::Init(const sf::Texture& texture, const sf::IntRect& rect, const sf::Vector2f& position)
+void Component::Init(const sf::Texture& text, const sf::IntRect& rect, const sf::Vector2f& position)
 {
-  this->mtexture=texture;
-  this->mSprite.setTexture(this->mtexture);
-  this->mSprite.setPosition(position);
-  this->mSprite.setTextureRect(rect);   
+  texture=text;
+  Sprite.setTexture(texture);
+  Sprite.setPosition(position);
+  Sprite.setTextureRect(rect);
 }
 
 
 sf::Vector2f Component::getPosition() const
 {
-  return mSprite.getPosition();
+  return Sprite.getPosition();
 }
 
 void Component::setPosition(float x, float y)
 {
-  mSprite.setPosition(x,y);
+  Sprite.setPosition(x,y);
 }
 
 
 void Component::move(float offsX, float offsY)
 {
-  mSprite.move(offsX,offsY);
+  Sprite.move(offsX,offsY);
 }
 
 
 void Component::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.draw(mSprite, states);
+  target.draw(Sprite, states);
 }
 
 
