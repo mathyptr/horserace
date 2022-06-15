@@ -1,3 +1,0 @@
-/mnt/datadisk1/c++/clion/horserace/cmake-build-debug/CMakeFiles/horseracingC.dir
-/mnt/datadisk1/c++/clion/horserace/cmake-build-debug/CMakeFiles/edit_cache.dir
-/mnt/datadisk1/c++/clion/horserace/cmake-build-debug/CMakeFiles/rebuild_cache.dir
