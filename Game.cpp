@@ -103,7 +103,7 @@ void Game:: stopSound()
 }
 
 
-Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
+Game::Game(const std::string &winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
     actchall=1;
 

@@ -72,7 +72,7 @@ using namespace std;
 class Game
 {
 public:
-  Game(const std::string wintTitle);
+  Game(const std::string &wintTitle);
   void Run();
 
 private:

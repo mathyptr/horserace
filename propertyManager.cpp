@@ -34,9 +34,9 @@ int propertyManager::getStatus()
 }
 
 
-void propertyManager::setChall(std::string actChall)
+void propertyManager::setChall(std::string actChallenge)
 {
-    actChall = actChall;
+    actChall = actChallenge;
 }
 
 std::string  propertyManager::getChall()
