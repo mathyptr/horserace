@@ -7,12 +7,14 @@
 #include <algorithm>
 #include <memory>
 #include "Component.hpp"
+#include "Challenge.hpp"
 #include "Layer.hpp"
 #include "Menu.hpp"
 #include "propertyManager.hpp"
 
 using namespace std;
 
+#define MAX_ZLEVEL_GAME 10
 #define  CENTER_SPEED_FACTOR 4
 //#define  BOTTOM_SPEED_FACTOR 1
 #define  BOTTOM_SPEED_FACTOR 2
@@ -78,25 +80,23 @@ private:
   propertyManager mdbm;
   sf::RenderWindow window;
   sf::View gameview;
-  sf::Texture centerpic;
-  sf::Texture bottompic;
-  sf::Texture toppic;
-  sf::Texture atmopic;
-  sf::Texture frontpic;
 
-
+/*
   std::string soundchall;
   sf::Sound sound;
   sf::SoundBuffer buffersound;
+  */
   bool nosound;
 
 
-  Layer layerBottom;
+/*  Layer layerBottom;
   Layer layerCenter;
   Layer layerTop;
   Layer layerAtmo;
   Layer layerFront;
-  
+*/
+  Challenge chall;
+
   sf::Image icon;
 
   bool winstate;

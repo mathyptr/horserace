@@ -16,9 +16,6 @@ private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     sf::Texture     mtexture;
     sf::Sprite      mSprite;
-    const float     mSpeedPerSecond;
-    float           mDistanceTravelled;
-    const float     mMaximumDistance;
 
 };
 #endif

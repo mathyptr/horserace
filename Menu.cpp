@@ -8,7 +8,7 @@ Menu::Menu():
 {
   
 
-  mfont.loadFromFile("roboto-black.ttf");
+  mfont.loadFromFile("font/default_font.ttf");
 
 
   sf::Color ccol=sf::Color::Red;

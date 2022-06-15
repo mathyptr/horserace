@@ -1,10 +1,7 @@
 #include "Component.hpp"
 
 
-Component::Component():
-  mSpeedPerSecond(800.f),
-  mDistanceTravelled(0),
-  mMaximumDistance(900.f)
+Component::Component()
 {
   
 }

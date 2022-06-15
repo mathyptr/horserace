@@ -32,11 +32,12 @@
 *.app
 
 
+.gitignore
 
 #cmake 
 CMakeLists.txt
-./idea/*
-./cmake-build-debug/*
+idea/
+cmake-build-debug/
 
 
 

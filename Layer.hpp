@@ -19,9 +19,8 @@ private:
     Component       mTile;
     Component       mTileR;
     Component       mTileL;
-    const float     mSpeedPerSecond;
-    float           mDistanceTravelled;
-    const float     mMaximumDistance;
+    unsigned int zlevel;
+    unsigned int zlevel_Act;
     unsigned int    mspeedFactor;
 };
 #endif

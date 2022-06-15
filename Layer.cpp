@@ -1,12 +1,10 @@
 #include "Layer.hpp"
 
 
-Layer::Layer():
-  mSpeedPerSecond(800.f),
-  mDistanceTravelled(0),
-  mMaximumDistance(900.f)
+Layer::Layer()
 {
-  
+    zlevel=0;
+    zlevel_Act=0;
 }
 
 void Layer::Init(const sf::Texture& texture,unsigned int speedFactor, const sf::IntRect& rect, const sf::Vector2f& position)
@@ -57,9 +55,13 @@ void Layer::move(float offsetX, float offsetY)
 
 void Layer::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-    target.draw(mTile, states);
-    target.draw(mTileR, states);    
-    target.draw(mTileL, states);
+    if(zlevel_Act==zlevel)
+    {
+        target.draw(mTile, states);
+        target.draw(mTileR, states);
+        target.draw(mTileL, states);
+    }
+//       zlevel_Act++;
 }
 
 
