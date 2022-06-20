@@ -13,22 +13,27 @@
 #define  ATMO_SPEED_FACTOR 20
 #define  FRONT_SPEED_FACTOR 1
 
+#define ZLEVELMAX 10
 
-class Challenge : public sf::Drawable
+class Challenge
 {
 public:
     Challenge();
-    void Init(propertyManager propmanager) ;
+    void init(propertyManager propmanager) ;
     void playSound();
     void stopSound();
-
+    void setLevel(unsigned int lev);
+    void incLevel();
+    unsigned int getLevel();
+    void draw(sf::RenderTarget &target, sf::RenderStates &states,unsigned int actzlevel);
 private:
-    void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     void loadResources();
-    void InitLayer();
+    void initLayer();
 
-    unsigned int zlevel_Act;
-    unsigned int zlevel_Max;
+    unsigned int zlevelAct;
+    unsigned int zlevelMax;
+    unsigned int zlevel;
+
     sf::Color getColor(std::string color);
 
     sf::Texture     texture;
@@ -57,6 +62,6 @@ private:
 
     propertyManager propmgr;
 
-    unsigned int    mspeedFactor;
+    unsigned int    speedFactor;
 };
 #endif

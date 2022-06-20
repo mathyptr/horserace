@@ -4,17 +4,16 @@
 Layer::Layer()
 {
     zlevel=0;
-    zlevel_Act=0;
 }
 
-void Layer::Init(const sf::Texture& text,unsigned int speedFactor, const sf::IntRect& rect, const sf::Vector2f& pos)
+void Layer::init(const sf::Texture& text,unsigned int speedFactor, const sf::IntRect& rect, const sf::Vector2f& pos)
 {
   texture=text;
   position=pos;
   speedFactor=speedFactor;
-  Tile.Init(texture, rect, position);
-  TileR.Init(texture, rect,sf::Vector2f(static_cast<float>(position.x+800),static_cast<float>(position.y+472) ) );
-  TileL.Init(texture, rect,sf::Vector2f(static_cast<float>(position.x-800),static_cast<float>(position.y+472) ) );
+  tile.init(texture, rect, position);
+  tileR.init(texture, rect,sf::Vector2f(static_cast<float>(position.x+800),static_cast<float>(position.y+472) ) );
+  tileL.init(texture, rect,sf::Vector2f(static_cast<float>(position.x-800),static_cast<float>(position.y+472) ) );
 
 }
 
@@ -27,9 +26,9 @@ void Layer::setPosition(float x, float y)
 {
   position.x=x;
   position.y=y;
-  Tile.setPosition(x,y);
-  TileR.setPosition(x+800,y);
-  TileL.setPosition(x-800,y);
+  tile.setPosition(x,y);
+  tileR.setPosition(x+800,y);
+  tileL.setPosition(x-800,y);
 }
 
 
@@ -37,31 +36,39 @@ void Layer::move(float offsetX, float offsetY)
 {
 
   float oX,oY;
-  oX=offsetX/mspeedFactor;
-  oY=offsetY/mspeedFactor;
-  Tile.move(oX,oY);
-  TileR.move(oX,oY);
-  TileL.move(oX,oY);
+  oX=offsetX/speedFactor;
+  oY=offsetY/speedFactor;
+  tile.move(oX,oY);
+  tileR.move(oX,oY);
+  tileL.move(oX,oY);
 
   if (this->getPosition().x > 400)
     this->setPosition(-400, position.y);
   else if (this->getPosition().x < -400)
     this->setPosition(400, position.y);
 
-  position= Tile.getPosition();
+  position= tile.getPosition();
 
 }
 
-
-void Layer::draw(sf::RenderTarget &target, sf::RenderStates states) const
+void Layer::setLevel(unsigned int lev)
 {
-    if(zlevel_Act==zlevel)
+    zlevel=lev;
+}
+unsigned int Layer::getLevel()
+{
+    return zlevel;
+}
+
+
+void Layer::draw(sf::RenderTarget &target, sf::RenderStates &states,unsigned int zlevel)
+{
+    if(getLevel()==zlevel)
     {
-        target.draw(Tile, states);
-        target.draw(TileR, states);
-        target.draw(TileL, states);
+        target.draw(tile, states);
+        target.draw(tileR, states);
+        target.draw(tileL, states);
     }
-//       zlevel_Act++;
 }
 
 

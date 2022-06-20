@@ -106,11 +106,11 @@ private:
   sf::Font font;
   sf::Text testBase;
 
-  Menu mmenu;
+  Menu menu;
   void processEvent();
   void backgroundLoop();
   void render();
-  void InitLayer();
+  void initLayer();
   void updateMenu();
   void loadResources();
   sf::Color getColor(std::string color);

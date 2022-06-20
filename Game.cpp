@@ -14,12 +14,14 @@ void Game::processEvent()
 
 void Game::render()
 {
+    sf::RenderStates states;
+
     window.clear();
 
-    for(int i=0;i<MAX_ZLEVEL_GAME;i++)
+    for(unsigned int zlevel=0;zlevel<MAX_ZLEVEL_GAME;zlevel++)
     {
-        window.draw(chall);
-        window.draw(mmenu);
+        chall.draw(window,states,zlevel);
+        window.draw(menu);
     }
     window.display();
 }
@@ -84,7 +86,7 @@ void Game::getNextChall()
 
     loadResources();
     if(!gameerrorstate)
-        chall.Init(propmgr);
+        chall.init(propmgr);
     playSound();
 }
 
@@ -119,7 +121,7 @@ Game::Game(const std::string &winTitle) : window(sf::VideoMode(800, 600, 32), wi
     loadResources();
     if(!gameerrorstate)
     {
-        chall.Init(propmgr);
+        chall.init(propmgr);
 
         playSound();
 
@@ -128,6 +130,6 @@ Game::Game(const std::string &winTitle) : window(sf::VideoMode(800, 600, 32), wi
         gameview.setCenter(GVIEW_X/2,GVIEW_Y/2);
         gameview.setSize(sf::Vector2f(GVIEW_X,GVIEW_Y));
 
-        mmenu.Init(testBase, gameview.getCenter());
+        menu.Init(testBase, gameview.getCenter());
     }
 };

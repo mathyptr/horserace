@@ -3,15 +3,15 @@
 
 Challenge::Challenge()
 {
-    zlevel_Act=0;
-    zlevel_Max=0;
+    zlevelAct=0;
+    zlevelMax=0;
 }
 
-void Challenge::Init(propertyManager propmanager)
+void Challenge::init(propertyManager propmanager)
 {
     propmgr=propmanager;
     loadResources();
-    InitLayer();
+    initLayer();
 }
 
 
@@ -61,23 +61,30 @@ void Challenge::loadResources()
 }
 
 
-void Challenge::InitLayer()
+void Challenge::initLayer()
 {
 
-    layerAtmo.Init(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(0, 0, 800,180),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));
-    layerBottom.Init(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));
-    layerTop.Init(toppic,TOP_SPEED_FACTOR,sf::IntRect(0, 0, 800,480),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));
-    layerCenter.Init(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(0, 280, 800, 250),sf::Vector2f(static_cast<float>(0),static_cast<float>(285)));
-    layerFront.Init(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));
+    layerAtmo.init(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(0, 0, 800,180),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));
+    layerBottom.init(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));
+    layerTop.init(toppic,TOP_SPEED_FACTOR,sf::IntRect(0, 0, 800,480),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));
+    layerCenter.init(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(0, 280, 800, 250),sf::Vector2f(static_cast<float>(0),static_cast<float>(285)));
+    layerFront.init(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));
 
-    zlevel_Act=0;
-    zlevel_Max=5;
+    zlevelAct=0;
 
     layerBottom.setPosition(0,472);
     layerCenter.setPosition(0,285);
     layerTop.setPosition(0,0);
     layerAtmo.setPosition(0,0);
     layerFront.setPosition(0,472);
+
+
+
+    layerTop.setLevel(1);
+    layerAtmo.setLevel(2);
+    layerCenter.setLevel(3);
+    layerBottom.setLevel(4);
+    layerFront.setLevel(6);
 
 }
 
@@ -95,15 +102,37 @@ void Challenge:: stopSound()
     sound.stop();
 }
 
-void Challenge::draw(sf::RenderTarget &target, sf::RenderStates states) const
+
+void Challenge::setLevel(unsigned int lev)
 {
-unsigned int zlevel_Act=0;
-    target.draw(layerTop);
+    zlevelAct=lev;
+}
+unsigned int Challenge::getLevel()
+{
+    return zlevelAct;
+}
+
+void Challenge::incLevel()
+{
+    zlevelAct=(zlevelAct+1)%ZLEVELMAX;
+}
+
+
+void Challenge::draw(sf::RenderTarget &target, sf::RenderStates &states,unsigned int actzlevel)
+{
+ /*    target.draw(layerTop);
     target.draw(layerAtmo);
     target.draw(layerCenter);
     target.draw(layerBottom);
-    target.draw(layerFront);
-//    zlevel_Act=(zlevel_Act+1)%zlevel_Max;
+    target.draw(layerFront);*/
+
+    layerTop.draw(target,states,actzlevel);
+    layerAtmo.draw(target,states,actzlevel);
+    layerCenter.draw(target,states,actzlevel);
+    layerBottom.draw(target,states,actzlevel);
+    layerFront.draw(target,states,actzlevel);
+
+    incLevel();
 }
 
 
