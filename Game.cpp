@@ -12,25 +12,106 @@ void Game::processEvent()
 }
 
 
+
+
+void Game::horseMove()
+{
+    const auto elapsed = horsePlayerDeltaTime.getElapsedTime();
+
+    int realSpeed = abs(speedX);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        horsePlayer.move(sf::Keyboard::Left, elapsed.asSeconds());
+    else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+        horsePlayer.move(sf::Keyboard::Right, elapsed.asSeconds());
+    else
+        horsePlayer.move(sf::Keyboard::A, elapsed.asSeconds());// o un qualsiasi altro tasto
+
+    speedX=horsePlayer.getSpeed();
+
+    float rspeed= elapsed.asSeconds() * speedX;
+
+    chall.move(rspeed);
+
+    //restart the timer
+    horsePlayerDeltaTime.restart();
+}
+
+
+
+void Game::chgState()
+{
+
+    /*
+            if (start)
+                checkWin();
+            else if (pricegiving)
+                checkEndPrizeGiving();
+    */
+    winstate=false;
+
+    if(winstate)
+    {
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+        {
+            winstate=false;
+            stopSound();
+            initHorses();
+            getNextChall();
+        }
+    }
+    else
+    {
+        gameoverstate=false;
+        if(gameoverstate)
+        {
+            stopSound();
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+            {
+                initHorses();
+            }
+        }
+        else
+        {
+            horseMove();
+            sf::RenderStates states;
+            horsePlayer.draw(window,states,6);
+        }
+    }
+}
+
+
+
 void Game::render()
 {
     sf::RenderStates states;
 
     window.clear();
 
-    for(unsigned int zlevel=0;zlevel<MAX_ZLEVEL_GAME;zlevel++)
+
+    for(unsigned int zlevel=1;zlevel<=MAX_ZLEVEL_GAME;zlevel++)
     {
         chall.draw(window,states,zlevel);
+        if (winstate||gameoverstate)
+        {
+            ;//TODO
+        }
+        if(!winstate&&!gameoverstate)
+        {
+            horsePlayer.draw(window,states,zlevel);
+        }
+
         window.draw(menu);
     }
     window.display();
 }
+
 
 void Game::Run()
 {
   while (window.isOpen()&&!gameerrorstate)
   {
     processEvent();
+    chgState();
     render();
   }
 }
@@ -104,11 +185,23 @@ void Game:: stopSound()
 
 }
 
+void Game::initHorses()
+{
+    unsigned int zlevel;
+    float posx,posy;
+    zlevel=5;
+    posx=HORSE3_POSX;
+    posy=HORSE3_POSY;
+    horsePlayer.init(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
+
+}
+
+
 
 Game::Game(const std::string &winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
     actchall=1;
-
+    speedX = 0;
     std::string actchallstr;
     actchallstr=propmgr.getActualChall(std::to_string(actchall));
     propmgr.setChall(actchallstr);
@@ -121,6 +214,7 @@ Game::Game(const std::string &winTitle) : window(sf::VideoMode(800, 600, 32), wi
     loadResources();
     if(!gameerrorstate)
     {
+        initHorses();
         chall.init(propmgr);
 
         playSound();

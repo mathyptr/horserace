@@ -63,12 +63,18 @@ void Challenge::loadResources()
 
 void Challenge::initLayer()
 {
+    unsigned int zlevel;
+    zlevel=1;
+    layerAtmo.init(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(0, 0, 800,180),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)),zlevel);
+    zlevel++;
+    layerBottom.init(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)),zlevel);
+    zlevel++;
+    layerTop.init(toppic,TOP_SPEED_FACTOR,sf::IntRect(0, 0, 800,480),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)),zlevel);
+    zlevel++;
+    layerCenter.init(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(0, 280, 800, 250),sf::Vector2f(static_cast<float>(0),static_cast<float>(285)),zlevel);
+    zlevel++;
+    layerFront.init(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)),zlevel);
 
-    layerAtmo.init(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(0, 0, 800,180),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));
-    layerBottom.init(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));
-    layerTop.init(toppic,TOP_SPEED_FACTOR,sf::IntRect(0, 0, 800,480),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)));
-    layerCenter.init(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(0, 280, 800, 250),sf::Vector2f(static_cast<float>(0),static_cast<float>(285)));
-    layerFront.init(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)));
 
     zlevelAct=0;
 
@@ -78,14 +84,21 @@ void Challenge::initLayer()
     layerAtmo.setPosition(0,0);
     layerFront.setPosition(0,472);
 
-
-
     layerTop.setLevel(1);
     layerAtmo.setLevel(2);
     layerCenter.setLevel(3);
     layerBottom.setLevel(4);
     layerFront.setLevel(6);
 
+}
+
+void Challenge:: move(float speed)
+{
+    layerBottom.move(speed,0);
+    layerCenter.move(speed,0);
+    layerTop.move(speed,0);
+    layerAtmo.move(speed,0);
+    layerFront.move(speed,0);
 }
 
 

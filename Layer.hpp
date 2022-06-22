@@ -2,17 +2,17 @@
 #define LAYER_INCLUDE
 #include <SFML/Graphics.hpp>
 #include "Component.hpp"
+#include <iostream>
 
 class Layer
 {
 public:
     Layer();
-    void init(const sf::Texture& texture, unsigned int speedFactor, const sf::IntRect& rect, const sf::Vector2f& position) ;
+    void init(const sf::Texture& texture, unsigned int speedFactor, const sf::IntRect& rect, const sf::Vector2f& position, unsigned int zlevel) ;
     sf::Vector2f getPosition();
     void setPosition(float x, float y);
     void move(float offsetX, float offsetY);
     void setLevel(unsigned int lev);
-    void incLevel();
     unsigned int getLevel();
     void draw(sf::RenderTarget &target, sf::RenderStates &states, unsigned int zlevel) ;
 private:

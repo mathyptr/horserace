@@ -20,6 +20,7 @@ class Challenge
 public:
     Challenge();
     void init(propertyManager propmanager) ;
+    void move(float speed);
     void playSound();
     void stopSound();
     void setLevel(unsigned int lev);
@@ -32,7 +33,7 @@ private:
 
     unsigned int zlevelAct;
     unsigned int zlevelMax;
-    unsigned int zlevel;
+// unsigned int zlevel;
 
     sf::Color getColor(std::string color);
 

@@ -8,6 +8,7 @@
 #include <memory>
 #include "Component.hpp"
 #include "Challenge.hpp"
+#include "Horse.hpp"
 #include "Layer.hpp"
 #include "Menu.hpp"
 #include "propertyManager.hpp"
@@ -81,21 +82,12 @@ private:
   sf::RenderWindow window;
   sf::View gameview;
 
-/*
-  std::string soundchall;
-  sf::Sound sound;
-  sf::SoundBuffer buffersound;
-  */
   bool nosound;
 
-
-/*  Layer layerBottom;
-  Layer layerCenter;
-  Layer layerTop;
-  Layer layerAtmo;
-  Layer layerFront;
-*/
   Challenge chall;
+  Horse horsePlayer;
+  sf::Clock horsePlayerDeltaTime;
+  float speedX;
 
   sf::Image icon;
 
@@ -118,5 +110,7 @@ private:
   void getNextChall();
   void playSound();
   void stopSound();
+  void initHorses();
+  void horseMove();
 };
 #endif // GAME_INCLUDE

@@ -6,15 +6,15 @@ Layer::Layer()
     zlevel=0;
 }
 
-void Layer::init(const sf::Texture& text,unsigned int speedFactor, const sf::IntRect& rect, const sf::Vector2f& pos)
+void Layer::init(const sf::Texture& text,unsigned int speedF, const sf::IntRect& rect, const sf::Vector2f& pos, unsigned int lev)
 {
+  zlevel=lev;
   texture=text;
   position=pos;
-  speedFactor=speedFactor;
+  speedFactor=speedF;
   tile.init(texture, rect, position);
   tileR.init(texture, rect,sf::Vector2f(static_cast<float>(position.x+800),static_cast<float>(position.y+472) ) );
   tileL.init(texture, rect,sf::Vector2f(static_cast<float>(position.x-800),static_cast<float>(position.y+472) ) );
-
 }
 
 sf::Vector2f Layer::getPosition()
