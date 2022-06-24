@@ -43,6 +43,5 @@ private:
     sf::Vector2f BottomCenterPosition;
     sf::Vector2f BottomRightPosition;
 
-
 };
 #endif

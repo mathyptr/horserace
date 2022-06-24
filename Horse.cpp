@@ -18,9 +18,9 @@ void Horse::init(unsigned int n,sf::Vector2f orig,sf::Vector2f pos, unsigned int
   indeximg=0;
   setPropHorse();
   loadImage();
-  this->setTexture();
-  this->setPlayerPosition(pos.x,pos.y);
-  this->setPlayerOrigin(orig.x,orig.y);
+  setTexture();
+  setPlayerPosition(pos.x,pos.y);
+  setPlayerOrigin(orig.x,orig.y);
 }
 
 void Horse::setPropHorse()
@@ -88,12 +88,14 @@ float Horse::getSpeed()
 
 void Horse::incSpeed(float sec)
 {
+    float adjsec=sec*100;
     if (speedX > -MAXSPEED && speedX<=0)
-        speedX -= (-MAXSPEED/(speedX-SPEEDTRHESOLD))*SPEEDFACTOR;
+        speedX -= (-MAXSPEED/(speedX-SPEEDTRHESOLD))*SPEEDFACTOR*adjsec;
 }
 void Horse::decSpeed(float sec)
 {
-    speedX -= speedX*SPEEDSMOOTH/MAXSPEED;
+    float adjsec=sec*100;
+    speedX -= speedX*SPEEDSMOOTH*adjsec/MAXSPEED;
 }
 void Horse::move(sf::Keyboard::Key key, float sec)
 {
@@ -104,7 +106,7 @@ void Horse::move(sf::Keyboard::Key key, float sec)
     }
     else
         decSpeed(sec);
-    std::cout << "speedX:"<< speedX << std::endl;
+    std::cout << "speedX:"<< speedX << "second:"<< sec << std::endl;
 }
 
 void Horse::move(float offsetX, float offsetY)

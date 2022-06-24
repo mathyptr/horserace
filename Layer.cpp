@@ -42,10 +42,10 @@ void Layer::move(float offsetX, float offsetY)
   tileR.move(oX,oY);
   tileL.move(oX,oY);
 
-  if (this->getPosition().x > 400)
-    this->setPosition(-400, position.y);
-  else if (this->getPosition().x < -400)
-    this->setPosition(400, position.y);
+  if (getPosition().x > 400)
+    setPosition(-400, position.y);
+  else if (getPosition().x < -400)
+    setPosition(400, position.y);
 
   position= tile.getPosition();
 

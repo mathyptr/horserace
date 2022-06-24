@@ -80,15 +80,13 @@ void Game::chgState()
 }
 
 
-
 void Game::render()
 {
     sf::RenderStates states;
 
     window.clear();
 
-
-    for(unsigned int zlevel=1;zlevel<=MAX_ZLEVEL_GAME;zlevel++)
+    for(unsigned int zlevel=1;zlevel<=ZLEVELMAX;zlevel++)
     {
         chall.draw(window,states,zlevel);
         if (winstate||gameoverstate)
@@ -119,7 +117,6 @@ void Game::Run()
 
 sf::Color  Game::getColor(std::string color)
 {  
-
   sf::Color co;
   
   std::transform(color.begin(), color.end(),color.begin(), ::toupper);
@@ -140,7 +137,6 @@ void Game::loadResources()
   if(propmgr.getStatus()==0)
   {
       icon.loadFromFile("img/icon.png");
-
 
       font.loadFromFile(propmgr.getChallProperty(FONT_TYPE));
       std::string fontSize=propmgr.getChallProperty(FONT_SIZE);
@@ -175,14 +171,11 @@ void Game::getNextChall()
 void Game:: playSound()
 {
     chall.playSound();
-
 }
 
 void Game:: stopSound()
 {
-//    sound.stop();
     chall.stopSound();
-
 }
 
 void Game::initHorses()

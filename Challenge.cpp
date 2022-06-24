@@ -17,7 +17,6 @@ void Challenge::init(propertyManager propmanager)
 
 sf::Color  Challenge::getColor(std::string color)
 {
-
     sf::Color co;
 
     std::transform(color.begin(), color.end(),color.begin(), ::toupper);
@@ -44,7 +43,6 @@ void Challenge::loadResources()
         frontpic.loadFromFile(propmgr.getChallProperty(FRONT_PIC));
         soundchall=propmgr.getChallProperty(SOUND_CHALL);
 
-
         font.loadFromFile(propmgr.getChallProperty(FONT_TYPE));
         std::string fontSize=propmgr.getChallProperty(FONT_SIZE);
         std::string fontColor=propmgr.getChallProperty(FONT_COLOR);
@@ -65,30 +63,28 @@ void Challenge::initLayer()
 {
     unsigned int zlevel;
     zlevel=1;
-    layerAtmo.init(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(0, 0, 800,180),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)),zlevel);
+    layerAtmo.init(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(LAYER_ATMO_RECTLEFT, LAYER_ATMO_RECTTOP, LAYER_ATMO_RECWIDTH,LAYER_ATMO_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_ATMO_POSX),static_cast<float>(LAYER_TOP_POSY)),zlevel);
+    layerAtmo.setLevel(zlevel);
     zlevel++;
-    layerBottom.init(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)),zlevel);
+    layerTop.init(toppic,TOP_SPEED_FACTOR,sf::IntRect(LAYER_TOP_RECTLEFT, LAYER_TOP_RECTTOP, LAYER_TOP_RECWIDTH,LAYER_TOP_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_TOP_POSX),static_cast<float>(LAYER_TOP_POSY)),zlevel);
+    layerTop.setLevel(zlevel);
     zlevel++;
-    layerTop.init(toppic,TOP_SPEED_FACTOR,sf::IntRect(0, 0, 800,480),sf::Vector2f(static_cast<float>(0),static_cast<float>(0)),zlevel);
+    layerCenter.init(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(LAYER_CENTER_RECTLEFT, LAYER_CENTER_RECTTOP, LAYER_CENTER_RECWIDTH, LAYER_CENTER_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_CENTER_POSX),static_cast<float>(LAYER_CENTER_POSY)),zlevel);
+    layerCenter.setLevel(zlevel);
     zlevel++;
-    layerCenter.init(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(0, 280, 800, 250),sf::Vector2f(static_cast<float>(0),static_cast<float>(285)),zlevel);
-    zlevel++;
-    layerFront.init(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(0, 472, 800,200),sf::Vector2f(static_cast<float>(0),static_cast<float>(472)),zlevel);
+    layerBottom.init(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
+    layerBottom.setLevel(zlevel);
 
+    layerFront.init(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(LAYER_FRONT_RECTLEFT, LAYER_FRONT_RECTTOP, LAYER_FRONT_RECWIDTH,LAYER_FRONT_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_FRONT_POSX),static_cast<float>(LAYER_FRONT_POSY)),zlevel);
+    layerFront.setLevel(ZLEVELMAX);
 
     zlevelAct=0;
 
-    layerBottom.setPosition(0,472);
-    layerCenter.setPosition(0,285);
-    layerTop.setPosition(0,0);
-    layerAtmo.setPosition(0,0);
-    layerFront.setPosition(0,472);
-
-    layerTop.setLevel(1);
-    layerAtmo.setLevel(2);
-    layerCenter.setLevel(3);
-    layerBottom.setLevel(4);
-    layerFront.setLevel(6);
+    layerAtmo.setPosition(LAYER_ATMO_POSX,LAYER_ATMO_POSY);
+    layerTop.setPosition(LAYER_TOP_POSX,LAYER_TOP_POSY);
+    layerCenter.setPosition(LAYER_CENTER_POSX,LAYER_CENTER_POSY);
+    layerBottom.setPosition(LAYER_BOTTOM_POSX,LAYER_BOTTOM_POSY);
+    layerFront.setPosition(LAYER_FRONT_POSX,LAYER_FRONT_POSY);
 
 }
 

@@ -7,9 +7,7 @@ Menu::Menu():
   mMaximumDistance(900.f)
 {
   
-
   font.loadFromFile("font/default_font.ttf");
-
 
   sf::Color ccol=sf::Color::Red;
   unsigned int csize=24;
@@ -17,7 +15,6 @@ Menu::Menu():
   testBase.setFont(font);
   testBase.setCharacterSize(csize);
   testBase.setColor(ccol);
-
 
   BottomLeftLabel="";
   TopRightLabel="";
@@ -34,51 +31,44 @@ Menu::Menu():
   BottomCenterPosition=sf::Vector2f(-120,270);
   BottomRightPosition=sf::Vector2f(280,270);
   
-  BottomLeft.setFont(font); // font is a sf::Font
+  BottomLeft.setFont(font);
   BottomLeft.setString("");
   BottomLeft.setCharacterSize(csize);
   BottomLeft.setColor(ccol);
 
-  TopRight.setFont(font); // font is a sf::Font
+  TopRight.setFont(font);
   TopRight.setString("");
   TopRight.setCharacterSize(csize);
   TopRight.setColor(ccol);
 
-  BottomCenter.setFont(font); // font is a sf::Font
+  BottomCenter.setFont(font);
   BottomCenter.setString("");
   BottomCenter.setCharacterSize(csize);
   BottomCenter.setColor(ccol);
 
-  TopCenter.setFont(font); // font is a sf::Font
+  TopCenter.setFont(font);
   TopCenter.setString("");
   TopCenter.setCharacterSize(csize);
   TopCenter.setColor(ccol);
 
-  BottomRight.setFont(font); // font is a sf::Font
-//  mBottomRight.setString("Level: " + std::to_string(0));
+  BottomRight.setFont(font);
   BottomRight.setString("");
   BottomRight.setCharacterSize(csize);
   BottomRight.setColor(ccol);
 
-  TopLeft.setFont(font); // font is a sf::Font
+  TopLeft.setFont(font);
   TopLeft.setString("");
   TopLeft.setCharacterSize(csize);
   TopLeft.setColor(ccol);
-
 
 }
 
 void Menu::Init(sf::Text testBase, const sf::Vector2f& pos)
 {
-
-//  mfont.loadFromFile(font);
-  //mfont=font;
   testBase=testBase;
   font=*testBase.getFont();
   unsigned int csize=testBase.getCharacterSize();
   sf::Color ccol=testBase.getColor();
-
-
 
   position=pos;
 
@@ -88,7 +78,6 @@ void Menu::Init(sf::Text testBase, const sf::Vector2f& pos)
   TopCenterLabel="";
   BottomRightLabel="";
   TopLeftLabel="";
-
 
   TopLeftPosition=sf::Vector2f(-390,-300);
   TopCenterPosition=sf::Vector2f(-120,-300);
@@ -130,8 +119,6 @@ void Menu::Init(sf::Text testBase, const sf::Vector2f& pos)
   TopLeft.setFont(font);
   TopLeft.setCharacterSize(csize);
   TopLeft.setColor(ccol);
-
-
 }
 
 
@@ -155,8 +142,6 @@ sf::Vector2f Menu::getPosition()
 
 void Menu::setPosition(sf::Vector2f pos)
 {
-
-
   position=pos;
   BottomLeft.setPosition(position+BottomLeftPosition);
   TopRight.setPosition(position+TopRightPosition);
@@ -176,12 +161,10 @@ void Menu::move(float offsX, float offsY)
 
 void Menu::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-
   target.draw(BottomLeft,  states);
   target.draw(TopRight);
   target.draw(BottomCenter);
   target.draw(TopCenter);
   target.draw(BottomRight);
   target.draw(TopLeft);
-
 }
