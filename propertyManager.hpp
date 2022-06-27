@@ -35,6 +35,7 @@ public:
     propertyManager();
     void setChall(std::string actChall);
     std::string getChall();
+    int Init() ;
     int Connect() ;
     int getStatus();
     void Close() ;

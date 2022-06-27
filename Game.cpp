@@ -196,6 +196,7 @@ Game::Game(const std::string &winTitle) : window(sf::VideoMode(800, 600, 32), wi
     actchall=1;
     speedX = 0;
     std::string actchallstr;
+    propmgr.Init();
     actchallstr=propmgr.getActualChall(std::to_string(actchall));
     propmgr.setChall(actchallstr);
 

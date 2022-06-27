@@ -14,8 +14,14 @@ static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
 
 propertyManager::propertyManager()
 {
+//   status=Connect();
+}
+
+int propertyManager::Init()
+{
    status=Connect();
 }
+
 
 int propertyManager::Connect()
 {
@@ -30,7 +36,7 @@ int propertyManager::Connect()
 
 int propertyManager::getStatus()
 {
-    status=Connect();
+    return status;
 }
 
 
