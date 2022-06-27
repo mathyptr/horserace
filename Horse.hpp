@@ -27,23 +27,25 @@ class Horse
 {
 public:
    Horse();
-   sf::FloatRect getPlayerGlobalBounds() const;
-   sf::Vector2f getPlayerPosition() const;
-
+   void setName(std::string name);
+   std::string getName();
    void init(unsigned int num,sf::Vector2f orig,sf::Vector2f pos, unsigned int lev);
-   void setPlayerPosition(float x, float y);
-   void setPlayerOrigin(float x, float y);
+   sf::FloatRect getHorseGlobalBounds() const;
+   sf::Vector2f getHorsePosition() const;
+   void setHorsePosition(float x, float y);
+   void setHorseOrigin(float x, float y);
    void setScale (float factorX, float factorY);
    void move(sf::Keyboard::Key key, float sec);
    void move(float offsetX, float offsetY);
    float getSpeed();
    void incSpeed(float sec);
    void decSpeed(float sec);
-    void setTexture();
+   void setTexture();
    void setLevel(unsigned int lev);
    unsigned int getLevel() const;
    void draw(sf::RenderTarget &target, sf::RenderStates states,unsigned int zlevel);
 private:
+    std::string horseName;
     sf::Texture     horse;
     sf::Sprite      Sprite;
     sf::Texture     horse1;

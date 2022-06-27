@@ -9,8 +9,15 @@
   speedFactor=1;
   speedX = 0;
 }
+void Horse::setName(std::string name)
+{
+    horseName=name;
+}
 
-
+std::string Horse::getName()
+{
+    return horseName;
+}
 void Horse::init(unsigned int n,sf::Vector2f orig,sf::Vector2f pos, unsigned int lev)
 {
   zlevel=lev;
@@ -19,8 +26,8 @@ void Horse::init(unsigned int n,sf::Vector2f orig,sf::Vector2f pos, unsigned int
   setPropHorse();
   loadImage();
   setTexture();
-  setPlayerPosition(pos.x,pos.y);
-  setPlayerOrigin(orig.x,orig.y);
+  setHorsePosition(pos.x,pos.y);
+  setHorseOrigin(orig.x,orig.y);
 }
 
 void Horse::setPropHorse()
@@ -31,29 +38,37 @@ void Horse::setPropHorse()
 
 void Horse::loadImage() {
 
-//		try {
       std::string snum=std::to_string(num);
+      std::string imgdir="img/horse";
+      std::string filename;
 
-      horse1.loadFromFile("img/horse" +  snum + "/horse.png");
+      filename="/horse.png";
+      if(!horse1.loadFromFile(imgdir +  snum + filename))
+          std::cout<<"file "<< filename <<" doesn't exist"<<std::endl;
       horse1.setSmooth(true);
       Sprite.setTexture(horse1);
 
-      horse2.loadFromFile("img/horse" +  snum + "/horse1.png");
+      filename="/horse1.png";
+      if(!horse2.loadFromFile(imgdir +  snum + filename))
+        std::cout<<"file "<< filename <<" doesn't exist"<<std::endl;
       horse2.setSmooth(true);
 
-      horse3.loadFromFile("img/horse" +  snum + "/horse2.png");
+      filename="/horse2.png";
+      if(!horse3.loadFromFile(imgdir +  snum + filename))
+        std::cout<<"file "<< filename <<" doesn't exist"<<std::endl;
       horse3.setSmooth(true);
 
-      horse4.loadFromFile("img/horse" +  snum + "/horse3.png");
+      filename="/horse3.png";
+      if(!horse4.loadFromFile(imgdir +  snum + filename))
+        std::cout<<"file "<< filename <<" doesn't exist"<<std::endl;
       horse4.setSmooth(true);
 
-      horse5.loadFromFile("img/horse" +  snum + "/horse4.png");
+      filename="/horse4.png";
+      if(!horse5.loadFromFile(imgdir +  snum + filename))
+        std::cout<<"file "<< filename <<" doesn't exist"<<std::endl;
       horse5.setSmooth(true);
 
-//		} catch (Exception e) {
-//			printf("errore input");
-//		}
-		indeximg = (int) (rand() * 5);
+	  indeximg = (int) (rand() * 5);
 	}
 
 
@@ -106,7 +121,7 @@ void Horse::move(sf::Keyboard::Key key, float sec)
     }
     else
         decSpeed(sec);
-    std::cout << "speedX:"<< speedX << "second:"<< sec << std::endl;
+//    std::cout << "speedX:"<< speedX << "second:"<< sec << std::endl;
 }
 
 void Horse::move(float offsetX, float offsetY)
@@ -118,21 +133,21 @@ void Horse::move(float offsetX, float offsetY)
   Sprite.move(oX, oY);
 }
 
-sf::FloatRect Horse::getPlayerGlobalBounds() const
+sf::FloatRect Horse::getHorseGlobalBounds() const
 {
     return Sprite.getGlobalBounds();
 }
 
-sf::Vector2f Horse::getPlayerPosition() const
+sf::Vector2f Horse::getHorsePosition() const
 {
   return Sprite.getPosition();
 }
-void Horse::setPlayerPosition(float x, float y)
+void Horse::setHorsePosition(float x, float y)
 {
   Sprite.setPosition(x,y);
 }
 
-void Horse::setPlayerOrigin(float x, float y)
+void Horse::setHorseOrigin(float x, float y)
 {
   Sprite.setOrigin(x,y);
 }

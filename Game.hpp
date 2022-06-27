@@ -6,7 +6,7 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
-#include "Component.hpp"
+//#include "Component.hpp"
 #include "Challenge.hpp"
 #include "Horse.hpp"
 #include "Layer.hpp"
