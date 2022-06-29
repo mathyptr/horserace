@@ -191,7 +191,7 @@ void Game::initHorses()
 
 
 
-Game::Game(const std::string &winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
+Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
     actchall=1;
     speedX = 0;
