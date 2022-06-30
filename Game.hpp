@@ -41,6 +41,7 @@ public:
 
 private:
   unsigned int actchall;
+  unsigned int pathlen;
   propertyManager propmgr;
   sf::RenderWindow window;
   sf::View gameview;
@@ -75,5 +76,6 @@ private:
   void stopSound();
   void initHorses();
   void horseMove();
+  bool checkWinner();
 };
 #endif // GAME_INCLUDE

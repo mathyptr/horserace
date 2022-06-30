@@ -36,18 +36,29 @@ void Game::horseMove()
     horsePlayerDeltaTime.restart();
 }
 
+bool Game::checkWinner()
+{
+    unsigned int travel;
+    travel=horsePlayer.getTravelled();
+
+    if (travel >= pathlen)
+    {
+        speedX = 0;
+        return true;
+    }
+    else
+    {
+        ;//TODO
+        return false;
+    }
+}
 
 
 void Game::chgState()
 {
 
-    /*
-            if (start)
-                checkWin();
-            else if (pricegiving)
-                checkEndPrizeGiving();
-    */
-    winstate=false;
+    winstate=checkWinner();
+ //   winstate=false;
 
     if(winstate)
     {
@@ -136,6 +147,8 @@ void Game::loadResources()
   gameerrorstate=true;
   if(propmgr.getStatus()==0)
   {
+      std::cout<<"length: "<<propmgr.getChallProperty(PATHLENGHT);
+      pathlen=stoi(propmgr.getChallProperty(PATHLENGHT));
       icon.loadFromFile("img/icon.png");
 
       font.loadFromFile(propmgr.getChallProperty(FONT_TYPE));

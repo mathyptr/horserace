@@ -25,7 +25,7 @@ using namespace std;
 #define ATMO_PIC "ATMO_PIC"
 #define FRONT_PIC "FRONT_PIC"
 #define SOUND_CHALL "SOUND_CHALL"
-
+#define PATHLENGHT "PATHLENGHT"
 
 #include "sqlite3.h"
 

@@ -8,6 +8,7 @@
   indeximg=0;
   speedFactor=1;
   speedX = 0;
+  travelled=0;
 }
 void Horse::setName(std::string name)
 {
@@ -23,6 +24,8 @@ void Horse::init(unsigned int n,sf::Vector2f orig,sf::Vector2f pos, unsigned int
   zlevel=lev;
   num=n;
   indeximg=0;
+  speedX=0;
+  travelled=0;
   setPropHorse();
   loadImage();
   setTexture();
@@ -121,9 +124,16 @@ void Horse::move(sf::Keyboard::Key key, float sec)
     }
     else
         decSpeed(sec);
-//    std::cout << "speedX:"<< speedX << "second:"<< sec << std::endl;
+    std::cout << "speedX:"<< speedX << "second:"<< sec << std::endl;
+    travelled+=-getSpeed()*sec;
+    std::cout << "Speed: "<< getSpeed() << std::endl;
+    std::cout << "sec: "<< sec << std::endl;
+    std::cout << "travelled: "<< travelled << std::endl;
 }
-
+unsigned int Horse::getTravelled()
+{
+    return travelled;
+}
 void Horse::move(float offsetX, float offsetY)
 {
   float oX,oY;

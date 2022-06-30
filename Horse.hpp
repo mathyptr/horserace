@@ -40,6 +40,7 @@ public:
    float getSpeed();
    void incSpeed(float sec);
    void decSpeed(float sec);
+   unsigned int getTravelled();
    void setTexture();
    void setLevel(unsigned int lev);
    unsigned int getLevel() const;
@@ -55,6 +56,7 @@ private:
     sf::Texture     horse5;
     unsigned int zlevel;
     unsigned int num;
+    unsigned int travelled;
     int indeximg;
     float speedX;
     unsigned int    speedFactor;
