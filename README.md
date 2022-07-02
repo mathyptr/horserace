@@ -9,7 +9,7 @@ Before compilation, you must link the SFML and SQLite (both static and dynamic) 
 - SQLite 3.35.5
 
 ### CMake
-
+Here's a ready CMake file to build the project.
 ```CMake
 cmake_minimum_required(VERSION 3.20)
 project(horserace)
@@ -17,16 +17,17 @@ project(horserace)
 set(CMAKE_CXX_STANDARD 14)
 set(SFML_INC_DIR YOUR_PATH_TO_SFML/include)
 include_directories(${SFML_INC_DIR})
-
+include_directories(./include)
 
 add_executable(horserace
         main.cpp
-        Challenge.cpp
-        Component.cpp
+        src/Track.cpp
+        src/MovingSprite.cpp
         src/Game.cpp
         src/Horse.cpp
         src/Layer.cpp
         src/Menu.cpp
+        src/Utility.cpp
         src/PropertyManager.cpp)
 
 target_link_libraries(horserace YOUR_PATH_TO_SFML/lib/sfml-graphics-d.lib)
