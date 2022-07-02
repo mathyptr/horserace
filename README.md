@@ -1,8 +1,8 @@
 # 🏇 Horse Race 🏇
-_Horse race_ is a parallax-scrolling game in which you control a horse; the horse goes through a 4-races grand prix to win the Horse Trophy. 🏆
+_Horse Race_ is a parallax-scrolling game in which you control a horse; the horse goes through a 4-races grand prix to win the Horse Trophy. 🏆
 
 ### Quickstart
-Before compilation, you must link the SFML and SQLite (both static and dynamic) libraries. The output file should be placed in the same directory as the img, music and font folders. Dynamic libraries (.DLL files or .so files) and the database (mydb.db file) should also stay there.
+Before compilation, you must link the SFML and SQLite (both static and dynamic) libraries. The output file should be placed in the same directory as the img, music and font folders. Dynamic libraries (.dll files or .so files) and the database (mydb.db file) should also stay there.
 
 ### Dependencies
 - SFML 2.5.1
