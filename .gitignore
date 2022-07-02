@@ -31,14 +31,12 @@
 *.out
 *.app
 
-
-.gitignore
-
-#cmake 
+# CMake build
 CMakeLists.txt
+
+# CLion project settings and build folders
 .idea/
 cmake-build-debug/
 
-
-
-
+# VS Code build directory
+build/
