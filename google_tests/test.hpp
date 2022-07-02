@@ -3,6 +3,7 @@
 
 #include "gtest/gtest.h"
 #include "Horse.hpp"
+#include "MovingSprite.hpp"
 #include "SFML/Graphics.hpp"
 
 #define  HORSE1_POSX 400
