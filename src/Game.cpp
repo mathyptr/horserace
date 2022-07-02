@@ -32,21 +32,37 @@ void Game::horseMove()
     float rspeed= elapsed.asSeconds() * speedX;
 
     chall.move(rspeed);
-
+//    horsePlayer2.setTexture();
+//    horsePlayer3.setTexture();
+    horsePlayer2.move(rspeed,0);
+    horsePlayer3.move(rspeed,0);
     //restart the timer
     horsePlayerDeltaTime.restart();
 }
 
+bool Game::checkWinner()
+{
+    unsigned int travel;
+    travel=horsePlayer.getTravelled();
+
+    if (travel >= pathlen)
+    {
+        speedX = 0;
+        return true;
+    }
+    else
+    {
+        ;//TODO
+        return false;
+    }
+}
+
+
 void Game::chgState()
 {
 
-    /*
-            if (start)
-                checkWin();
-            else if (pricegiving)
-                checkEndPrizeGiving();
-    */
-    winstate=false;
+    winstate=checkWinner();
+ //   winstate=false;
 
     if(winstate)
     {
@@ -73,7 +89,10 @@ void Game::chgState()
         {
             horseMove();
             sf::RenderStates states;
-            horsePlayer.draw(window,states,6);
+/*            horsePlayer.draw(window,states,6);
+            horsePlayer2.draw(window,states,6);
+            horsePlayer3.draw(window,states,6);
+            */
         }
     }
 }
@@ -93,6 +112,8 @@ void Game::render()
         if(!winstate&&!gameoverstate)
         {
             horsePlayer.draw(window,states,zlevel);
+            horsePlayer2.draw(window,states,zlevel);
+            horsePlayer3.draw(window,states,zlevel);
         }
 
         window.draw(menu);
@@ -105,6 +126,9 @@ void Game::loadResources()
   gameerrorstate=true;
   if(propmgr.getStatus()==0)
   {
+      std::cout<<"length: "<<propmgr.getTrackProperty(PATHLENGHT);
+
+      pathlen=stoi(propmgr.getTrackProperty(PATHLENGHT));
       icon.loadFromFile("img/icon.png");
 
       font.loadFromFile(propmgr.getTrackProperty(FONT_TYPE));
@@ -149,10 +173,20 @@ void Game::stopSound()
 void Game::initHorses()
 {
     unsigned int zlevel;
-    float posx,posy;
+    float posx,posy,posx2,posy2,posx3,posy3;
+
+    posx3=HORSE3_POSX;
+    posy3=HORSE3_POSY;
+    posx2=HORSE2_POSX;
+    posy2=HORSE2_POSY;
+    posx=HORSE1_POSX;
+    posy=HORSE1_POSY;
     zlevel=5;
-    posx=HORSE3_POSX;
-    posy=HORSE3_POSY;
+    horsePlayer2.init(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
+    zlevel++;
+    horsePlayer3.init(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
+//    zlevel=5;
+    zlevel++;
     horsePlayer.init(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
 }
 

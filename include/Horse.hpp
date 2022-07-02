@@ -12,6 +12,17 @@
 #define SPEEDFACTOR 10.f
 #define SPEEDSMOOTH 40.f
 
+/*
+#include "log4cpp/Category.hh"
+#include "log4cpp/Appender.hh"
+#include "log4cpp/FileAppender.hh"
+#include "log4cpp/OstreamAppender.hh"
+#include "log4cpp/Layout.hh"
+#include "log4cpp/BasicLayout.hh"
+#include "log4cpp/Priority.hh"
+
+*/
+
 class Horse
 {
 public:
@@ -28,12 +39,14 @@ public:
     float getSpeed();
     void incSpeed(float sec);
     void decSpeed(float sec);
+    unsigned int getTravelled();
     void setTexture();
     void setScale(float factorX, float factorY);
     void draw(sf::RenderTarget &target, sf::RenderStates states, unsigned int z);
 private:
     std::string horseName;
     unsigned int horseNumber;
+    unsigned int travelled;
     float speed;
     float speedFactor;
     unsigned int zlevel;

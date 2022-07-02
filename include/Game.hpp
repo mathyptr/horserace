@@ -41,6 +41,7 @@ public:
 
 private:
   unsigned int actchall;
+  unsigned int pathlen;
   PropertyManager propmgr;
   sf::RenderWindow window;
   sf::View gameview;
@@ -48,7 +49,7 @@ private:
   bool mute;
 
   Track chall;
-  Horse horsePlayer;
+  Horse horsePlayer,horsePlayer2,horsePlayer3;
   sf::Clock horsePlayerDeltaTime;
   float speedX;
 
@@ -75,5 +76,6 @@ private:
   void stopSound();
   void initHorses();
   void horseMove();
+  bool checkWinner();
 };
 #endif // GAME_INCLUDE

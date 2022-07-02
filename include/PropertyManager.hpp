@@ -5,6 +5,17 @@
 #include <iostream>
 using namespace std;
 
+/*
+#include "log4cpp/Category.hh"
+#include "log4cpp/Appender.hh"
+#include "log4cpp/FileAppender.hh"
+#include "log4cpp/OstreamAppender.hh"
+#include "log4cpp/Layout.hh"
+#include "log4cpp/BasicLayout.hh"
+#include "log4cpp/Priority.hh"
+
+*/
+
 #define FONT_TYPE "FONT_TYPE"
 #define FONT_SIZE "FONT_SIZE"
 #define FONT_COLOR "FONT_COLOR"
@@ -14,6 +25,7 @@ using namespace std;
 #define ATMO_PIC "ATMO_PIC"
 #define FRONT_PIC "FRONT_PIC"
 #define SOUND_CHALL "SOUND_CHALL"
+#define PATHLENGHT "PATHLENGHT"
 
 #include "../sqlite3.h"
 

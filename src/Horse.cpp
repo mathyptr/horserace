@@ -9,6 +9,7 @@ Horse::Horse()
     speed = 0;
     sheets = {};
     sprite = MovingSprite();
+    travelled=0;
 }
 
 void Horse::setName(std::string name)
@@ -26,6 +27,8 @@ void Horse::init(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsig
     zlevel = z;
     horseNumber = number;
     sheetIndex = 0;
+    speed = 0;
+    travelled=0;
     setPropHorse();
     loadImage();
     setTexture();
@@ -94,11 +97,23 @@ void Horse::move(sf::Keyboard::Key key, float sec)
     }
     else
         decSpeed(sec);
+    std::cout << "speed:"<< speed << "second:"<< sec << std::endl;
+    travelled+=-getSpeed()*sec;
+    std::cout << "Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; sec: "<< sec << "; travelled: "<< travelled << std::endl;
 }
-
+unsigned int Horse::getTravelled()
+{
+    return travelled;
+}
 void Horse::move(float offsetX, float offsetY)
 {
-    sprite.move(offsetX / speedFactor, offsetY / speedFactor);
+    float oX,oY;
+    oX=offsetX/speedFactor+speedFactor;
+    oY=offsetY*speedFactor;
+//    incSpeed(oX);
+    setTexture();
+    sprite.move(oX, oY);
+    std::cout <<"Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; travelled: "<< travelled << std::endl;
 }
 
 sf::FloatRect Horse::getHorseGlobalBounds() const
