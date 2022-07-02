@@ -62,12 +62,12 @@ void Game::chgState()
 {
 
     winstate=checkWinner();
- //   winstate=false;
-
     if(winstate)
     {
+        testBottomCenter="Press Return KEY to continue....";
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
         {
+            testBottomCenter="";
             winstate=false;
             stopSound();
             initHorses();
@@ -80,8 +80,10 @@ void Game::chgState()
         if(gameoverstate)
         {
             stopSound();
+            testBottomCenter="GAME OVER";
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
             {
+                testBottomCenter="";
                 initHorses();
             }
         }
@@ -96,6 +98,14 @@ void Game::chgState()
         }
     }
 }
+
+void Game::updateMenu()
+{
+    menu.setPosition(gameview.getCenter());
+    menu.UpdateText("","",testBottomCenter,"","",chall.getName());
+
+}
+
 
 void Game::render()
 {
@@ -116,8 +126,8 @@ void Game::render()
             horsePlayer3.draw(window,states,zlevel);
         }
 
-        window.draw(menu);
     }
+    window.draw(menu);
     window.display();
 }
 
@@ -126,6 +136,9 @@ void Game::loadResources()
   gameerrorstate=true;
   if(propmgr.getStatus()==0)
   {
+      chall.setName(propmgr.getCurrentTrack(std::to_string(actchall)));
+      propmgr.setTrack(chall.getName());
+
       std::cout<<"length: "<<propmgr.getTrackProperty(PATHLENGHT);
 
       pathlen=stoi(propmgr.getTrackProperty(PATHLENGHT));
@@ -149,14 +162,12 @@ void Game::getNextChall()
 {
     actchall++;
 
-    std::string actchallstr;
-    actchallstr= propmgr.getCurrentTrack(std::to_string(actchall));
-
-    propmgr.setTrack(actchallstr);
-
     loadResources();
     if(!gameerrorstate)
+    {
         chall.init(propmgr);
+        menu.Init(testBase, gameview.getCenter());
+    }
     playSound();
 }
 
@@ -196,6 +207,7 @@ void Game::Run()
     while (window.isOpen() && !gameerrorstate)
     {
         processEvents();
+        updateMenu();
         chgState();
         render();
     }

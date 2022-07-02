@@ -122,14 +122,14 @@ void Menu::Init(sf::Text testBase, const sf::Vector2f& pos)
 
 
 
-void Menu::UpdateText( const sf::String &showEnemiesLeft, const  sf::String &livesLeft, const sf::String &bombsExploded,  const sf::String &timeRemaining, const sf::String &showLevel, const sf::String &speedometer)
+void Menu::UpdateText( const sf::String BottomL, const  sf::String TopR, const sf::String BottomC,  const sf::String TopC, const sf::String BottomR, const sf::String TopL)
 {
-  BottomLeft.setString(showEnemiesLeft);
-  TopRight.setString(livesLeft);
-  BottomCenter.setString(bombsExploded);
-  TopCenter.setString(timeRemaining);
-  BottomRight.setString(showLevel);
-  TopLeft.setString(speedometer);
+  BottomLeft.setString(BottomL);
+  TopRight.setString(TopR);
+  BottomCenter.setString(BottomC);
+  TopCenter.setString(TopC);
+  BottomRight.setString(BottomR);
+  TopLeft.setString(TopL);
 
 }
 

@@ -61,7 +61,8 @@ private:
 
   sf::Font font;
   sf::Text testBase;
-
+  sf::String testBottomCenter;
+  sf::String testTopCenter;
   Menu menu;
 
   void processEvents();

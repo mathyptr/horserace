@@ -62,6 +62,8 @@ public:
     void setZLevel(int z);
     void incZLevel();
     unsigned int getZLevel();
+    void setName(std::string trackName);
+    std::string getName();
     void draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel);
 private:
     void loadResources();
@@ -70,6 +72,8 @@ private:
     unsigned int zlevelAct;
     unsigned int zlevelMax;
 // unsigned int zlevel;
+
+    std::string name;
 
     sf::Texture texture;
     sf::Vector2f position;

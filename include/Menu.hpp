@@ -10,7 +10,7 @@ class Menu : public sf::Drawable
 public:
     Menu();
     void Init(sf::Text testBase, const sf::Vector2f& position) ;
-    void UpdateText(const sf::String &showEnemiesLeft, const sf::String &livesLeft, const sf::String &bombsExploded, const sf::String &timeRemaining, const  sf::String &showLevel, const sf::String &speedometer);
+    void UpdateText( const sf::String BottomL, const  sf::String TopR, const sf::String BottomC,  const sf::String TopC, const sf::String BottomR, const sf::String TopL);
     sf::Vector2f getPosition();
     void setPosition(sf::Vector2f pos);
     void move(float offsX, float offsY);

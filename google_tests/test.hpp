@@ -3,6 +3,7 @@
 
 #include "gtest/gtest.h"
 #include "Horse.hpp"
+#include "Track.hpp"
 #include "MovingSprite.hpp"
 #include "SFML/Graphics.hpp"
 

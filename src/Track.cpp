@@ -104,6 +104,16 @@ void Track::incZLevel()
     zlevelAct = (zlevelAct + 1) % ZLEVELMAX;
 }
 
+void Track::setName(std::string trackName)
+{
+    name = trackName;
+}
+
+std::string Track::getName()
+{
+    return name;
+}
+
 void Track::draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel)
 {
  /*    target.draw(layerTop);
