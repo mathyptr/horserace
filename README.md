@@ -9,6 +9,7 @@ Before compilation, you must link the SFML and SQLite (both static and dynamic) 
 - SQLite 3.35.5
 
 ### CMake
+
 ```CMake
 cmake_minimum_required(VERSION 3.20)
 project(horserace)
@@ -22,11 +23,11 @@ add_executable(horserace
         main.cpp
         Challenge.cpp
         Component.cpp
-        Game.cpp
-        Horse.cpp
-        Layer.cpp
-        Menu.cpp
-        propertyManager.cpp)
+        src/Game.cpp
+        src/Horse.cpp
+        src/Layer.cpp
+        src/Menu.cpp
+        src/PropertyManager.cpp)
 
 target_link_libraries(horserace YOUR_PATH_TO_SFML/lib/sfml-graphics-d.lib)
 target_link_libraries(horserace YOUR_PATH_TO_SFML/lib/sfml-window-d.lib)

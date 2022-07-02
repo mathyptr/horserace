@@ -1,5 +1,5 @@
 #include "Game.hpp"
-#include "Utility.h"
+#include "Utility.hpp"
 
 //listens to events (in this case, closing the window by the cross button or by the escape key)
 void Game::processEvents()

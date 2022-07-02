@@ -15,7 +15,7 @@ using namespace std;
 #define FRONT_PIC "FRONT_PIC"
 #define SOUND_CHALL "SOUND_CHALL"
 
-#include "sqlite3.h"
+#include "../sqlite3.h"
 
 class PropertyManager
 {

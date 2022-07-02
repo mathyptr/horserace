@@ -2,7 +2,7 @@
 #define TEST_INCLUDE
 
 #include "gtest/gtest.h"
-#include "../Horse.hpp"
+#include "Horse.hpp"
 #include "SFML/Graphics.hpp"
 
 #define  HORSE1_POSX 400

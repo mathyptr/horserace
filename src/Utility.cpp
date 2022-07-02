@@ -1,4 +1,4 @@
-#include "Utility.h"
+#include "Utility.hpp"
 
 sf::Color Utility::getColor(std::string colorName)
 {
