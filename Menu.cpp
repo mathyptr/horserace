@@ -1,6 +1,5 @@
 #include "Menu.hpp"
 
-
 Menu::Menu():
   mSpeedPerSecond(800.f),
   mDistanceTravelled(0),

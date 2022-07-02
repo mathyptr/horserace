@@ -1,81 +1,61 @@
-#include "Challenge.hpp"
+#include "Track.hpp"
+#include "Utility.h"
 
-
-Challenge::Challenge()
+Track::Track()
 {
     zlevelAct=0;
     zlevelMax=0;
 }
 
-void Challenge::init(propertyManager propmanager)
+void Track::init(PropertyManager propmanager)
 {
     propmgr=propmanager;
     loadResources();
     initLayer();
 }
 
-
-sf::Color  Challenge::getColor(std::string color)
+void Track::loadResources()
 {
-    sf::Color co;
-
-    std::transform(color.begin(), color.end(),color.begin(), ::toupper);
-    if(color.compare("BLACK")==0) co=sf::Color::Black;
-    else if(color.compare("RED")==0) co=sf::Color::Red;
-    else if(color.compare("GREEN")==0) co=sf::Color::Green;
-    else if(color.compare("BLUE")==0) co=sf::Color::Blue;
-    else if(color.compare("YELLOW")==0) co=sf::Color::Yellow;
-    else if(color.compare("MAGENTA")==0) co=sf::Color::Magenta;
-    else if(color.compare("CYAN")==0) co=sf::Color::Cyan;
-    else if(color.compare("TRASPARENT")==0) co=sf::Color::Transparent;
-    return co;
-}
-
-void Challenge::loadResources()
-{
-
-    if(propmgr.getStatus()==0)
+    if(propmgr.getStatus() == 0)
     {
-        toppic.loadFromFile(propmgr.getChallProperty(TOP_PIC));
-        bottompic.loadFromFile(propmgr.getChallProperty(BOTTOM_PIC));
-        centerpic.loadFromFile(propmgr.getChallProperty(CENTER_PIC));
-        atmopic.loadFromFile(propmgr.getChallProperty(ATMO_PIC));
-        frontpic.loadFromFile(propmgr.getChallProperty(FRONT_PIC));
-        soundchall=propmgr.getChallProperty(SOUND_CHALL);
+        toppic.loadFromFile(propmgr.getTrackProperty(TOP_PIC));
+        bottompic.loadFromFile(propmgr.getTrackProperty(BOTTOM_PIC));
+        centerpic.loadFromFile(propmgr.getTrackProperty(CENTER_PIC));
+        atmopic.loadFromFile(propmgr.getTrackProperty(ATMO_PIC));
+        frontpic.loadFromFile(propmgr.getTrackProperty(FRONT_PIC));
+        soundchall = propmgr.getTrackProperty(SOUND_CHALL);
 
-        font.loadFromFile(propmgr.getChallProperty(FONT_TYPE));
-        std::string fontSize=propmgr.getChallProperty(FONT_SIZE);
-        std::string fontColor=propmgr.getChallProperty(FONT_COLOR);
+        font.loadFromFile(propmgr.getTrackProperty(FONT_TYPE));
+        std::string fontSize = propmgr.getTrackProperty(FONT_SIZE);
+        std::string fontColor = propmgr.getTrackProperty(FONT_COLOR);
 
         testBase.setFont(font);
         testBase.setCharacterSize(std::stoi(fontSize));
-        testBase.setColor(getColor(fontColor));
+        testBase.setColor(Utility::getColor(fontColor));
 
         if (!buffersound.loadFromFile(soundchall))
-            nosound=true;
+            nosound = true;
 
     }
-
 }
 
-
-void Challenge::initLayer()
+void Track::initLayer()
 {
     unsigned int zlevel;
     zlevel=1;
     layerTop.init(toppic,TOP_SPEED_FACTOR,sf::IntRect(LAYER_TOP_RECTLEFT, LAYER_TOP_RECTTOP, LAYER_TOP_RECWIDTH,LAYER_TOP_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_TOP_POSX),static_cast<float>(LAYER_TOP_POSY)),zlevel);
-//    layerTop.setLevel(zlevel);
+//    layerTop.setZLevel(zlevel);
     zlevel++;
     layerAtmo.init(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(LAYER_ATMO_RECTLEFT, LAYER_ATMO_RECTTOP, LAYER_ATMO_RECWIDTH,LAYER_ATMO_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_ATMO_POSX),static_cast<float>(LAYER_TOP_POSY)),zlevel);
-//    layerAtmo.setLevel(zlevel);
+//    layerAtmo.setZLevel(zlevel);
     zlevel++;
     layerCenter.init(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(LAYER_CENTER_RECTLEFT, LAYER_CENTER_RECTTOP, LAYER_CENTER_RECWIDTH, LAYER_CENTER_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_CENTER_POSX),static_cast<float>(LAYER_CENTER_POSY)),zlevel);
-//    layerCenter.setLevel(zlevel);
+//    layerCenter.setZLevel(zlevel);
     zlevel++;
     layerBottom.init(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
-//    layerBottom.setLevel(zlevel);
+//    layerBottom.setZLevel(zlevel);
     layerFront.init(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(LAYER_FRONT_RECTLEFT, LAYER_FRONT_RECTTOP, LAYER_FRONT_RECWIDTH,LAYER_FRONT_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_FRONT_POSX),static_cast<float>(LAYER_FRONT_POSY)),ZLEVELMAX);
-//    layerFront.setLevel(ZLEVELMAX);
+//    layerFront.setZLevel(ZLEVELMAX);
 
     zlevelAct=0;
 
@@ -87,7 +67,7 @@ void Challenge::initLayer()
 
 }
 
-void Challenge:: move(float speed)
+void Track:: move(float speed)
 {
     layerBottom.move(speed,0);
     layerCenter.move(speed,0);
@@ -97,36 +77,34 @@ void Challenge:: move(float speed)
 }
 
 
-void Challenge:: playSound()
+void Track:: playSound()
 {
     sound.setBuffer(buffersound);
     sound.setLoop(true);
     sound.play();
-
 }
 
-void Challenge:: stopSound()
+void Track:: stopSound()
 {
     sound.stop();
 }
 
-
-void Challenge::setLevel(unsigned int lev)
+void Track::setZLevel(int z)
 {
-    zlevelAct=lev;
+    zlevelAct = z;
 }
-unsigned int Challenge::getLevel()
+
+unsigned int Track::getZLevel()
 {
     return zlevelAct;
 }
 
-void Challenge::incLevel()
+void Track::incZLevel()
 {
-    zlevelAct=(zlevelAct+1)%ZLEVELMAX;
+    zlevelAct = (zlevelAct + 1) % ZLEVELMAX;
 }
 
-
-void Challenge::draw(sf::RenderTarget &target, sf::RenderStates &states,unsigned int actzlevel)
+void Track::draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel)
 {
  /*    target.draw(layerTop);
     target.draw(layerAtmo);
@@ -134,13 +112,13 @@ void Challenge::draw(sf::RenderTarget &target, sf::RenderStates &states,unsigned
     target.draw(layerBottom);
     target.draw(layerFront);*/
 
-    layerTop.draw(target,states,actzlevel);
-    layerAtmo.draw(target,states,actzlevel);
-    layerCenter.draw(target,states,actzlevel);
-    layerBottom.draw(target,states,actzlevel);
-    layerFront.draw(target,states,actzlevel);
+    layerTop.draw(target, states, actzlevel);
+    layerAtmo.draw(target, states, actzlevel);
+    layerCenter.draw(target, states, actzlevel);
+    layerBottom.draw(target, states, actzlevel);
+    layerFront.draw(target, states, actzlevel);
 
-    incLevel();
+    incZLevel();
 }
 
 

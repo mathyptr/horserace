@@ -3,8 +3,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 #include "Layer.hpp"
-#include "propertyManager.hpp"
-
+#include "PropertyManager.hpp"
 
 #define  CENTER_SPEED_FACTOR 4
 //#define  BOTTOM_SPEED_FACTOR 1
@@ -46,25 +45,24 @@
 #define  LAYER_FRONT_POSX 0
 #define  LAYER_FRONT_POSY 472
 
-
 #define  LAYER_FRONT_RECTLEFT 0
 #define  LAYER_FRONT_RECTTOP 472
 #define  LAYER_FRONT_RECWIDTH 800
 #define  LAYER_FRONT_RECTHEIGHT 200
 
 
-class Challenge
+class Track
 {
 public:
-    Challenge();
-    void init(propertyManager propmanager) ;
+    Track();
+    void init(PropertyManager propmanager);
     void move(float speed);
     void playSound();
     void stopSound();
-    void setLevel(unsigned int lev);
-    void incLevel();
-    unsigned int getLevel();
-    void draw(sf::RenderTarget &target, sf::RenderStates &states,unsigned int actzlevel);
+    void setZLevel(int z);
+    void incZLevel();
+    unsigned int getZLevel();
+    void draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel);
 private:
     void loadResources();
     void initLayer();
@@ -73,17 +71,14 @@ private:
     unsigned int zlevelMax;
 // unsigned int zlevel;
 
-    sf::Color getColor(std::string color);
-
-    sf::Texture     texture;
-    sf::Vector2f    position;
+    sf::Texture texture;
+    sf::Vector2f position;
 
     sf::Texture centerpic;
     sf::Texture bottompic;
     sf::Texture toppic;
     sf::Texture atmopic;
     sf::Texture frontpic;
-
 
     Layer layerBottom;
     Layer layerCenter;
@@ -99,8 +94,8 @@ private:
     sf::Font font;
     sf::Text testBase;
 
-    propertyManager propmgr;
+    PropertyManager propmgr;
 
-    unsigned int    speedFactor;
+    unsigned int speedFactor;
 };
 #endif

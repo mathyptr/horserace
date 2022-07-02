@@ -1,167 +1,122 @@
-#include "propertyManager.hpp"
+#include "PropertyManager.hpp"
 
-
-
-static int callback(void *NotUsed, int argc, char **argv, char **azColName) {
-   int i;
-   for(i = 0; i<argc; i++) {
+static int callback(void *NotUsed, int argc, char **argv, char **azColName)
+{
+   for(int i = 0; i < argc; i++)
       printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
-   }
-   cout<<"\n";
+
+   cout << "\n";
    return 0;
 }
 
-
-propertyManager::propertyManager()
+PropertyManager::PropertyManager()
 {
 //   status=Connect();
 }
 
-int propertyManager::Init()
+int PropertyManager::Init()
 {
-   status=Connect();
+    currentTrack = "1";
+    status = Connect();
+    return 0;//QUI
 }
 
-
-int propertyManager::Connect()
+int PropertyManager::Connect()
 {
-   status = sqlite3_open_v2("./mydb.db", &db,SQLITE_OPEN_READWRITE,NULL);
-   if(status!= SQLITE_OK)
-//		root << log4cpp::Priority::ERROR << "Database failed to open" ;
+    status = sqlite3_open_v2("./mydb.db", &db, SQLITE_OPEN_READWRITE, NULL);
+    if(status!= SQLITE_OK)
         cout << "Database failed to open" << endl;
     else
-            cout << "Database opened" << endl;
-   return status;
+        cout << "Database opened" << endl;
+
+    return status;
 }
 
-int propertyManager::getStatus()
+int PropertyManager::getStatus()
 {
     return status;
 }
 
-
-void propertyManager::setChall(std::string actChallenge)
+void PropertyManager::setTrack(std::string currentTrack)
 {
-    actChall = actChallenge;
+    this->currentTrack = currentTrack;
 }
 
-std::string  propertyManager::getChall()
+std::string PropertyManager::getTrack()
 {
-   return actChall;
+    return currentTrack;
 }
 
-
-void propertyManager::Query()
+void PropertyManager::Query()
 {
     int rc;
 	char *sql;
 	char *zErrMsg = 0;
 
-// Create SQL statement 
-   sql = "INSERT INTO user (id,name,lastname) "  
+    // Create SQL statement
+    sql = "INSERT INTO user (id,name,lastname) "
          "VALUES (1, 'Mathy', 'Pat'); " 
          "INSERT INTO user (id,name,lastname) "  
          "VALUES (2, 'Mathy1', 'Pat1'); ";
     
-    if(status!= SQLITE_OK)
-//		root << log4cpp::Priority::ERROR << "Database failed to open" ;
+    if(status != SQLITE_OK)
         cout << "Database failed to insert data" << endl;
     else
     {
-//    sqlite3_exec(mdb, "BEGIN TRANSACTION;", NULL, NULL, NULL);
+        // Execute SQL statement
+        rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
 
-// Execute SQL statement
-       rc = sqlite3_exec(db, sql, callback, 0, &zErrMsg);
-   
-       if( rc != SQLITE_OK ){
-          cout<<"SQL error:"<<zErrMsg<<"\n";
-          sqlite3_free(zErrMsg);
-       } else {
-          cout<<"Records created successfully\n";
+        if(rc != SQLITE_OK)
+        {
+            cout<<"SQL error:"<<zErrMsg<<"\n";
+            sqlite3_free(zErrMsg);
         }
-//   sqlite3_exec(mdb, "END TRANSACTION;", NULL, NULL, NULL);
-
+        else
+            cout<<"Records created successfully\n";
     }
 }
 
-
-std::string   propertyManager::getChallProperty(std::string propName)
+std::string PropertyManager::getTrackProperty(std::string propName)
 {
-   int rc;
+    int rc;
+    std::string  sql,prop="NONE";
+    sqlite3_stmt *stmt;
+    // Create SQL statement
+    sql = "select value from chg_prop as p,challenge as c where p.id_chall=c.id"
+          " and c.name = '"+ currentTrack + "' and p.name = '" + propName + "';";
 
-   std::string  sql,prop="NONE";
-   sqlite3_stmt *stmt;
-// Create SQL statement 
-   sql = "select value from chg_prop as p,challenge as c where p.id_chall=c.id"
-         " and c.name = '"+ actChall + "' and p.name = '" + propName + "';";
-           
     if(status!= SQLITE_OK)
-//		root << log4cpp::Priority::ERROR << "Database failed to open" ;
         cout << "Database failed to read data" << endl;
     else
     {
-//    sqlite3_exec(mdb, "BEGIN TRANSACTION;", NULL, NULL, NULL);
-
-   // Execute SQL statement 
+        // Execute SQL statement
         rc=sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, 0);
         if (rc != SQLITE_OK)
-             cout<<"SQL error, Failed to fetch data: "<< sqlite3_errmsg(db);
-        else  {
-             cout<<"Records read successfully\n";
-        }
-//   sqlite3_exec(mdb, "END TRANSACTION;", NULL, NULL, NULL);
+            cout<<"SQL error, Failed to fetch data: "<< sqlite3_errmsg(db);
+        else
+            cout<<"Records read successfully\n";
         rc = sqlite3_step(stmt);
-   
-        if (rc != SQLITE_DONE) {
-/*      int i;
-		int num_cols = sqlite3_column_count(stmt);
-      for (i = 0; i < num_cols; i++)
-		{
-			switch (sqlite3_column_type(stmt, i))
-			{
-			case (SQLITE3_TEXT):
-            prop=(char *)sqlite3_column_text(stmt, i);
-				printf("column %s ", prop.c_str());
-				break;
-			case (SQLITE_INTEGER):
-				printf("column %d, ", sqlite3_column_int(stmt, i));
-				break;
-			case (SQLITE_FLOAT):
-				printf("column %g, ", sqlite3_column_double(stmt, i));
-				break;
-			default:
-				break;
-			}
-         printf("\n");
-         
-		}
-      */
-          prop=(char *)sqlite3_column_text(stmt, 0);
 
-//       cout<< sqlite3_column_text(stmt, 0);
-     }
-    
-     sqlite3_finalize(stmt);
+        if (rc != SQLITE_DONE)
+            prop=(char *)sqlite3_column_text(stmt, 0);
+
+        sqlite3_finalize(stmt);
     }
-
     return prop;
 }
 
-
-std::string   propertyManager::getActualChall(std::string challId)
+std::string PropertyManager::getCurrentTrack(std::string trackID)
 {
     int rc;
-
     std::string  sql,value="NONE";
     sqlite3_stmt *stmt;
-// Create SQL statement
-    sql = "select name from challenge as c where c.id = '"+challId + "';";
+    // Create SQL statement
+    sql = "select name from challenge as c where c.id = '" + trackID + "';";
 
     return sendQuery(sql);
 }
 
-
-std::string   propertyManager::sendQuery(std::string sql)
+std::string PropertyManager::sendQuery(std::string sql)
 {
     int rc;
 
@@ -169,12 +124,9 @@ std::string   propertyManager::sendQuery(std::string sql)
     sqlite3_stmt *stmt;
 
     if(status!= SQLITE_OK)
-//		root << log4cpp::Priority::ERROR << "Database failed to open" ;
         cout << "Database failed to read data" << endl;
     else
     {
-//    sqlite3_exec(mdb, "BEGIN TRANSACTION;", NULL, NULL, NULL);
-
         // Execute SQL statement
         rc=sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, 0);
         if (rc != SQLITE_OK)
@@ -182,23 +134,17 @@ std::string   propertyManager::sendQuery(std::string sql)
         else  {
             cout<<"Records read successfully\n";
         }
-//   sqlite3_exec(mdb, "END TRANSACTION;", NULL, NULL, NULL);
         rc = sqlite3_step(stmt);
 
-        if (rc != SQLITE_DONE) {
+        if (rc != SQLITE_DONE)
             prop=(char *)sqlite3_column_text(stmt, 0);
-
-//       cout<< sqlite3_column_text(stmt, 0);
-        }
 
         sqlite3_finalize(stmt);
     }
-
     return prop;
 }
 
-
-void propertyManager::Close()
+void PropertyManager::Close()
 {
-  sqlite3_close(db);
+    sqlite3_close(db);
 }

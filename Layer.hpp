@@ -1,27 +1,28 @@
 #ifndef LAYER_INCLUDE
 #define LAYER_INCLUDE
 #include <SFML/Graphics.hpp>
-#include "Component.hpp"
-#include <iostream>
+#include "MovingSprite.hpp"
+
+#define MAX_HORIZONTAL_X 400
 
 class Layer
 {
 public:
     Layer();
-    void init(const sf::Texture& texture, unsigned int speedFactor, const sf::IntRect& rect, const sf::Vector2f& position, unsigned int zlevel) ;
+    void init(const sf::Texture& tex, float speedFactor, const sf::IntRect& rect, const sf::Vector2f& position, unsigned int z);
     sf::Vector2f getPosition();
     void setPosition(float x, float y);
     void move(float offsetX, float offsetY);
-    void setLevel(unsigned int lev);
-    unsigned int getLevel();
-    void draw(sf::RenderTarget &target, sf::RenderStates &states, unsigned int zlevel) ;
+    void setZLevel(unsigned int z);
+    unsigned int getZLevel();
+    void draw(sf::RenderTarget &target, sf::RenderStates &states, unsigned int z);
 private:
-    sf::Texture     texture;
-    sf::Vector2f    position;
-    Component       tile;
-    Component       tileR;
-    Component       tileL;
+    sf::Texture texture;
+    sf::Vector2f position;
+    MovingSprite tile;
+    MovingSprite tileR;
+    MovingSprite tileL;
     unsigned int zlevel;
-    unsigned int    speedFactor;
+    float speedFactor;
 };
 #endif

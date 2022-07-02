@@ -1,18 +1,19 @@
 #include "Game.hpp"
+#include "Utility.h"
 
-void Game::processEvent()
+//listens to events (in this case, closing the window by the cross button or by the escape key)
+void Game::processEvents()
 {
-  sf::Event event;
+    sf::Event event;
 
-  while (window.pollEvent(event))
-    if (event.type == sf::Event::Closed)
-      window.close();
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-    window.close();
+    while (window.pollEvent(event))
+    {
+        if (event.type == sf::Event::Closed)
+            window.close();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+            window.close();
+    }
 }
-
-
-
 
 void Game::horseMove()
 {
@@ -36,29 +37,16 @@ void Game::horseMove()
     horsePlayerDeltaTime.restart();
 }
 
-bool Game::checkWinner()
-{
-    unsigned int travel;
-    travel=horsePlayer.getTravelled();
-
-    if (travel >= pathlen)
-    {
-        speedX = 0;
-        return true;
-    }
-    else
-    {
-        ;//TODO
-        return false;
-    }
-}
-
-
 void Game::chgState()
 {
 
-    winstate=checkWinner();
- //   winstate=false;
+    /*
+            if (start)
+                checkWin();
+            else if (pricegiving)
+                checkEndPrizeGiving();
+    */
+    winstate=false;
 
     if(winstate)
     {
@@ -90,14 +78,12 @@ void Game::chgState()
     }
 }
 
-
 void Game::render()
 {
     sf::RenderStates states;
 
     window.clear();
-
-    for(unsigned int zlevel=1;zlevel<=ZLEVELMAX;zlevel++)
+    for(unsigned int zlevel = 1; zlevel <= ZLEVELMAX; zlevel++)
     {
         chall.draw(window,states,zlevel);
         if (winstate||gameoverstate)
@@ -114,50 +100,20 @@ void Game::render()
     window.display();
 }
 
-
-void Game::Run()
-{
-  while (window.isOpen()&&!gameerrorstate)
-  {
-    processEvent();
-    chgState();
-    render();
-  }
-}
-
-
-sf::Color  Game::getColor(std::string color)
-{  
-  sf::Color co;
-  
-  std::transform(color.begin(), color.end(),color.begin(), ::toupper);
-  if(color.compare("BLACK")==0) co=sf::Color::Black;
-  else if(color.compare("RED")==0) co=sf::Color::Red;
-  else if(color.compare("GREEN")==0) co=sf::Color::Green;
-  else if(color.compare("BLUE")==0) co=sf::Color::Blue;
-  else if(color.compare("YELLOW")==0) co=sf::Color::Yellow;
-  else if(color.compare("MAGENTA")==0) co=sf::Color::Magenta;
-  else if(color.compare("CYAN")==0) co=sf::Color::Cyan;
-  else if(color.compare("TRASPARENT")==0) co=sf::Color::Transparent;
-  return co;
-}
-
 void Game::loadResources()
 {
   gameerrorstate=true;
   if(propmgr.getStatus()==0)
   {
-      std::cout<<"length: "<<propmgr.getChallProperty(PATHLENGHT);
-      pathlen=stoi(propmgr.getChallProperty(PATHLENGHT));
       icon.loadFromFile("img/icon.png");
 
-      font.loadFromFile(propmgr.getChallProperty(FONT_TYPE));
-      std::string fontSize=propmgr.getChallProperty(FONT_SIZE);
-      std::string fontColor=propmgr.getChallProperty(FONT_COLOR);
+      font.loadFromFile(propmgr.getTrackProperty(FONT_TYPE));
+      std::string fontSize= propmgr.getTrackProperty(FONT_SIZE);
+      std::string fontColor= propmgr.getTrackProperty(FONT_COLOR);
 
       testBase.setFont(font);
       testBase.setCharacterSize(std::stoi(fontSize));
-      testBase.setColor(getColor(fontColor));
+      testBase.setColor(Utility::getColor(fontColor));
 
       gameerrorstate=false;
 
@@ -170,9 +126,9 @@ void Game::getNextChall()
     actchall++;
 
     std::string actchallstr;
-    actchallstr=propmgr.getActualChall(std::to_string(actchall));
+    actchallstr= propmgr.getCurrentTrack(std::to_string(actchall));
 
-    propmgr.setChall(actchallstr);
+    propmgr.setTrack(actchallstr);
 
     loadResources();
     if(!gameerrorstate)
@@ -180,13 +136,12 @@ void Game::getNextChall()
     playSound();
 }
 
-
-void Game:: playSound()
+void Game::playSound()
 {
     chall.playSound();
 }
 
-void Game:: stopSound()
+void Game::stopSound()
 {
     chall.stopSound();
 }
@@ -199,24 +154,32 @@ void Game::initHorses()
     posx=HORSE3_POSX;
     posy=HORSE3_POSY;
     horsePlayer.init(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
-
 }
 
+//game loop: it is executed until exit or errors
+void Game::Run()
+{
+    while (window.isOpen() && !gameerrorstate)
+    {
+        processEvents();
+        chgState();
+        render();
+    }
+}
 
-
+//class constructor: creates a SFML window and initializes objects
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
+    window.setMouseCursorVisible(false);
+    window.setFramerateLimit(60);
+
     actchall=1;
     speedX = 0;
     std::string actchallstr;
     propmgr.Init();
-    actchallstr=propmgr.getActualChall(std::to_string(actchall));
-    propmgr.setChall(actchallstr);
-
-
+    actchallstr= propmgr.getCurrentTrack(std::to_string(actchall));
+    propmgr.setTrack(actchallstr);
     winstate=false;
-    window.setMouseCursorVisible(false);
-    window.setFramerateLimit(60);
 
     loadResources();
     if(!gameerrorstate)
@@ -228,8 +191,8 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
 
         window.setIcon(icon.getSize().x, icon.getSize().y,icon.getPixelsPtr());
 
-        gameview.setCenter(GVIEW_X/2,GVIEW_Y/2);
-        gameview.setSize(sf::Vector2f(GVIEW_X,GVIEW_Y));
+        gameview.setCenter(GVIEW_X / 2,GVIEW_Y / 2);
+        gameview.setSize(sf::Vector2f(GVIEW_X, GVIEW_Y));
 
         menu.Init(testBase, gameview.getCenter());
     }

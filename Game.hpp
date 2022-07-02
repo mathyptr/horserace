@@ -6,12 +6,12 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
-//#include "Component.hpp"
-#include "Challenge.hpp"
+//#include "MovingSprite.hpp"
+#include "Track.hpp"
 #include "Horse.hpp"
 #include "Layer.hpp"
 #include "Menu.hpp"
-#include "propertyManager.hpp"
+#include "PropertyManager.hpp"
 
 using namespace std;
 
@@ -36,19 +36,18 @@ using namespace std;
 class Game
 {
 public:
-  Game(const std::string wintTitle);
+  Game(std::string winTitle);
   void Run();
 
 private:
   unsigned int actchall;
-  unsigned int pathlen;
-  propertyManager propmgr;
+  PropertyManager propmgr;
   sf::RenderWindow window;
   sf::View gameview;
 
-  bool nosound;
+  bool mute;
 
-  Challenge chall;
+  Track chall;
   Horse horsePlayer;
   sf::Clock horsePlayerDeltaTime;
   float speedX;
@@ -63,19 +62,18 @@ private:
   sf::Text testBase;
 
   Menu menu;
-  void processEvent();
+
+  void processEvents();
   void backgroundLoop();
   void render();
   void initLayer();
   void updateMenu();
   void loadResources();
-  sf::Color getColor(std::string color);
   void chgState();
   void getNextChall();
   void playSound();
   void stopSound();
   void initHorses();
   void horseMove();
-  bool checkWinner();
 };
 #endif // GAME_INCLUDE
