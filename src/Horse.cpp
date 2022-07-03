@@ -108,9 +108,10 @@ unsigned int Horse::getTravelled()
 void Horse::move(float offsetX, float offsetY)
 {
     float oX,oY;
-    oX=offsetX/speedFactor+speedFactor;
+    oX=speedFactor+offsetX/speedFactor;
     oY=offsetY*speedFactor;
 //    incSpeed(oX);
+    travelled+=abs(oX);
     setTexture();
     sprite.move(oX, oY);
     std::cout <<"Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; travelled: "<< travelled << std::endl;
