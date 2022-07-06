@@ -136,6 +136,10 @@ void Horse::setHorseOrigin(float x, float y)
 {
     sprite.setOrigin(x, y);
 }
+unsigned int Horse::getZLevel()
+{
+    return zlevel;
+}
 
 void Horse::draw(sf::RenderTarget &target, sf::RenderStates states, unsigned int z)
 {

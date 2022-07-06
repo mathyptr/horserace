@@ -1,12 +1,13 @@
 #include "Weather.hpp"
 
-Weather::Weather(const sf::Texture& texture, float enemeyMoveSpeed, float posx, float posy) :
+Weather::Weather(const sf::Texture& texture, float enemeyMoveSpeed, float posx, float posy,unsigned int zlevel) :
      mSprite(texture),
      mDistanceTravelled(0),
-     mMaximumDistance(472.f)
+     mMaximumDistance(600.f)
 {
     this->mSpeedPerSecond = enemeyMoveSpeed;
     this->mSprite.setPosition(posx, posy);
+    this->zlevel= zlevel;
 }
 
 void Weather::updateWeather(float speedX, float timeDelta)
@@ -36,6 +37,12 @@ sf::Vector2f Weather::getWeatherPosition() const
 {
   return mSprite.getPosition();
 }
+
+unsigned int Weather::getZLevel()
+{
+    return zlevel;
+}
+
 bool Weather::isWeatherAlive() const
 {
     return mDistanceTravelled < mMaximumDistance;

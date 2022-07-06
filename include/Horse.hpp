@@ -34,6 +34,7 @@ public:
     sf::Vector2f getHorsePosition() const;
     void setHorsePosition(float x, float y);
     void setHorseOrigin(float x, float y);
+    unsigned int getZLevel();
     void move(sf::Keyboard::Key key, float sec);
     void move(float offsetX, float offsetY);
     float getSpeed();

@@ -58,14 +58,15 @@ void Game::createWeather()
     //create random starting position
     int posx = rand() % 2350 + (-750);
     int posy = -20;
+    unsigned int zlevel = rand() % (HORSEZLEVELMAX - HORSEZLEVELMIN) + HORSEZLEVELMIN;
     const auto spawnSome = weatherSpawnTimer.getElapsedTime();
     const auto timeSinceStart = weatherDeltaTime.getElapsedTime();
 //Mathy  timerDifficulty = sf::seconds(5.f);
     sf::Time timerDifficulty = sf::seconds(1.f);
     if (spawnSome > timerDifficulty )//&& countDown > 10)
     {
-        auto pEnemy = std::make_shared<Weather>(Weather(weathtexture,weatherMoveSpeed,posx,posy));
-        weath.push_back(pEnemy);
+        auto weathptr = std::make_shared<Weather>(Weather(weathtexture,weatherMoveSpeed,posx,posy,zlevel));
+        weath.push_back(weathptr);
         weatherSpawnTimer.restart();
     }
 
@@ -80,7 +81,6 @@ void Game::createWeather()
                                          auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
                                          pExplosion->setPosition(o->getWeatherPosition());
                                          explosions.push_back(pExplosion);
-//                                         hitTheGround++;
                                          return true;
                                      }
                                      else
@@ -93,50 +93,32 @@ void Game::createWeather()
 
 void Game::collision()
 {
-/*    for (auto e = weath.begin(); e != weath.end();)
+
+    for (auto i = weath.begin(); i != weath.end(); i++)
     {
-        //if element is removed dont increment the iterator and skip the collison check for the next element!
-        bool collides = false;
-        for (auto i = Shields.begin(); i != Shields.end(); i++)
-        {
-            sf::FloatRect enemiez = (*e)->getEnemyGlobalBounds();
-            sf::FloatRect Shieldz = (*i)->getShieldGlobalBounds();
-            //checks if Shield hits enemy. if true animate explosion and break out of loop
-            if (Shieldz.intersects(enemiez))
+        if(horsePlayer.getZLevel()==(*i)->getZLevel())
+            {
+            sf::FloatRect playerbox = horsePlayer.getHorseGlobalBounds();
+            sf::FloatRect weatherbox =   (*i)->getWeatherGlobalBounds();
+            //cout<<"Player:"<< playerbox.height<<" "<<playerbox.width<<" "<<playerbox.left<<" "<<playerbox.top<<" "<<"\n";
+            //cout<<"weatherbox:"<< weatherbox.height<<" "<<weatherbox.width<<" "<<weatherbox.left<<" "<<weatherbox.top<<" "<<"\n";
+            if (playerbox.intersects((*i)->getWeatherGlobalBounds()))
+             //if (playerbox.contains(weatherbox.left,weatherbox.top))
+                if (playerbox.intersects((*i)->getWeatherGlobalBounds()))
             {
                 auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
-                pExplosion->setPosition((*e)->getEnemyPosition());
+                pExplosion->setPosition(horsePlayer.getHorsePosition());
                 explosions.push_back(pExplosion);
-//                Shields.erase(i);
-                e = weath.erase(e);
-                collides = true;
+//                horsePlayer.setHorsePosition(400, 472);
+                speedX = 0;
+                ;//TODO dec energy horse
+                cout<<"Hit!!\n";
+                weath.erase(i);
                 break;
             }
         }
-        //if no collision happens check next index
-        if (!collides)
-            e++;
-    }
-*/
-    for (auto i = weath.begin(); i != weath.end(); i++)
-    {
-        sf::FloatRect playerbox = horsePlayer.getHorseGlobalBounds();
-        if (playerbox.intersects((*i)->getWeatherGlobalBounds()))
-        {
-            auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
-            pExplosion->setPosition(horsePlayer.getHorsePosition());
-            explosions.push_back(pExplosion);
-            horsePlayer.setHorsePosition(400, 472);
-            speedX = 0;
- //           lives--;
-            weath.erase(i);
-            break;
-        }
     }
 
-//    bombsExploded="Lighting : " + std::to_string(hitTheGround);
-//    showEnemiesLeft="Distance : " + std::to_string(enemies.size());
-//    livesLeft="Lives left: " + std::to_string(lives);
 }
 
 

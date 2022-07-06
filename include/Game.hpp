@@ -28,6 +28,9 @@ using namespace std;
 #define GVIEW_Y 600
 
 
+#define  HORSEZLEVELMIN 5
+#define  HORSEZLEVELMAX 8
+
 #define  HORSE1_POSX 400
 #define  HORSE1_POSY 472
 #define  HORSE2_POSX 400
