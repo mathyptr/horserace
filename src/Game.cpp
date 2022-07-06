@@ -39,6 +39,116 @@ void Game::horseMove()
     //restart the timer
     horsePlayerDeltaTime.restart();
 }
+void Game::animateExplosion()
+{
+    const auto explosionDeltaTime = explosionDeltaTimer.getElapsedTime();
+    //loop tru explosions vector and animate the pointers
+    for (auto i = explosions.begin(); i != explosions.end(); i++)
+    {
+        (*i)->play(boom);
+        (*i)->update(explosionDeltaTime);
+        (*i)->move(speedX*explosionDeltaTime.asSeconds(),0);
+    }
+    //remove pointer from vector if isAlive returns false.
+    explosions.erase(std::remove_if(explosions.begin(), explosions.end(),[this](const std::shared_ptr<AnimatedSprite>& o){ return !o->isAlive(); }), explosions.end());
+    explosionDeltaTimer.restart();
+}
+void Game::createWeather()
+{
+    //create random starting position
+    int posx = rand() % 2350 + (-750);
+    int posy = -20;
+    const auto spawnSome = weatherSpawnTimer.getElapsedTime();
+    const auto timeSinceStart = weatherDeltaTime.getElapsedTime();
+//Mathy  timerDifficulty = sf::seconds(5.f);
+    sf::Time timerDifficulty = sf::seconds(1.f);
+    if (spawnSome > timerDifficulty )//&& countDown > 10)
+    {
+        auto pEnemy = std::make_shared<Weather>(Weather(weathtexture,weatherMoveSpeed,posx,posy));
+        weath.push_back(pEnemy);
+        weatherSpawnTimer.restart();
+    }
+
+    for (auto i = weath.begin(); i != weath.end(); i++)
+        (*i)->updateWeather(speedX, timeSinceStart.asSeconds());
+
+    weath.erase(std::remove_if(weath.begin(), weath.end(),[this](const std::shared_ptr<Weather> o)
+                                 {
+                                     //delete enemy if isenemy alive returns true. create explosion @ same cordinates
+                                     if (!(*o).isWeatherAlive())
+                                     {
+                                         auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
+                                         pExplosion->setPosition(o->getWeatherPosition());
+                                         explosions.push_back(pExplosion);
+//                                         hitTheGround++;
+                                         return true;
+                                     }
+                                     else
+                                         return false;
+                                 }
+    ), weath.end());
+
+    weatherDeltaTime.restart();
+}
+
+void Game::collision()
+{
+/*    for (auto e = weath.begin(); e != weath.end();)
+    {
+        //if element is removed dont increment the iterator and skip the collison check for the next element!
+        bool collides = false;
+        for (auto i = Shields.begin(); i != Shields.end(); i++)
+        {
+            sf::FloatRect enemiez = (*e)->getEnemyGlobalBounds();
+            sf::FloatRect Shieldz = (*i)->getShieldGlobalBounds();
+            //checks if Shield hits enemy. if true animate explosion and break out of loop
+            if (Shieldz.intersects(enemiez))
+            {
+                auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
+                pExplosion->setPosition((*e)->getEnemyPosition());
+                explosions.push_back(pExplosion);
+//                Shields.erase(i);
+                e = weath.erase(e);
+                collides = true;
+                break;
+            }
+        }
+        //if no collision happens check next index
+        if (!collides)
+            e++;
+    }
+*/
+    for (auto i = weath.begin(); i != weath.end(); i++)
+    {
+        sf::FloatRect playerbox = horsePlayer.getHorseGlobalBounds();
+        if (playerbox.intersects((*i)->getWeatherGlobalBounds()))
+        {
+            auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
+            pExplosion->setPosition(horsePlayer.getHorsePosition());
+            explosions.push_back(pExplosion);
+            horsePlayer.setHorsePosition(400, 472);
+            speedX = 0;
+ //           lives--;
+            weath.erase(i);
+            break;
+        }
+    }
+
+//    bombsExploded="Lighting : " + std::to_string(hitTheGround);
+//    showEnemiesLeft="Distance : " + std::to_string(enemies.size());
+//    livesLeft="Lives left: " + std::to_string(lives);
+}
+
+
+void Game::loadExplosion()
+{
+    //create animation using 16 images sheet. all sprites 30x30px big
+    boom.setSpriteSheet(explosion);
+    for (unsigned j = 0; j < explosion.getSize().y; j+=30)
+        for (unsigned i = 0; i < explosion.getSize().x; i+=30)
+            boom.addFrame(sf::IntRect(i,j,30,30));
+}
+
 
 bool Game::checkWinner()
 {
@@ -95,6 +205,8 @@ void Game::chgState()
             horsePlayer2.draw(window,states,6);
             horsePlayer3.draw(window,states,6);
             */
+            drawWeather();
+            drawExplosions();
         }
     }
 }
@@ -124,18 +236,41 @@ void Game::render()
             horsePlayer.draw(window,states,zlevel);
             horsePlayer2.draw(window,states,zlevel);
             horsePlayer3.draw(window,states,zlevel);
+            drawExplosions();
         }
 
     }
+    drawWeather();
     window.draw(menu);
     window.display();
 }
+
+void Game::drawWeather()
+{
+    for (auto e = weath.begin(); e != weath.end(); e++)
+        window.draw(*(*e));
+}
+
+void Game::drawExplosions()
+{
+    for (auto x = explosions.begin(); x != explosions.end(); x++)
+        window.draw(*(*x));
+}
+
+
 
 void Game::loadResources()
 {
   gameerrorstate=true;
   if(propmgr.getStatus()==0)
   {
+
+//      weathtexture.loadFromFile("img/thunder.png");
+      weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(actchall),"1"));
+//      explosion.loadFromFile("img/thunder_exp.png");
+      explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(actchall),"1"));
+
+
       chall.setName(propmgr.getCurrentTrack(std::to_string(actchall)));
       propmgr.setTrack(chall.getName());
 
@@ -205,6 +340,10 @@ void Game::Run()
 {
     while (window.isOpen() && !gameerrorstate)
     {
+        for(unsigned int i=0;i<40;i++)
+            createWeather();
+        animateExplosion();
+        collision();
         processEvents();
         updateMenu();
         chgState();
@@ -225,7 +364,7 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
     actchallstr= propmgr.getCurrentTrack(std::to_string(actchall));
     propmgr.setTrack(actchallstr);
     winstate=false;
-
+    weatherMoveSpeed=40.f;
     loadResources();
     if(!gameerrorstate)
     {
@@ -240,5 +379,6 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
         gameview.setSize(sf::Vector2f(GVIEW_X, GVIEW_Y));
 
         menu.Init(testBase, gameview.getCenter());
+        loadExplosion();
     }
 };

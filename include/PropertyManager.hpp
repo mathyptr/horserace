@@ -42,7 +42,9 @@ public:
     std::string getTrack();
     std::string getTrackProperty(std::string propName);
     std::string getCurrentTrack(std::string trackID);
-
+    std::string getNumTrack(std::string trackID);
+    std::string getCurrentWeatherTexture(std::string trackID, std::string probability);
+    std::string getCurrentWeatherExplosion(std::string trackID, std::string probability);
 private:
   sqlite3* db;
   int status;

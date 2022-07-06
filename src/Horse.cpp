@@ -97,9 +97,9 @@ void Horse::move(sf::Keyboard::Key key, float sec)
     }
     else
         decSpeed(sec);
-    std::cout << "speed:"<< speed << "second:"<< sec << std::endl;
+//    std::cout << "speed:"<< speed << "second:"<< sec << std::endl;
     travelled+=-getSpeed()*sec;
-    std::cout << "Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; sec: "<< sec << "; travelled: "<< travelled << std::endl;
+//    std::cout << "Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; sec: "<< sec << "; travelled: "<< travelled << std::endl;
 }
 unsigned int Horse::getTravelled()
 {
@@ -114,7 +114,7 @@ void Horse::move(float offsetX, float offsetY)
     travelled+=abs(oX);
     setTexture();
     sprite.move(oX, oY);
-    std::cout <<"Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; travelled: "<< travelled << std::endl;
+//    std::cout <<"Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; travelled: "<< travelled << std::endl;
 }
 
 sf::FloatRect Horse::getHorseGlobalBounds() const

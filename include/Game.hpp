@@ -9,9 +9,11 @@
 //#include "MovingSprite.hpp"
 #include "Track.hpp"
 #include "Horse.hpp"
+#include "Weather.hpp"
 #include "Layer.hpp"
 #include "Menu.hpp"
 #include "PropertyManager.hpp"
+#include "AnimatedSprite.hpp"
 
 using namespace std;
 
@@ -50,9 +52,16 @@ private:
 
   Track chall;
   Horse horsePlayer,horsePlayer2,horsePlayer3;
-  sf::Clock horsePlayerDeltaTime;
-  float speedX;
+  std::vector<std::shared_ptr<Weather>> weath;
+  std::vector<std::shared_ptr<AnimatedSprite>> explosions;
+  Animation boom;
 
+  sf::Clock horsePlayerDeltaTime;
+  sf::Clock weatherDeltaTime;
+  sf::Clock weatherSpawnTimer;
+  sf::Clock explosionDeltaTimer;
+  float speedX;
+  float weatherMoveSpeed;
   sf::Image icon;
 
   bool winstate;
@@ -63,6 +72,8 @@ private:
   sf::Text testBase;
   sf::String testBottomCenter;
   sf::String testTopCenter;
+  sf::Texture weathtexture;
+  sf::Texture explosion;
   Menu menu;
 
   void processEvents();
@@ -78,5 +89,11 @@ private:
   void initHorses();
   void horseMove();
   bool checkWinner();
+  void createWeather();
+  void drawWeather();
+  void animateExplosion();
+  void collision();
+  void loadExplosion();
+  void drawExplosions();
 };
 #endif // GAME_INCLUDE

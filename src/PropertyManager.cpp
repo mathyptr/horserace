@@ -93,8 +93,8 @@ std::string PropertyManager::getTrackProperty(std::string propName)
         rc=sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, 0);
         if (rc != SQLITE_OK)
             cout<<"SQL error, Failed to fetch data: "<< sqlite3_errmsg(db);
-        else
-            cout<<"Records read successfully\n";
+//        else
+//            cout<<"Records read successfully\n";
         rc = sqlite3_step(stmt);
 
         if (rc != SQLITE_DONE)
@@ -116,6 +116,19 @@ std::string PropertyManager::getCurrentTrack(std::string trackID)
     return sendQuery(sql);
 }
 
+std::string PropertyManager::getNumTrack(std::string trackID)
+{
+    int rc;
+    std::string  sql,value="NONE";
+    sqlite3_stmt *stmt;
+    // Create SQL statement
+    sql = "select count(*) from challenge";
+
+    return sendQuery(sql);
+}
+
+
+
 std::string PropertyManager::sendQuery(std::string sql)
 {
     int rc;
@@ -131,9 +144,9 @@ std::string PropertyManager::sendQuery(std::string sql)
         rc=sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, 0);
         if (rc != SQLITE_OK)
             cout<<"SQL error, Failed to fetch data: "<< sqlite3_errmsg(db);
-        else  {
-            cout<<"Records read successfully\n";
-        }
+//        else
+//        cout<<"Records read successfully\n";
+
         rc = sqlite3_step(stmt);
 
         if (rc != SQLITE_DONE)
@@ -143,6 +156,31 @@ std::string PropertyManager::sendQuery(std::string sql)
     }
     return prop;
 }
+
+std::string PropertyManager::getCurrentWeatherTexture(std::string trackID, std::string probability)
+{
+    int rc;
+    std::string  sql,value="NONE";
+    sqlite3_stmt *stmt;
+    // Create SQL statement
+//    sql = "select name from challenge as c where c.id = '" + trackID + "';";
+    sql="select texture from weather as w, weather_prob as wp where idchallenge= '"+ trackID + "' and probability= '"+probability+"' and w.id=wp.idweather;";
+//    cout<<"query Weather Texture:"<<sql<<"\n";
+    return sendQuery(sql);
+}
+
+std::string PropertyManager::getCurrentWeatherExplosion(std::string trackID, std::string probability)
+{
+int rc;
+std::string  sql,value="NONE";
+sqlite3_stmt *stmt;
+// Create SQL statement
+//    sql = "select name from challenge as c where c.id = '" + trackID + "';";
+sql="select explosion from weather as w, weather_prob as wp where idchallenge= '"+ trackID + "' and probability= '"+probability+"' and w.id=wp.idweather;";
+//cout<<"query Weather Exp:"<<sql<<"\n";
+return sendQuery(sql);
+}
+
 
 void PropertyManager::Close()
 {
