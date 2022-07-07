@@ -10,6 +10,7 @@ Before compilation, you must link the SFML and SQLite (both static and dynamic) 
 
 ### CMake
 Here's a ready CMake file to build the project.
+##### Windows
 ```CMake
 cmake_minimum_required(VERSION 3.20)
 project(horserace)
@@ -35,4 +36,31 @@ target_link_libraries(horserace YOUR_PATH_TO_SFML/lib/sfml-window-d.lib)
 target_link_libraries(horserace YOUR_PATH_TO_SFML/lib/sfml-system-d.lib)
 target_link_libraries(horserace YOUR_PATH_TO_SFML/lib/sfml-audio-d.lib)
 target_link_libraries(horserace YOUR_PATH_TO_SQLITE/sqlite3.lib)
+```
+##### Linux
+```CMake
+cmake_minimum_required(VERSION 3.20)
+project(horserace)
+
+set(CMAKE_CXX_STANDARD 14)
+set(SFML_INC_DIR YOUR_PATH_TO_SFML_INCLUDES)
+include_directories(${SFML_INC_DIR})
+include_directories(./include)
+
+add_executable(horserace
+        main.cpp
+        src/Track.cpp
+        src/MovingSprite.cpp
+        src/Game.cpp
+        src/Horse.cpp
+        src/Layer.cpp
+        src/Menu.cpp
+        src/Utility.cpp
+        src/PropertyManager.cpp)
+
+target_link_libraries(horserace sfml-graphics)
+target_link_libraries(horserace sfml-window)
+target_link_libraries(horserace sfml-system)
+target_link_libraries(horserace sfml-audio)
+target_link_libraries(horserace YOUR_PATH_TO_SQLITE/sqlite3)
 ```
