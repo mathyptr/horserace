@@ -7,8 +7,9 @@ Track::Track()
     zlevelMax=0;
 }
 
-void Track::init(PropertyManager propmanager)
+void Track::init(PropertyManager propmanager, std::string name)
 {
+    this->name = name;
     propmgr=propmanager;
     loadResources();
     initLayer();
@@ -16,27 +17,23 @@ void Track::init(PropertyManager propmanager)
 
 void Track::loadResources()
 {
-    if(propmgr.getStatus() == 0)
-    {
-        toppic.loadFromFile(propmgr.getTrackProperty(TOP_PIC));
-        bottompic.loadFromFile(propmgr.getTrackProperty(BOTTOM_PIC));
-        centerpic.loadFromFile(propmgr.getTrackProperty(CENTER_PIC));
-        atmopic.loadFromFile(propmgr.getTrackProperty(ATMO_PIC));
-        frontpic.loadFromFile(propmgr.getTrackProperty(FRONT_PIC));
-        soundchall = propmgr.getTrackProperty(SOUND_CHALL);
+    toppic.loadFromFile(propmgr.getTrackProperty(name, TOP_PIC));
+    bottompic.loadFromFile(propmgr.getTrackProperty(name, BOTTOM_PIC));
+    centerpic.loadFromFile(propmgr.getTrackProperty(name, CENTER_PIC));
+    atmopic.loadFromFile(propmgr.getTrackProperty(name, SKY_PIC));
+    frontpic.loadFromFile(propmgr.getTrackProperty(name, FRONT_PIC));
+    soundchall = propmgr.getTrackProperty(name, SOUND);
 
-        font.loadFromFile(propmgr.getTrackProperty(FONT_TYPE));
-        std::string fontSize = propmgr.getTrackProperty(FONT_SIZE);
-        std::string fontColor = propmgr.getTrackProperty(FONT_COLOR);
+    font.loadFromFile(propmgr.getTrackProperty(name, FONT_FILE));
+    std::string fontSize = propmgr.getTrackProperty(name, FONT_SIZE);
+    std::string fontColor = propmgr.getTrackProperty(name, FONT_COLOR);
 
-        testBase.setFont(font);
-        testBase.setCharacterSize(std::stoi(fontSize));
-        testBase.setColor(Utility::getColor(fontColor));
+    testBase.setFont(font);
+    testBase.setCharacterSize(std::stoi(fontSize));
+    testBase.setColor(Utility::getColor(fontColor));
 
-        if (!buffersound.loadFromFile(soundchall))
-            nosound = true;
-
-    }
+    if (!buffersound.loadFromFile(soundchall))
+        nosound = true;
 }
 
 void Track::initLayer()
@@ -119,5 +116,3 @@ void Track::draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlev
 
     incZLevel();
 }
-
-

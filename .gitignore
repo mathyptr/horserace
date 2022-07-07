@@ -38,5 +38,6 @@ CMakeLists.txt
 .idea/
 cmake-build-debug/
 
-# VS Code build directory
+# VS Code project settings and build directory
+.vscode/
 build/

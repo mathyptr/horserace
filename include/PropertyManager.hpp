@@ -16,39 +16,42 @@ using namespace std;
 
 */
 
-#define FONT_TYPE "FONT_TYPE"
-#define FONT_SIZE "FONT_SIZE"
-#define FONT_COLOR "FONT_COLOR"
-#define TOP_PIC "TOP_PIC" 
-#define BOTTOM_PIC "BOTTOM_PIC"
-#define CENTER_PIC "CENTER_PIC"
-#define ATMO_PIC "ATMO_PIC"
-#define FRONT_PIC "FRONT_PIC"
-#define SOUND_CHALL "SOUND_CHALL"
-#define PATHLENGHT "PATHLENGHT"
+#define FONT_FILE "font_file"
+#define FONT_SIZE "font_size"
+#define FONT_COLOR "font_color"
+#define TOP_PIC "top_pic" 
+#define BOTTOM_PIC "bottom_pic"
+#define CENTER_PIC "center_pic"
+#define SKY_PIC "sky_pic"
+#define FRONT_PIC "front_pic"
+#define SOUND "sound"
+#define PATHLENGTH "length"
+
+#define WEATHER_TEX "main_texture"
+#define WEATHER_EXP "explosion_texture"
 
 #include "../sqlite3.h"
 
 class PropertyManager
 {
 public:
-    PropertyManager();
-    int Init();
-    int Connect();
-    int getStatus();
-    void Close();
-    void Query();
-    void setTrack(std::string currentTrack);
-    std::string getTrack();
-    std::string getTrackProperty(std::string propName);
-    std::string getCurrentTrack(std::string trackID);
-    std::string getNumTrack(std::string trackID);
+	PropertyManager(bool autoConnect = true);
+	int connect();
+	void close();
+	int getStatus();
+	std::string getTrackProperty(int trackID, std::string propName);
+	std::string getTrackProperty(std::string trackName, std::string propName);
+    std::string getTrackCount();
+    std::string getWeatherProperty(int weatherID, std::string propName);
+    std::string getWeatherProperty(std::string weatherName, std::string propName);
+    std::string getWeatherProbability(int weatherID, int trackID);
+
     std::string getCurrentWeatherTexture(std::string trackID, std::string probability);
     std::string getCurrentWeatherExplosion(std::string trackID, std::string probability);
+
 private:
-  sqlite3* db;
-  int status;
-  std::string currentTrack;
-  std::string sendQuery(std::string sql);
+	sqlite3* db;
+	int status;
+	std::string sendQuery(std::string sql);
 };
 #endif

@@ -243,36 +243,27 @@ void Game::drawExplosions()
 
 void Game::loadResources()
 {
-  gameerrorstate=true;
-  if(propmgr.getStatus()==0)
-  {
+    gameerrorstate=true;
 
-//      weathtexture.loadFromFile("img/thunder.png");
-      weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(actchall),"1"));
-//      explosion.loadFromFile("img/thunder_exp.png");
-      explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(actchall),"1"));
+    weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(actchall),"1"));
+    explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(actchall),"1"));
 
+    chall.setName(propmgr.getTrackProperty(actchall, "name"));
 
-      chall.setName(propmgr.getCurrentTrack(std::to_string(actchall)));
-      propmgr.setTrack(chall.getName());
+    std::cout<<"length: "<<propmgr.getTrackProperty(actchall, PATHLENGTH);
 
-      std::cout<<"length: "<<propmgr.getTrackProperty(PATHLENGHT);
+    pathlen=stoi(propmgr.getTrackProperty(actchall, PATHLENGTH));
+    icon.loadFromFile("img/icon.png");
 
-      pathlen=stoi(propmgr.getTrackProperty(PATHLENGHT));
-      icon.loadFromFile("img/icon.png");
+    font.loadFromFile(propmgr.getTrackProperty(actchall, FONT_FILE));
+    std::string fontSize= propmgr.getTrackProperty(actchall, FONT_SIZE);
+    std::string fontColor= propmgr.getTrackProperty(actchall, FONT_COLOR);
 
-      font.loadFromFile(propmgr.getTrackProperty(FONT_TYPE));
-      std::string fontSize= propmgr.getTrackProperty(FONT_SIZE);
-      std::string fontColor= propmgr.getTrackProperty(FONT_COLOR);
+    testBase.setFont(font);
+    testBase.setCharacterSize(std::stoi(fontSize));
+    testBase.setColor(Utility::getColor(fontColor));
 
-      testBase.setFont(font);
-      testBase.setCharacterSize(std::stoi(fontSize));
-      testBase.setColor(Utility::getColor(fontColor));
-
-      gameerrorstate=false;
-
-  }
-
+    gameerrorstate=false;
 }
 
 void Game::getNextChall()
@@ -282,7 +273,7 @@ void Game::getNextChall()
     loadResources();
     if(!gameerrorstate)
     {
-        chall.init(propmgr);
+        chall.init(propmgr, propmgr.getTrackProperty(actchall, "name"));
         menu.Init(testBase, gameview.getCenter());
     }
     playSound();
@@ -341,17 +332,14 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
 
     actchall=1;
     speedX = 0;
-    std::string actchallstr;
-    propmgr.Init();
-    actchallstr= propmgr.getCurrentTrack(std::to_string(actchall));
-    propmgr.setTrack(actchallstr);
+    propmgr = PropertyManager();
     winstate=false;
     weatherMoveSpeed=40.f;
     loadResources();
     if(!gameerrorstate)
     {
         initHorses();
-        chall.init(propmgr);
+        chall.init(propmgr, propmgr.getTrackProperty(actchall, "name"));
 
         playSound();
 
