@@ -65,7 +65,9 @@ void Game::createWeather()
     sf::Time timerDifficulty = sf::seconds(1.f);
     if (spawnSome > timerDifficulty )//&& countDown > 10)
     {
-        auto weathptr = std::make_shared<Weather>(Weather(weathtexture,weatherMoveSpeed,posx,posy,zlevel));
+        unsigned int maxy=horseposymax[zlevel-HORSEZLEVELMIN];
+//        cout<<"ZLEVEL "<<zlevel-HORSEZLEVELMIN<<"MAXY "<<maxy<<"\n";
+        auto weathptr = std::make_shared<Weather>(Weather(weathtexture,weatherMoveSpeed,posx,posy,zlevel,maxy));
         weath.push_back(weathptr);
         weatherSpawnTimer.restart();
     }
@@ -317,6 +319,13 @@ void Game::initHorses()
     horsePlayer.init(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
 }
 
+void Game::horseMaxYCreate()
+{
+    horseposymax[0]=HORSE1_POSY;
+    horseposymax[1]=HORSE2_POSY;
+    horseposymax[2]=HORSE3_POSY;
+}
+
 //game loop: it is executed until exit or errors
 void Game::Run()
 {
@@ -338,7 +347,7 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
 {
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
-
+    horseMaxYCreate();
     actchall=1;
     speedX = 0;
     std::string actchallstr;

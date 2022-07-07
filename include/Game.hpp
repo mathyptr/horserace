@@ -37,6 +37,7 @@ using namespace std;
 #define  HORSE2_POSY 522
 #define  HORSE3_POSX 400
 #define  HORSE3_POSY 562
+#define NMAXHORSE 3
 
 class Game
 {
@@ -55,6 +56,7 @@ private:
 
   Track chall;
   Horse horsePlayer,horsePlayer2,horsePlayer3;
+  unsigned int horseposymax[NMAXHORSE];
   std::vector<std::shared_ptr<Weather>> weath;
   std::vector<std::shared_ptr<AnimatedSprite>> explosions;
   Animation boom;
@@ -85,6 +87,7 @@ private:
   void initLayer();
   void updateMenu();
   void loadResources();
+  void horseMaxYCreate();
   void chgState();
   void getNextChall();
   void playSound();

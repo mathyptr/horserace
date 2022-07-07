@@ -1,13 +1,15 @@
 #include "Weather.hpp"
 
-Weather::Weather(const sf::Texture& texture, float enemeyMoveSpeed, float posx, float posy,unsigned int zlevel) :
+Weather::Weather(const sf::Texture& texture, float enemeyMoveSpeed, float posx, float posy,unsigned int zlevel,unsigned int maxy) :
      mSprite(texture),
      mDistanceTravelled(0),
-     mMaximumDistance(600.f)
+//     mMaximumDistance(600.f)
+     mMaximumDistance(maxy)
 {
     this->mSpeedPerSecond = enemeyMoveSpeed;
     this->mSprite.setPosition(posx, posy);
     this->zlevel= zlevel;
+    this->maxy= maxy;
 }
 
 void Weather::updateWeather(float speedX, float timeDelta)

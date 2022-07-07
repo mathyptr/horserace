@@ -27,7 +27,7 @@ using namespace std;
 #define SOUND_CHALL "SOUND_CHALL"
 #define PATHLENGHT "PATHLENGHT"
 
-#include "../sqlite3.h"
+#include "sqlite3.h"
 
 class PropertyManager
 {

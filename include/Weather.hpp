@@ -5,7 +5,7 @@
 class Weather : public sf::Drawable
 {
 public:
-    Weather(const sf::Texture& texture,  float enemyMoveSpeed, float posx, float posy,unsigned int zlevel);
+    Weather(const sf::Texture& texture,  float enemyMoveSpeed, float posx, float posy,unsigned int zlevel,unsigned int maxy);
     void updateWeather(float speedX, float timeDelta);
     sf::FloatRect getWeatherGlobalBounds() const;
     sf::Vector2f getWeatherPosition() const;
@@ -15,6 +15,7 @@ public:
 private:
     sf::Sprite      mSprite;
     unsigned int zlevel;
+    unsigned int maxy;
     float           mSpeedPerSecond;
     float           mDistanceTravelled;
     const float     mMaximumDistance;
