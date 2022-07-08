@@ -40,6 +40,7 @@ public:
     float getSpeed();
     void incSpeed(float sec);
     void decSpeed(float sec);
+    bool decLife();
     unsigned int getTravelled();
     void setTexture();
     void setScale(float factorX, float factorY);
@@ -54,6 +55,7 @@ private:
     MovingSprite sprite;
     std::vector<sf::Texture> sheets;
     int sheetIndex;
+    int life;
     void loadImage();
     void setPropHorse();
 };

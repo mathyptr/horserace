@@ -10,6 +10,7 @@ Horse::Horse()
     sheets = {};
     sprite = MovingSprite();
     travelled=0;
+    life=10;
 }
 
 void Horse::setName(std::string name)
@@ -86,6 +87,17 @@ void Horse::decSpeed(float sec)
 {
     float adjsec = sec * 100;
     speed -= speed * SPEEDSMOOTH * adjsec / MAXSPEED;
+}
+
+bool Horse::decLife()
+{
+    if(life>0){
+        life--;
+        std::cout<<"hit! actual life: "<<life<<"\n";
+        return true;
+    }
+    else
+        return false;
 }
 
 void Horse::move(sf::Keyboard::Key key, float sec)

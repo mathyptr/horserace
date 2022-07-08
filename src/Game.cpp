@@ -116,6 +116,10 @@ void Game::collision()
                 ;//TODO dec energy horse
                 cout<<"Hit!!\n";
                 weath.erase(i);
+                if(!horsePlayer.decLife()){
+                    gameoverstate=true;
+                    chgState();
+                }
                 break;
             }
         }
@@ -170,7 +174,7 @@ void Game::chgState()
     }
     else
     {
-        gameoverstate=false;
+        //gameoverstate=false;
         if(gameoverstate)
         {
             stopSound();
@@ -241,14 +245,32 @@ void Game::drawExplosions()
         window.draw(*(*x));
 }
 
+int Game::createProbability(){
+    int probability;
+    int actprob;
+    int prob[NMAXPROB];
+    int j=0;
+    for(int i=1,j=0;i<4;i++){
+        probability=std::stoi(propmgr.getProbability(std::to_string(actchall),std::to_string(i)));
+        while(j<NMAXPROB&&probability>0){
+            prob[j]=i;
+            probability--;
+            j++;
+        }
+    }
+    actprob=prob[rand()%(10-1)];
+    return actprob;
+}
 
 
 void Game::loadResources()
 {
     gameerrorstate=true;
-
-    weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(actchall),"1"));
-    explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(actchall),"1"));
+    if(propmgr.getStatus()==0)
+    {
+    weatherId=createProbability();
+    weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(weatherId)));
+    explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(weatherId)));
 
     chall.setName(propmgr.getTrackProperty(actchall, "name"));
 
@@ -266,6 +288,7 @@ void Game::loadResources()
     testBase.setColor(Utility::getColor(fontColor));
 
     gameerrorstate=false;
+    }
 }
 
 void Game::getNextChall()

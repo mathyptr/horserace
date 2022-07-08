@@ -38,6 +38,7 @@ using namespace std;
 #define  HORSE3_POSX 400
 #define  HORSE3_POSY 562
 #define NMAXHORSE 3
+#define NMAXPROB 10
 
 class Game
 {
@@ -48,6 +49,7 @@ public:
 private:
   unsigned int actchall;
   unsigned int pathlen;
+  int weatherId;
   PropertyManager propmgr;
   sf::RenderWindow window;
   sf::View gameview;
@@ -90,6 +92,7 @@ private:
   void horseMaxYCreate();
   void chgState();
   void getNextChall();
+  int createProbability();
   void playSound();
   void stopSound();
   void initHorses();

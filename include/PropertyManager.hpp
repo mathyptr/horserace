@@ -30,7 +30,7 @@ using namespace std;
 #define WEATHER_TEX "main_texture"
 #define WEATHER_EXP "explosion_texture"
 
-#include "../sqlite3.h"
+#include "sqlite3.h"
 
 class PropertyManager
 {
@@ -46,8 +46,9 @@ public:
     std::string getWeatherProperty(std::string weatherName, std::string propName);
     std::string getWeatherProbability(int weatherID, int trackID);
 
-    std::string getCurrentWeatherTexture(std::string trackID, std::string probability);
-    std::string getCurrentWeatherExplosion(std::string trackID, std::string probability);
+    std::string getCurrentWeatherTexture(std::string weatherId);
+    std::string getCurrentWeatherExplosion(std::string weatherId);
+    std::string getProbability(std::string trackID, std::string weatherId);
 
 private:
 	sqlite3* db;
