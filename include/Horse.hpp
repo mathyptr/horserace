@@ -41,6 +41,11 @@ public:
     void incSpeed(float sec);
     void decSpeed(float sec);
     bool decLife();
+    void incLife();
+    int getLife();
+    bool decMoney();
+    void incMoney(int coin);
+    int getMoney();
     unsigned int getTravelled();
     void setTexture();
     void setScale(float factorX, float factorY);
@@ -56,6 +61,7 @@ private:
     std::vector<sf::Texture> sheets;
     int sheetIndex;
     int life;
+    int money;
     void loadImage();
     void setPropHorse();
 };

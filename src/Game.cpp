@@ -1,11 +1,11 @@
 #include "Game.hpp"
 #include "Utility.hpp"
+#include <map>
 
 //listens to events (in this case, closing the window by the cross button or by the escape key)
 void Game::processEvents()
 {
     sf::Event event;
-
     while (window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
@@ -155,21 +155,42 @@ bool Game::checkWinner()
     }
 }
 
+std::string Game::result(){
+    std::string res="";
+    int i=3;
+    //map <std::string,std::string> results={{std::to_string(horsePlayer.getTravelled()),horsePlayer.getName()},{std::to_string(horsePlayer2.getTravelled()),horsePlayer2.getName()},{std::to_string(horsePlayer3.getTravelled()),horsePlayer3.getName()}};
+    map <std::string,float> results = {{"Player",horsePlayer.getHorsePosition().x},{"Salazar",horsePlayer2.getHorsePosition().x},{"Sarah",horsePlayer3.getHorsePosition().x}};
+    map<float,std::string> ordRes;
+
+    for (const auto & [key, value] : results) {
+        ordRes.emplace(value, key);
+    }
+
+    for (const auto & [key, value] : ordRes) {
+        res=std::to_string(i)+". "+value+"\n"+res;
+        i--;
+    }
+    return res;
+}
 
 void Game::chgState()
 {
-
     winstate=checkWinner();
-    if(winstate)
-    {
-        testBottomCenter="Press Return KEY to continue....";
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-        {
-            testBottomCenter="";
-            winstate=false;
-            stopSound();
-            initHorses();
-            getNextChall();
+    if(winstate){
+        testTopRight=result();
+        if(actchall==NCHALL)
+            testBottomCenter="GAME OVER";
+        else {
+            testBottomCenter="Press Return KEY to continue....";
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+            {
+             testBottomCenter="";
+             testTopRight="";
+             winstate=false;
+             stopSound();
+             initHorses();
+             getNextChall();
+             }
         }
     }
     else
@@ -202,7 +223,9 @@ void Game::chgState()
 void Game::updateMenu()
 {
     menu.setPosition(gameview.getCenter());
-    menu.UpdateText("","",testBottomCenter,"","",chall.getName());
+    testBottomLeft="Life: "+std::to_string(horsePlayer.getLife());
+    testTopLeft=chall.getName()+"\nMoney: "+std::to_string(horsePlayer.getMoney());
+    menu.UpdateText(testBottomLeft,testTopRight,testBottomCenter,"","",testTopLeft);
 
 }
 
@@ -218,6 +241,7 @@ void Game::render()
         if (winstate||gameoverstate)
         {
             ;//TODO
+            drawExplosions();
         }
         if(!winstate&&!gameoverstate)
         {
@@ -294,7 +318,7 @@ void Game::loadResources()
 void Game::getNextChall()
 {
     actchall++;
-
+    horsePlayer.incMoney(10);
     loadResources();
     if(!gameerrorstate)
     {
@@ -367,6 +391,8 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
     propmgr = PropertyManager();
     winstate=false;
     weatherMoveSpeed=40.f;
+    gameerrorstate=false;
+    gameoverstate=false;
     loadResources();
     if(!gameerrorstate)
     {

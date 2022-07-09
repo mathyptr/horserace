@@ -39,6 +39,7 @@ using namespace std;
 #define  HORSE3_POSY 562
 #define NMAXHORSE 3
 #define NMAXPROB 10
+#define NCHALL 5
 
 class Game
 {
@@ -78,7 +79,9 @@ private:
   sf::Font font;
   sf::Text testBase;
   sf::String testBottomCenter;
-  sf::String testTopCenter;
+  sf::String testTopRight;
+  sf::String testBottomLeft;
+  sf::String testTopLeft;
   sf::Texture weathtexture;
   sf::Texture explosion;
   Menu menu;
@@ -92,6 +95,7 @@ private:
   void horseMaxYCreate();
   void chgState();
   void getNextChall();
+  std::string result();
   int createProbability();
   void playSound();
   void stopSound();

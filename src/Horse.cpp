@@ -11,6 +11,7 @@ Horse::Horse()
     sprite = MovingSprite();
     travelled=0;
     life=10;
+    money=0;
 }
 
 void Horse::setName(std::string name)
@@ -89,6 +90,12 @@ void Horse::decSpeed(float sec)
     speed -= speed * SPEEDSMOOTH * adjsec / MAXSPEED;
 }
 
+void Horse::incLife()
+{
+    if(life<10)
+        life++;
+}
+
 bool Horse::decLife()
 {
     if(life>0){
@@ -98,6 +105,28 @@ bool Horse::decLife()
     }
     else
         return false;
+}
+
+int Horse::getLife(){
+    return life;
+}
+
+int Horse::getMoney(){
+    return money;
+}
+
+bool Horse::decMoney()
+{
+    if(money>0){
+        money--;
+        return true;
+    }
+    else
+        return false;
+}
+
+void Horse::incMoney(int coin){
+    money=money+coin;
 }
 
 void Horse::move(sf::Keyboard::Key key, float sec)
