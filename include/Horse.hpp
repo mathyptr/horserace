@@ -47,6 +47,8 @@ public:
     void incMoney(int coin);
     int getMoney();
     unsigned int getTravelled();
+    float getTotalTravelled();
+    void setTotalTravelled(float inc);
     void setTexture();
     void setScale(float factorX, float factorY);
     void draw(sf::RenderTarget &target, sf::RenderStates states, unsigned int z);
@@ -54,6 +56,7 @@ private:
     std::string horseName;
     unsigned int horseNumber;
     unsigned int travelled;
+    float totalTravelled;
     float speed;
     float speedFactor;
     unsigned int zlevel;

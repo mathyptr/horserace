@@ -82,6 +82,7 @@ private:
   sf::String testTopRight;
   sf::String testBottomLeft;
   sf::String testTopLeft;
+  sf::String testTopCenter;
   sf::Texture weathtexture;
   sf::Texture explosion;
   Menu menu;

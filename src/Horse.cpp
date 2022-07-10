@@ -12,6 +12,7 @@ Horse::Horse()
     travelled=0;
     life=10;
     money=0;
+    totalTravelled=0;
 }
 
 void Horse::setName(std::string name)
@@ -146,6 +147,17 @@ unsigned int Horse::getTravelled()
 {
     return travelled;
 }
+
+float Horse::getTotalTravelled()
+{
+    return totalTravelled;
+}
+
+void Horse::setTotalTravelled(float inc)
+{
+    totalTravelled=totalTravelled+inc;
+}
+
 void Horse::move(float offsetX, float offsetY)
 {
     float oX,oY;

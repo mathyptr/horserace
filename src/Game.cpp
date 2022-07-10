@@ -158,9 +158,16 @@ bool Game::checkWinner()
 std::string Game::result(){
     std::string res="";
     int i=3;
-    //map <std::string,std::string> results={{std::to_string(horsePlayer.getTravelled()),horsePlayer.getName()},{std::to_string(horsePlayer2.getTravelled()),horsePlayer2.getName()},{std::to_string(horsePlayer3.getTravelled()),horsePlayer3.getName()}};
-    map <std::string,float> results = {{"Player",horsePlayer.getHorsePosition().x},{"Salazar",horsePlayer2.getHorsePosition().x},{"Sarah",horsePlayer3.getHorsePosition().x}};
-    map<float,std::string> ordRes;
+    map <std::string,float> results;
+    if(actchall==NCHALL)
+        results = {{"Pippo",horsePlayer.getTotalTravelled()},{"Salazar",horsePlayer2.getTotalTravelled()},{"Sarah",horsePlayer3.getTotalTravelled()}};
+    else{
+        results = {{"Player",horsePlayer.getHorsePosition().x},{"Salazar",horsePlayer2.getHorsePosition().x},{"Sarah",horsePlayer3.getHorsePosition().x}};
+        horsePlayer.setTotalTravelled(horsePlayer.getHorsePosition().x);
+        horsePlayer2.setTotalTravelled(horsePlayer2.getHorsePosition().x);
+        horsePlayer3.setTotalTravelled(horsePlayer3.getHorsePosition().x);
+    }
+        map<float,std::string> ordRes;
 
     for (const auto & [key, value] : results) {
         ordRes.emplace(value, key);
@@ -178,14 +185,18 @@ void Game::chgState()
     winstate=checkWinner();
     if(winstate){
         testTopRight=result();
-        if(actchall==NCHALL)
+        if(actchall==NCHALL){
+            testTopRight="";
+            testTopCenter="Winner:"+result();
             testBottomCenter="GAME OVER";
+        }
         else {
             testBottomCenter="Press Return KEY to continue....";
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
             {
              testBottomCenter="";
              testTopRight="";
+             testTopCenter="";
              winstate=false;
              stopSound();
              initHorses();
@@ -225,7 +236,7 @@ void Game::updateMenu()
     menu.setPosition(gameview.getCenter());
     testBottomLeft="Life: "+std::to_string(horsePlayer.getLife());
     testTopLeft=chall.getName()+"\nMoney: "+std::to_string(horsePlayer.getMoney());
-    menu.UpdateText(testBottomLeft,testTopRight,testBottomCenter,"","",testTopLeft);
+    menu.UpdateText(testBottomLeft,testTopRight,testBottomCenter,testTopCenter,"",testTopLeft);
 
 }
 
