@@ -11,7 +11,7 @@ public:
     Menu();
     void Init(sf::Text testBase, const sf::Vector2f& position) ;
     void UpdateText( const sf::String BottomL, const  sf::String TopR, const sf::String BottomC,  const sf::String TopC, const sf::String BottomR, const sf::String TopL);
-    sf::Vector2f getPosition();
+    sf::Vector2f getPosition() const;
     void setPosition(sf::Vector2f pos);
     void move(float offsX, float offsY);
 private:

@@ -11,7 +11,7 @@ public:
     sf::Vector2f getPosition() const;
     void setPosition(float x, float y);
     void move(float offsetX, float offsetY);
-    sf::Vector2f getScale();
+    sf::Vector2f getScale() const;
     void setScale (float factorX, float factorY);
     unsigned int getZLevel() const;
     void setZLevel(unsigned int z);

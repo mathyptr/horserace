@@ -17,7 +17,7 @@ void Race::horseMove(bool go)
 
     float rspeed= elapsed.asSeconds() * speedX;
 
-    chall.move(rspeed);
+    track.move(rspeed);
 //    horsePlayer2.setTexture();
 //    horsePlayer3.setTexture();
     horsePlayer2.move(rspeed,0);
@@ -145,7 +145,7 @@ void Race::loadExplosion()
     boom.setSpriteSheet(explosion);
     for (unsigned j = 0; j < explosion.getSize().y; j+=30)
         for (unsigned i = 0; i < explosion.getSize().x; i+=30)
-            boom.addFrame(sf::IntRect(i,j,30,30));
+            boom.addFrameRect(sf::IntRect(i,j,30,30));
 }
 
 void Race::drawWeather(sf::RenderTarget &window)
@@ -166,7 +166,7 @@ int Race::createProbability(){
     int prob[NMAXPROB];
     int j=0;
     for(int i=1,j=0;i<4;i++){
-        probability=std::stoi(propmgr.getProbability(std::to_string(actchall),std::to_string(i)));
+        probability=std::stoi(propmgr.getProbability(std::to_string(currentTrackIndex),std::to_string(i)));
         while(j<NMAXPROB&&probability>0){
             prob[j]=i;
             probability--;
@@ -188,16 +188,16 @@ void Race::loadResources()
     weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(weatherId)));
     explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(weatherId)));
 
-    chall.setName(propmgr.getTrackProperty(actchall, "name"));
+    track.setName(propmgr.getTrackProperty(currentTrackIndex, "name"));
 
-    std::cout<<"length: "<<propmgr.getTrackProperty(actchall, PATHLENGTH);
+    std::cout<<"length: "<<propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH);
 
-    pathlen=stoi(propmgr.getTrackProperty(actchall, PATHLENGTH));
+    pathlen=stoi(propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH));
     icon.loadFromFile("img/icon.png");
 
-    font.loadFromFile(propmgr.getTrackProperty(actchall, FONT_FILE));
-    std::string fontSize= propmgr.getTrackProperty(actchall, FONT_SIZE);
-    std::string fontColor= propmgr.getTrackProperty(actchall, FONT_COLOR);
+    font.loadFromFile(propmgr.getTrackProperty(currentTrackIndex, FONT_FILE));
+    std::string fontSize= propmgr.getTrackProperty(currentTrackIndex, FONT_SIZE);
+    std::string fontColor= propmgr.getTrackProperty(currentTrackIndex, FONT_COLOR);
 
     testBase.setFont(font);
     testBase.setCharacterSize(std::stoi(fontSize));
@@ -207,20 +207,20 @@ void Race::loadResources()
     }
 }
 
-void Race::getNextChall()
+void Race::getNextTrack()
 {
-    horsePlayer.incMoney(actchall*5);
+    horsePlayer.incMoney(currentTrackIndex*5);
     winstate=false;
     testBottomCenter="";
     testTopRight="";
     testTopCenter="";
-   actchall++;
-    std::cout<<"chall n."<<actchall;
+   currentTrackIndex++;
+    std::cout<<"track n."<<currentTrackIndex;
     initHorses();
     loadResources();
     if(!gameerrorstate)
     {
-        chall.init(propmgr, propmgr.getTrackProperty(actchall, "name"));
+        track = Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
         menu.Init(testBase, posgameview);
     }
     playSound();
@@ -228,12 +228,12 @@ void Race::getNextChall()
 
 void Race::playSound()
 {
-    chall.playSound();
+    track.playSound();
 }
 
 void Race::stopSound()
 {
-    chall.stopSound();
+    track.stopSound();
 }
 
 void Race::initHorses()
@@ -338,7 +338,7 @@ void Race::finalResult(){
 void Race::updateMenu()
 {
     testBottomLeft="Life: "+std::to_string(horsePlayer.getLife());
-    testTopLeft=chall.getName()+"\nMoney: "+std::to_string(horsePlayer.getMoney());
+    testTopLeft=track.getName()+"\nMoney: "+std::to_string(horsePlayer.getMoney());
     menu.setPosition(posgameview);
     menu.UpdateText(testBottomLeft,testTopRight,testBottomCenter,testTopCenter,"",testTopLeft);
 
@@ -378,7 +378,7 @@ void Race::render(sf::RenderTarget &window)
 //    window.clear();
     for(unsigned int zlevel = 1; zlevel <= ZLEVELMAX; zlevel++)
     {
-        chall.draw(window,states,zlevel);
+        track.draw(window,states,zlevel);
         if (winstate||gameoverstate)
         {
             ;//TODO
@@ -405,7 +405,7 @@ Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
 {
     gameoverstate=false;
     horseMaxYCreate();
-    actchall=1;
+    currentTrackIndex=1;
     speedX = 0;
     propmgr = propmanager;
     winstate=false;
@@ -415,7 +415,7 @@ Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
     if(!gameerrorstate)
     {
         initHorses();
-        chall.init(propmgr, propmgr.getTrackProperty(actchall, "name"));
+        track = Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
         playSound();
         menu.Init(testBase, posgameview);
         loadExplosion();

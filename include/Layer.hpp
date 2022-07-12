@@ -9,12 +9,12 @@ class Layer
 {
 public:
     Layer();
-    void init(const sf::Texture& tex, float speedFactor, const sf::IntRect& rect, const sf::Vector2f& position, unsigned int z);
-    sf::Vector2f getPosition();
+    Layer(const sf::Texture& tex, float speedFactor, const sf::IntRect& rect, const sf::Vector2f& position, unsigned int z);
+    sf::Vector2f getPosition() const;
     void setPosition(float x, float y);
     void move(float offsetX, float offsetY);
     void setZLevel(unsigned int z);
-    unsigned int getZLevel();
+    unsigned int getZLevel() const;
     void draw(sf::RenderTarget &target, sf::RenderStates &states, unsigned int z);
 private:
     sf::Texture texture;

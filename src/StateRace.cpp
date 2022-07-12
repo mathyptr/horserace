@@ -1,8 +1,8 @@
 #include "StateRace.hpp"
 #include "Game.hpp"
 
-
-StateRace::StateRace(Game *gamePtr) {
+StateRace::StateRace(Game *gamePtr) 
+{
     game = gamePtr;
 /*    try {
         if(!music.openFromFile("../SoundEffects/Route.wav")){
@@ -19,7 +19,8 @@ StateRace::StateRace(Game *gamePtr) {
     stateName = GameState ::STATE_RACE;
 }
 
-void StateRace::changeState(State* nextState) {
+void StateRace::changeState(State* nextState) 
+{
 
     State* tmpState = game->getCurrentState();
     game->setCurrentState(nextState);
@@ -34,7 +35,8 @@ void StateRace::changeState(State* nextState) {
     delete tmpState;
 }
 
-void StateRace::draw(sf::RenderWindow &window) {
+void StateRace::draw(sf::RenderWindow &window) 
+{
     //window.draw(game->map);
     game->race->render(window);
 //    game->player.draw(window,game->player.getState());
@@ -42,26 +44,28 @@ void StateRace::draw(sf::RenderWindow &window) {
 //    game->map.drawUI(window);
 }
 
-void StateRace::update() {
+void StateRace::update() 
+{
       game->race->update();
 //    game->player.move();
 //    game->map.checkCollisions(game->player);
 }
 
-
-
-void StateRace::handleInput(sf::Event event, sf::RenderWindow &window) {
+void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
+{
    // game->race->horseMove();
   if (event.type == sf::Event::KeyReleased)
         if (event.key.code == sf::Keyboard::Up)
-            game->race->getNextChall();
+            game->race->getNextTrack();
 
 }
 
-GameState StateRace::getStateName() {
+GameState StateRace::getStateName() const
+{
     return stateName;
 }
 
-void StateRace::playMusic() {
+void StateRace::playMusic() 
+{
     music.play();
 }

@@ -55,7 +55,7 @@ public:
   void playSound();
   void stopSound();
   void initHorses();
-  void getNextChall();
+  void getNextTrack();
   //  void changeState(GameState nextGameState);
   void horseMove(bool go);
   void result();
@@ -64,7 +64,7 @@ public:
 
 private:
 //  State* currentState;
-  unsigned int actchall;
+  unsigned int currentTrackIndex;
   unsigned int pathlen;
   int weatherId;
   PropertyManager propmgr;
@@ -72,7 +72,7 @@ private:
 
   bool mute;
 
-  Track chall;
+  Track track;
   Horse horsePlayer,horsePlayer2,horsePlayer3;
   unsigned int horseposymax[NMAXHORSE];
   std::vector<std::shared_ptr<Weather>> weath;

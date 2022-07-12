@@ -134,7 +134,7 @@ void Menu::UpdateText( const sf::String BottomL, const  sf::String TopR, const s
 }
 
 
-sf::Vector2f Menu::getPosition()
+sf::Vector2f Menu::getPosition() const
 {
   return position;
 }

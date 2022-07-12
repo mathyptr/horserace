@@ -40,7 +40,7 @@ sf::Vector2f Weather::getWeatherPosition() const
   return mSprite.getPosition();
 }
 
-unsigned int Weather::getZLevel()
+unsigned int Weather::getZLevel() const
 {
     return zlevel;
 }

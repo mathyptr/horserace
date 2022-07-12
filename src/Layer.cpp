@@ -2,10 +2,10 @@
 
 Layer::Layer()
 {
-    zlevel = 0;
+    
 }
 
-void Layer::init(const sf::Texture& tex, float speedF, const sf::IntRect& rect, const sf::Vector2f& pos, unsigned int z)
+Layer::Layer(const sf::Texture& tex, float speedF, const sf::IntRect& rect, const sf::Vector2f& pos, unsigned int z)
 {
     zlevel = z;
     texture = tex;
@@ -16,7 +16,7 @@ void Layer::init(const sf::Texture& tex, float speedF, const sf::IntRect& rect, 
     tileL.init(texture, rect,sf::Vector2f(static_cast<float>(position.x-800),static_cast<float>(position.y+472)), z);
 }
 
-sf::Vector2f Layer::getPosition()
+sf::Vector2f Layer::getPosition() const
 {
     return position;
 }
@@ -52,7 +52,7 @@ void Layer::setZLevel(unsigned int z)
     zlevel = z;
 }
 
-unsigned int Layer::getZLevel()
+unsigned int Layer::getZLevel() const
 {
     return zlevel;
 }

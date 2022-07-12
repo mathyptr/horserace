@@ -45,12 +45,13 @@ using namespace std;
 
 
 class State;
-enum class GameState{
-    STATE_AWARD,
-    STATE_RACE,
-    STATE_RESULT,
-    STATE_MAIN_MENU,
-    STATE_PAUSE_MENU
+enum class GameState
+{
+  STATE_AWARD,
+  STATE_RACE,
+  STATE_RESULT,
+  STATE_MAIN_MENU,
+  STATE_PAUSE_MENU
 };
 
 
@@ -61,9 +62,9 @@ public:
   Game(std::string winTitle);
   void Run();
   void changeState(GameState nextGameState);
-  State* getCurrentState()  const;
+  State* getCurrentState() const;
   void setCurrentState(State *_currentState);
-  bool checkState(GameState state);
+  bool checkState(GameState state) const;
   Race* race;
 
 private:

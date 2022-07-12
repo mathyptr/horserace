@@ -20,16 +20,16 @@
 
 */
 
-
-class StateRace : public State {
+class StateRace : public State 
+{
 public:
     explicit StateRace(Game* gamePtr);
     void draw(sf::RenderWindow& window) override;
     void changeState(State* nextState) override;
     void update() override;
     void handleInput(sf::Event event, sf::RenderWindow &window) override;
-    void playMusic() override ;
-    GameState getStateName() override;
+    void playMusic() override;
+    GameState getStateName() const override;
 };
 
 #endif // STATERACE_INCLUDE

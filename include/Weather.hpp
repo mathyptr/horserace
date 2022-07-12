@@ -9,7 +9,7 @@ public:
     void updateWeather(float speedX, float timeDelta);
     sf::FloatRect getWeatherGlobalBounds() const;
     sf::Vector2f getWeatherPosition() const;
-    unsigned int getZLevel();
+    unsigned int getZLevel() const;
     bool isWeatherAlive() const;
 
 private:

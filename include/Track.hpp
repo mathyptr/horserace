@@ -55,7 +55,7 @@ class Track
 {
 public:
     Track();
-    void init(PropertyManager propmanager, std::string name);
+    Track(PropertyManager propManager, std::string name);
     void move(float speed);
     void playSound();
     void stopSound();

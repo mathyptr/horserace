@@ -47,7 +47,7 @@ void MovingSprite::setZLevel(unsigned int z)
     zLevel = z;
 }
 
-sf::Vector2f MovingSprite::getScale()
+sf::Vector2f MovingSprite::getScale() const
 {
     return sprite.getScale();
 }

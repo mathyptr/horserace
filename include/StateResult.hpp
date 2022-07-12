@@ -7,7 +7,7 @@
 
 #include "Game.hpp"
 #include "State.hpp"
-#include "StateResult.h"
+#include "StateResult.hpp"
 
 /*
 #include "log4cpp/Category.hh"
@@ -20,16 +20,16 @@
 
 */
 
-
-class StateResult : public State {
+class StateResult : public State 
+{
 public:
     explicit StateResult(Game* gamePtr);
     void draw(sf::RenderWindow& window) override;
     void changeState(State* nextState) override;
     void update() override;
     void handleInput(sf::Event event, sf::RenderWindow &window) override;
-    void playMusic() override ;
-    GameState getStateName() override;
+    void playMusic() override;
+    GameState getStateName() const override;
 };
 
 #endif

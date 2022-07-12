@@ -62,7 +62,7 @@ const Animation* AnimatedSprite::getAnimation() const
 
 sf::FloatRect AnimatedSprite::getLocalBounds() const
 {
-    sf::IntRect rect = animation->getFrame(currentFrame);
+    sf::IntRect rect = animation->getFrameRect(currentFrame);
 
     float width = static_cast<float>(std::abs(rect.width));
     float height = static_cast<float>(std::abs(rect.height));
@@ -95,7 +95,7 @@ void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime)
     if (animation)
     {
         //calculate new vertex positions and texture coordiantes
-        sf::IntRect rect = animation->getFrame(newFrame);
+        sf::IntRect rect = animation->getFrameRect(newFrame);
 
         vertices[0].position = sf::Vector2f(0.f, 0.f);
         vertices[1].position = sf::Vector2f(0.f, static_cast<float>(rect.height));
@@ -132,7 +132,7 @@ void AnimatedSprite::update(sf::Time deltaTime)
             currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
 
             // get next Frame index
-            if (currentFrame + 1 < animation->getSize())
+            if (currentFrame + 1 < animation->getFrameCount())
                 currentFrame++;
             else
             {

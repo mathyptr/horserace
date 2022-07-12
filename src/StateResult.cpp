@@ -1,8 +1,8 @@
-#include "StateResult.h"
+#include "StateResult.hpp"
 #include "Game.hpp"
 
-
-StateResult::StateResult(Game *gamePtr) {
+StateResult::StateResult(Game *gamePtr) 
+{
     game = gamePtr;
 /*    try {
         if(!music.openFromFile("../SoundEffects/Route.wav")){
@@ -19,7 +19,8 @@ StateResult::StateResult(Game *gamePtr) {
     stateName = GameState ::STATE_RESULT;
 }
 
-void StateResult::changeState(State* nextState) {
+void StateResult::changeState(State* nextState) 
+{
 
     State* tmpState = game->getCurrentState();
     game->setCurrentState(nextState);
@@ -33,7 +34,8 @@ void StateResult::changeState(State* nextState) {
     }*/
 }
 
-void StateResult::draw(sf::RenderWindow &window) {
+void StateResult::draw(sf::RenderWindow &window) 
+{
     //window.draw(game->map);
    game->race->render(window);
 //    game->player.draw(window,game->player.getState());
@@ -48,19 +50,20 @@ void StateResult::update() {
 //    game->map.checkCollisions(game->player);
 }
 
-
-
-void StateResult::handleInput(sf::Event event, sf::RenderWindow &window) {
+void StateResult::handleInput(sf::Event event, sf::RenderWindow &window) 
+{
     // game->race->horseMove();
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
             game->race->finalResult();
 
 }
 
-GameState StateResult::getStateName() {
+GameState StateResult::getStateName() const
+{
     return stateName;
 }
 
-void StateResult::playMusic() {
+void StateResult::playMusic() 
+{
     music.play();
 }

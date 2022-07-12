@@ -2,7 +2,7 @@
 #include "Utility.hpp"
 #include "StateRace.hpp"
 #include "Race.hpp"
-#include "StateResult.h"
+#include "StateResult.hpp"
 
 
 //listens to events (in this case, closing the window by the cross button or by the escape key)
@@ -125,14 +125,14 @@ State* Game::createPointer(GameState state) {
     else if (state == GameState::STATE_RACE)
         return new StateRace(this);
 
-    /*
+    
     else if (state == GameState::STATE_MAIN_MENU)
         return nullptr;
     else if (state == GameState::STATE_PAUSE_MENU)
         return nullptr;
     else
         return nullptr;
-    */
+   
 }
 
 

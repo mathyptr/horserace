@@ -84,12 +84,12 @@ std::string PropertyManager::sendQuery(std::string sql)
     int rc;
     std::string  prop="NONE";
     sqlite3_stmt *stmt;
-    if(status!= SQLITE_OK)
+    if(status != SQLITE_OK)
         cout << "Database failed to read data" << endl;
     else
     {
         // Execute SQL statement
-        rc=sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, 0);
+        rc = sqlite3_prepare_v2(db, sql.c_str(), -1, &stmt, 0);
         if (rc != SQLITE_OK)
             cout<<"SQL error, Failed to fetch data: "<< sqlite3_errmsg(db);
         rc = sqlite3_step(stmt);

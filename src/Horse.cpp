@@ -20,7 +20,7 @@ void Horse::setName(std::string name)
     horseName = name;
 }
 
-std::string Horse::getName()
+std::string Horse::getName() const
 {
     return horseName;
 }
@@ -73,7 +73,7 @@ void Horse::setScale(float factorX, float factorY)
     sprite.setScale(factorX, factorY);
 }
 
-float Horse::getSpeed()
+float Horse::getSpeed() const
 {
     return speed;
 }
@@ -108,11 +108,13 @@ bool Horse::decLife()
         return false;
 }
 
-int Horse::getLife(){
+int Horse::getLife() const
+{
     return life;
 }
 
-int Horse::getMoney(){
+int Horse::getMoney() const
+{
     return money;
 }
 
@@ -144,12 +146,12 @@ void Horse::move(bool go, float sec)
     travelled+=-getSpeed()*sec;
 //    std::cout << "Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; sec: "<< sec << "; travelled: "<< travelled << std::endl;
 }
-unsigned int Horse::getTravelled()
+unsigned int Horse::getTravelled() const
 {
     return travelled;
 }
 
-float Horse::getTotalTravelled()
+float Horse::getTotalTravelled() const
 {
     return totalTravelled;
 }
@@ -190,7 +192,7 @@ void Horse::setHorseOrigin(float x, float y)
 {
     sprite.setOrigin(x, y);
 }
-unsigned int Horse::getZLevel()
+unsigned int Horse::getZLevel() const
 {
     return zlevel;
 }

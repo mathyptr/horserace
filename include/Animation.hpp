@@ -1,4 +1,3 @@
-
 #ifndef ANIMATION_INCLUDE
 #define ANIMATION_INCLUDE
 
@@ -10,16 +9,17 @@ class Animation
 {
 public:
     Animation();
+    Animation(const sf::Texture& texture);
 
-    void addFrame(sf::IntRect rect);
+    void addFrameRect(sf::IntRect rect);
     void setSpriteSheet(const sf::Texture& texture);
     const sf::Texture* getSpriteSheet() const;
-    std::size_t getSize() const;
-    const sf::IntRect& getFrame(std::size_t n) const;
+    std::size_t getFrameCount() const;
+    const sf::IntRect& getFrameRect(std::size_t n) const;
 
 private:
-    std::vector<sf::IntRect> m_frames;
-    const sf::Texture* m_texture;
+    std::vector<sf::IntRect> frames;
+    const sf::Texture* texture;
 };
 
 #endif // ANIMATION_INCLUDE
