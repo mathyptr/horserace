@@ -1,5 +1,3 @@
-
-
 #ifndef ANIMATEDSPRITE_INCLUDE
 #define ANIMATEDSPRITE_INCLUDE
 
@@ -36,15 +34,15 @@ public:
     bool isAlive() const;
 
 private:
-    sf::Clock m_timeToDie;
-    const Animation* m_animation;
-    sf::Time m_frameTime;
-    sf::Time m_currentTime;
-    std::size_t m_currentFrame;
-    bool m_isPaused;
-    bool m_isLooped;
-    const sf::Texture* m_texture;
-    sf::Vertex m_vertices[4];
+    sf::Clock timeToDie;
+    const Animation* animation;
+    sf::Time frameTime;
+    sf::Time currentTime;
+    std::size_t currentFrame;
+    bool isPaused;
+    bool _isLooped;
+    const sf::Texture* texture;
+    sf::Vertex vertices[4];
     virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 };

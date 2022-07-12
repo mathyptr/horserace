@@ -8,7 +8,7 @@
 
 #define HORSE_SHEETS_NUM 5
 #define MAXSPEED 500.f
-#define SPEEDTRESHOLD 100.f
+#define SPEEDTHRESHOLD 100.f
 #define SPEEDFACTOR 10.f
 #define SPEEDSMOOTH 40.f
 

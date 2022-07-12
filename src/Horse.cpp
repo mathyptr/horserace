@@ -82,7 +82,7 @@ void Horse::incSpeed(float sec)
 {
     float adjsec = sec * 100;
     if (speed > -MAXSPEED && speed <= 0)
-        speed -= (-MAXSPEED / (speed - SPEEDTRESHOLD)) * SPEEDFACTOR * adjsec;
+        speed -= (-MAXSPEED / (speed - SPEEDTHRESHOLD)) * SPEEDFACTOR * adjsec;
 }
 
 void Horse::decSpeed(float sec)
