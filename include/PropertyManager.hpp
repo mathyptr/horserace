@@ -35,7 +35,7 @@ using namespace std;
 class PropertyManager
 {
 public:
-	PropertyManager(bool autoConnect = true);
+	PropertyManager(bool autoConnect = false);
 	int connect();
 	void close();
 	int getStatus();

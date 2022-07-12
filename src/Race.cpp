@@ -1,0 +1,423 @@
+#include "Race.hpp"
+#include "Utility.hpp"
+#include "Game.hpp"
+
+
+void Race::horseMove(bool go)
+{
+    const auto elapsed = horsePlayerDeltaTime.getElapsedTime();
+
+    int realSpeed = abs(speedX);
+    if (go)
+        horsePlayer.move(true, elapsed.asSeconds());
+    else
+        horsePlayer.move(false, elapsed.asSeconds());// o un qualsiasi altro tasto
+
+    speedX=horsePlayer.getSpeed();
+
+    float rspeed= elapsed.asSeconds() * speedX;
+
+    chall.move(rspeed);
+//    horsePlayer2.setTexture();
+//    horsePlayer3.setTexture();
+    horsePlayer2.move(rspeed,0);
+    horsePlayer3.move(rspeed,0);
+    //restart the timer
+    horsePlayerDeltaTime.restart();
+}
+
+
+
+bool Race::checkWinner()
+{
+    unsigned int travel;
+    travel=horsePlayer.getTravelled();
+
+    if (travel >= pathlen)
+    {
+        testBottomCenter=TEST_BOTTOM_CENTER_GAME;
+        speedX = 0;
+        winstate=true;
+        return true;
+    }
+    else
+    {
+        ;//TODO
+        return false;
+    }
+}
+
+
+
+
+void Race::animateExplosion()
+{
+    const auto explosionDeltaTime = explosionDeltaTimer.getElapsedTime();
+    //loop tru explosions vector and animate the pointers
+    for (auto i = explosions.begin(); i != explosions.end(); i++)
+    {
+        (*i)->play(boom);
+        (*i)->update(explosionDeltaTime);
+        (*i)->move(speedX*explosionDeltaTime.asSeconds(),0);
+    }
+    //remove pointer from vector if isAlive returns false.
+    explosions.erase(std::remove_if(explosions.begin(), explosions.end(),[this](const std::shared_ptr<AnimatedSprite>& o){ return !o->isAlive(); }), explosions.end());
+    explosionDeltaTimer.restart();
+}
+void Race::createWeather()
+{
+    //create random starting position
+    int posx = rand() % 2350 + (-750);
+    int posy = -20;
+    unsigned int zlevel = rand() % (HORSEZLEVELMAX - HORSEZLEVELMIN) + HORSEZLEVELMIN;
+    const auto spawnSome = weatherSpawnTimer.getElapsedTime();
+    const auto timeSinceStart = weatherDeltaTime.getElapsedTime();
+//Mathy  timerDifficulty = sf::seconds(5.f);
+    sf::Time timerDifficulty = sf::seconds(1.f);
+    if (spawnSome > timerDifficulty )//&& countDown > 10)
+    {
+        unsigned int maxy=horseposymax[zlevel-HORSEZLEVELMIN];
+//        cout<<"ZLEVEL "<<zlevel-HORSEZLEVELMIN<<"MAXY "<<maxy<<"\n";
+        auto weathptr = std::make_shared<Weather>(Weather(weathtexture,weatherMoveSpeed,posx,posy,zlevel,maxy));
+        weath.push_back(weathptr);
+        weatherSpawnTimer.restart();
+    }
+
+    for (auto i = weath.begin(); i != weath.end(); i++)
+        (*i)->updateWeather(speedX, timeSinceStart.asSeconds());
+
+    weath.erase(std::remove_if(weath.begin(), weath.end(),[this](const std::shared_ptr<Weather> o)
+                                 {
+                                     //delete enemy if isenemy alive returns true. create explosion @ same cordinates
+                                     if (!(*o).isWeatherAlive())
+                                     {
+                                         auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
+                                         pExplosion->setPosition(o->getWeatherPosition());
+                                         explosions.push_back(pExplosion);
+                                         return true;
+                                     }
+                                     else
+                                         return false;
+                                 }
+    ), weath.end());
+
+    weatherDeltaTime.restart();
+}
+
+void Race::collision()
+{
+
+    for (auto i = weath.begin(); i != weath.end(); i++)
+    {
+        if(horsePlayer.getZLevel()==(*i)->getZLevel())
+            {
+            sf::FloatRect playerbox = horsePlayer.getHorseGlobalBounds();
+            sf::FloatRect weatherbox =   (*i)->getWeatherGlobalBounds();
+            //cout<<"Player:"<< playerbox.height<<" "<<playerbox.width<<" "<<playerbox.left<<" "<<playerbox.top<<" "<<"\n";
+            //cout<<"weatherbox:"<< weatherbox.height<<" "<<weatherbox.width<<" "<<weatherbox.left<<" "<<weatherbox.top<<" "<<"\n";
+            if (playerbox.intersects((*i)->getWeatherGlobalBounds()))
+             //if (playerbox.contains(weatherbox.left,weatherbox.top))
+                if (playerbox.intersects((*i)->getWeatherGlobalBounds()))
+            {
+                auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
+                pExplosion->setPosition(horsePlayer.getHorsePosition());
+                explosions.push_back(pExplosion);
+//                horsePlayer.setHorsePosition(400, 472);
+                speedX = 0;
+                ;//TODO dec energy horse
+                cout<<"Hit!!\n";
+                weath.erase(i);
+                if(!horsePlayer.decLife()){
+                    gameoverstate=true;
+//                    chgState();
+                }
+                break;
+            }
+        }
+    }
+
+}
+
+
+void Race::loadExplosion()
+{
+    //create animation using 16 images sheet. all sprites 30x30px big
+    boom.setSpriteSheet(explosion);
+    for (unsigned j = 0; j < explosion.getSize().y; j+=30)
+        for (unsigned i = 0; i < explosion.getSize().x; i+=30)
+            boom.addFrame(sf::IntRect(i,j,30,30));
+}
+
+void Race::drawWeather(sf::RenderTarget &window)
+{
+    for (auto e = weath.begin(); e != weath.end(); e++)
+        window.draw(*(*e));
+}
+
+void Race::drawExplosions(sf::RenderTarget &window)
+{
+    for (auto x = explosions.begin(); x != explosions.end(); x++)
+        window.draw(*(*x));
+}
+
+int Race::createProbability(){
+    int probability;
+    int actprob;
+    int prob[NMAXPROB];
+    int j=0;
+    for(int i=1,j=0;i<4;i++){
+        probability=std::stoi(propmgr.getProbability(std::to_string(actchall),std::to_string(i)));
+        while(j<NMAXPROB&&probability>0){
+            prob[j]=i;
+            probability--;
+            j++;
+        }
+    }
+    actprob=prob[rand()%(10-1)];
+    return actprob;
+}
+
+
+void Race::loadResources()
+{
+    gameerrorstate=true;
+    if(propmgr.getStatus()==0)
+    {
+    weatherId=createProbability();
+    std::cout<<"Load Probability: "<<endl;
+    weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(weatherId)));
+    explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(weatherId)));
+
+    chall.setName(propmgr.getTrackProperty(actchall, "name"));
+
+    std::cout<<"length: "<<propmgr.getTrackProperty(actchall, PATHLENGTH);
+
+    pathlen=stoi(propmgr.getTrackProperty(actchall, PATHLENGTH));
+    icon.loadFromFile("img/icon.png");
+
+    font.loadFromFile(propmgr.getTrackProperty(actchall, FONT_FILE));
+    std::string fontSize= propmgr.getTrackProperty(actchall, FONT_SIZE);
+    std::string fontColor= propmgr.getTrackProperty(actchall, FONT_COLOR);
+
+    testBase.setFont(font);
+    testBase.setCharacterSize(std::stoi(fontSize));
+    testBase.setColor(Utility::getColor(fontColor));
+
+    gameerrorstate=false;
+    }
+}
+
+void Race::getNextChall()
+{
+    horsePlayer.incMoney(actchall*5);
+    winstate=false;
+    testBottomCenter="";
+    testTopRight="";
+    testTopCenter="";
+   actchall++;
+    std::cout<<"chall n."<<actchall;
+    initHorses();
+    loadResources();
+    if(!gameerrorstate)
+    {
+        chall.init(propmgr, propmgr.getTrackProperty(actchall, "name"));
+        menu.Init(testBase, posgameview);
+    }
+    playSound();
+}
+
+void Race::playSound()
+{
+    chall.playSound();
+}
+
+void Race::stopSound()
+{
+    chall.stopSound();
+}
+
+void Race::initHorses()
+{
+    unsigned int zlevel;
+    float posx,posy,posx2,posy2,posx3,posy3;
+
+    posx3=HORSE3_POSX;
+    posy3=HORSE3_POSY;
+    posx2=HORSE2_POSX;
+    posy2=HORSE2_POSY;
+    posx=HORSE1_POSX;
+    posy=HORSE1_POSY;
+    zlevel=5;
+    horsePlayer2.init(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
+    zlevel++;
+    horsePlayer3.init(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
+    zlevel++;
+    horsePlayer.init(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
+}
+
+void Race::horseMaxYCreate()
+{
+    horseposymax[0]=HORSE1_POSY;
+    horseposymax[1]=HORSE2_POSY;
+    horseposymax[2]=HORSE3_POSY;
+}
+/*void Race::chgState()
+{
+
+    winstate=checkWinner();
+    if(winstate)
+    {
+        testBottomCenter="Press Return KEY to continue....";
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+        {
+            testBottomCenter="";
+            winstate=false;
+            stopSound();
+            initHorses();
+            getNextChall();
+        }
+    }
+    else
+    {
+        //gameoverstate=false;
+        if(gameoverstate)
+        {
+            stopSound();
+//            stopSound();
+            testBottomCenter="GAME OVER";
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
+            {
+                testBottomCenter="";
+//                initHorses();
+            }
+        }
+        else
+        {
+            horseMove(true);
+            sf::RenderStates states;
+//            drawWeather();
+//            drawExplosions();
+        }
+    }
+}
+*/
+std::string Race::order( map <std::string,float> results){
+    map<float,std::string> ordRes;
+    std::string res="";
+    int i=3;
+    for (const auto & [key, value] : results) {
+        ordRes.emplace(value, key);
+    }
+
+    for (const auto & [key, value] : ordRes) {
+        res=std::to_string(i)+". "+value+"\n"+res;
+        i--;
+    }
+    return "Result\n"+res;
+}
+
+void Race::result(){
+    horsePlayer.setTotalTravelled(horsePlayer.getHorsePosition().x);
+    horsePlayer2.setTotalTravelled(horsePlayer2.getHorsePosition().x);
+    horsePlayer3.setTotalTravelled(horsePlayer3.getHorsePosition().x);
+    testTopRight=order({{"Player",horsePlayer.getHorsePosition().x},{"Salazar",horsePlayer2.getHorsePosition().x},{"Sarah",horsePlayer3.getHorsePosition().x}});
+    testBottomCenter=TEST_BOTTOM_CENTER_RESULT;
+    updateMenu();
+}
+
+void Race::finalResult(){
+    testTopCenter="Total "+order({{"Player",horsePlayer.getTotalTravelled()},{"Salazar",horsePlayer2.getTotalTravelled()},{"Sarah",horsePlayer3.getTotalTravelled()}});
+    updateMenu();
+}
+/*void Race::drawResult(){
+    testTopRight="Result\n"+result();
+    testBottomCenter=TEST_BOTTOM_CENTER_RESULT;
+    updateMenu();
+}*/
+
+void Race::updateMenu()
+{
+    testBottomLeft="Life: "+std::to_string(horsePlayer.getLife());
+    testTopLeft=chall.getName()+"\nMoney: "+std::to_string(horsePlayer.getMoney());
+    menu.setPosition(posgameview);
+    menu.UpdateText(testBottomLeft,testTopRight,testBottomCenter,testTopCenter,"",testTopLeft);
+
+}
+
+//game loop: it is executed until exit or errors
+void Race::update()
+{
+//    while (window.isOpen() && !gameerrorstate)
+    {
+        for(unsigned int i=0;i<40;i++)
+            createWeather();
+        animateExplosion();
+        collision();
+//        processEvents();
+        updateMenu();
+//        chgState();
+     if(!winstate){
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            horseMove(true);
+        else
+            horseMove(false);
+        checkWinner();
+     }
+
+        /*drawWeather();
+        drawExplosions();
+        render(window);*/
+    }
+}
+
+
+void Race::render(sf::RenderTarget &window)
+{
+    sf::RenderStates states;
+
+//    window.clear();
+    for(unsigned int zlevel = 1; zlevel <= ZLEVELMAX; zlevel++)
+    {
+        chall.draw(window,states,zlevel);
+        if (winstate||gameoverstate)
+        {
+            ;//TODO
+        }
+        if(!winstate&&!gameoverstate)
+        {
+            horsePlayer.draw(window,states,zlevel);
+            horsePlayer2.draw(window,states,zlevel);
+            horsePlayer3.draw(window,states,zlevel);
+            drawExplosions(window);
+        }
+
+    }
+    drawWeather(window);
+    drawExplosions(window);
+    window.draw(menu);
+//    window.display();
+}
+
+
+
+//class constructor: creates a SFML window and initializes objects
+Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
+{
+    gameoverstate=false;
+    horseMaxYCreate();
+    actchall=1;
+    speedX = 0;
+    propmgr = propmanager;
+    winstate=false;
+    weatherMoveSpeed=40.f;
+    posgameview=posgv;
+    loadResources();
+    if(!gameerrorstate)
+    {
+        initHorses();
+        chall.init(propmgr, propmgr.getTrackProperty(actchall, "name"));
+        playSound();
+        menu.Init(testBase, posgameview);
+        loadExplosion();
+    }
+};

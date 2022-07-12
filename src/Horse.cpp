@@ -130,9 +130,10 @@ void Horse::incMoney(int coin){
     money=money+coin;
 }
 
-void Horse::move(sf::Keyboard::Key key, float sec)
+
+void Horse::move(bool go, float sec)
 {
-    if (key == sf::Keyboard::Right)
+    if (go)
     {
         setTexture();
         incSpeed(sec);

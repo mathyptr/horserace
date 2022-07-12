@@ -1,5 +1,5 @@
-#ifndef GAME_INCLUDE
-#define GAME_INCLUDE
+#ifndef RACE_INCLUDE
+#define RACE_INCLUDE
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
@@ -12,11 +12,8 @@
 #include "Weather.hpp"
 #include "Layer.hpp"
 #include "Menu.hpp"
-#include "Race.hpp"
-
 #include "PropertyManager.hpp"
 #include "AnimatedSprite.hpp"
-
 
 using namespace std;
 
@@ -26,6 +23,8 @@ using namespace std;
 #define  TOP_SPEED_FACTOR 10
 #define  ATMO_SPEED_FACTOR 20
 #define  FRONT_SPEED_FACTOR 1
+#define TEST_BOTTOM_CENTER_GAME "Press return key to see actual result"
+#define TEST_BOTTOM_CENTER_RESULT "Press up/down key (play/total result)"
 
 #define GVIEW_X 800
 #define GVIEW_Y 600
@@ -42,39 +41,34 @@ using namespace std;
 #define  HORSE3_POSY 562
 #define NMAXHORSE 3
 #define NMAXPROB 10
+#define NCHALL 5
 
 
-class State;
-enum class GameState{
-    STATE_AWARD,
-    STATE_RACE,
-    STATE_RESULT,
-    STATE_MAIN_MENU,
-    STATE_PAUSE_MENU
-};
 
-
-class Game
+class Race
 {
 public:
-  Game();
-  Game(std::string winTitle);
-  void Run();
-  void changeState(GameState nextGameState);
-  State* getCurrentState()  const;
-  void setCurrentState(State *_currentState);
-  bool checkState(GameState state);
-  Race* race;
+  Race(PropertyManager propmanager, const sf::Vector2f& pos);
+  void update();
+  void render(sf::RenderTarget &target);
+  bool checkWinner();
+  void playSound();
+  void stopSound();
+  void initHorses();
+  void getNextChall();
+  //  void changeState(GameState nextGameState);
+  void horseMove(bool go);
+  void result();
+  void finalResult();
+  std::string order( map <std::string,float> results);
 
 private:
-  State* currentState;
-
+//  State* currentState;
   unsigned int actchall;
   unsigned int pathlen;
   int weatherId;
   PropertyManager propmgr;
-  sf::RenderWindow window;
-  sf::View gameview;
+  sf::Vector2f posgameview;
 
   bool mute;
 
@@ -100,34 +94,33 @@ private:
   sf::Font font;
   sf::Text testBase;
   sf::String testBottomCenter;
+  sf::String testBottomLeft;
+  sf::String testTopLeft;
+  sf::String testTopRight;
   sf::String testTopCenter;
+
+
   sf::Texture weathtexture;
   sf::Texture explosion;
   Menu menu;
 
-  State* createPointer(GameState state);
+//  State* createPointer(GameState state);
   void processEvents();
-  void handleInput(sf::Event event, sf::RenderWindow &window);
   void backgroundLoop();
-  void render();
+
   void initLayer();
   void updateMenu();
   void loadResources();
   void horseMaxYCreate();
   void chgState();
-  void getNextChall();
+
   int createProbability();
-  void playSound();
-  void stopSound();
-  void initHorses();
-  void horseMove();
-  bool checkWinner();
+
   void createWeather();
-  void drawWeather();
+  void drawWeather(sf::RenderTarget &target);
   void animateExplosion();
   void collision();
   void loadExplosion();
-  void drawExplosions();
-
+  void drawExplosions(sf::RenderTarget &target);
 };
 #endif // GAME_INCLUDE
