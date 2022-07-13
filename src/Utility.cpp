@@ -1,6 +1,6 @@
 #include "Utility.hpp"
 
-sf::Color Utility::getColor(std::string colorName)
+const sf::Color Utility::getColor(std::string colorName)
 {
     sf::Color c;
 

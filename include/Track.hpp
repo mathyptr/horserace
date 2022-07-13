@@ -84,11 +84,11 @@ private:
     sf::Texture atmopic;
     sf::Texture frontpic;
 
-    Layer layerBottom;
-    Layer layerCenter;
-    Layer layerTop;
-    Layer layerAtmo;
-    Layer layerFront;
+    Layer* layerBottom;
+    Layer* layerCenter;
+    Layer* layerTop;
+    Layer* layerAtmo;
+    Layer* layerFront;
 
     std::string soundchall;
     sf::Sound sound;

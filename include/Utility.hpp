@@ -5,6 +5,6 @@
 
 namespace Utility
 {
-    static sf::Color getColor(std::string colorName);
+    const sf::Color getColor(std::string colorName);
 };
 #endif //HORSERACE_UTILITY_HPP

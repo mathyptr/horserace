@@ -155,7 +155,7 @@ void Game::setCurrentState(State *_currentState) {
     std::cout<<"stato: "<<currentState;
 }
 
-bool Game::checkState(GameState state) {
+bool Game::checkState(GameState state) const {
     return currentState->getStateName() == state;
 }
 
