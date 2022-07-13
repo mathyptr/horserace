@@ -17,7 +17,7 @@ void Race::horseMove(bool go)
 
     float rspeed= elapsed.asSeconds() * speedX;
 
-    track.move(rspeed);
+    track->move(rspeed);
 //    horsePlayer2.setTexture();
 //    horsePlayer3.setTexture();
     horsePlayer2.move(rspeed,0);
@@ -187,8 +187,8 @@ void Race::loadResources()
     std::cout<<"Load Probability: "<<endl;
     weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(weatherId)));
     explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(weatherId)));
-
-    track.setName(propmgr.getTrackProperty(currentTrackIndex, "name"));
+    if(track!=NULL)
+        track->setName(propmgr.getTrackProperty(currentTrackIndex, "name"));
 
     std::cout<<"length: "<<propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH);
 
@@ -214,13 +214,16 @@ void Race::getNextTrack()
     testBottomCenter="";
     testTopRight="";
     testTopCenter="";
-   currentTrackIndex++;
+    currentTrackIndex++;
+    character=0;
     std::cout<<"track n."<<currentTrackIndex;
     initHorses();
     loadResources();
     if(!gameerrorstate)
     {
-        track = Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
+        if(track!=NULL)
+            delete track;
+        track = new Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
         menu.Init(testBase, posgameview);
     }
     playSound();
@@ -228,12 +231,12 @@ void Race::getNextTrack()
 
 void Race::playSound()
 {
-    track.playSound();
+    track->playSound();
 }
 
 void Race::stopSound()
 {
-    track.stopSound();
+    track->stopSound();
 }
 
 void Race::initHorses()
@@ -317,37 +320,62 @@ std::string Race::order( map <std::string,float> results){
 }
 
 void Race::result(){
+    std::string str;
     horsePlayer.setTotalTravelled(horsePlayer.getHorsePosition().x);
     horsePlayer2.setTotalTravelled(horsePlayer2.getHorsePosition().x);
     horsePlayer3.setTotalTravelled(horsePlayer3.getHorsePosition().x);
-    testTopRight=order({{"Player",horsePlayer.getHorsePosition().x},{"Salazar",horsePlayer2.getHorsePosition().x},{"Sarah",horsePlayer3.getHorsePosition().x}});
     testBottomCenter=TEST_BOTTOM_CENTER_RESULT;
+    testTopRight=order({{"Player",horsePlayer.getHorsePosition().x},{"Salazar",horsePlayer2.getHorsePosition().x},{"Sarah",horsePlayer3.getHorsePosition().x}});
     updateMenu();
+    /*str=order({{"Player",horsePlayer.getHorsePosition().x},{"Salazar",horsePlayer2.getHorsePosition().x},{"Sarah",horsePlayer3.getHorsePosition().x}});
+    if ((timer.getElapsedTime().asSeconds() > 0.01) && character < str.length())
+    {
+        character++;
+        if (timer.getElapsedTime() > sf::milliseconds(1)){
+            testTopRight=(str.substr(0,character)) ;
+            timer.restart();
+        }
+    }*/
 }
 
 void Race::finalResult(){
-    testTopCenter="Total "+order({{"Player",horsePlayer.getTotalTravelled()},{"Salazar",horsePlayer2.getTotalTravelled()},{"Sarah",horsePlayer3.getTotalTravelled()}});
-    updateMenu();
+    std::string str;
+    str="Total "+order({{"Player",horsePlayer.getTotalTravelled()},{"Salazar",horsePlayer2.getTotalTravelled()},{"Sarah",horsePlayer3.getTotalTravelled()}});
+    if ((timer.getElapsedTime().asSeconds() > 0.01) && character < str.length())
+    {
+        character++;
+        if (timer.getElapsedTime() > sf::milliseconds(1)){
+            testTopCenter=(str.substr(0,character)) ;
+            timer.restart();
+        }
+    }
 }
-/*void Race::drawResult(){
-    testTopRight="Result\n"+result();
-    testBottomCenter=TEST_BOTTOM_CENTER_RESULT;
-    updateMenu();
+
+/*void Race::typeWriter(std::string str, sf::String bott){
+    //std::string str ="Total "+order({{"Player",horsePlayer.getTotalTravelled()},{"Salazar",horsePlayer2.getTotalTravelled()},{"Sarah",horsePlayer3.getTotalTravelled()}});
+     if ((timer.getElapsedTime().asSeconds() > 0.01) && character < str.length())
+    {
+        character++;
+        if (timer.getElapsedTime() > sf::milliseconds(1)){
+            bott=(str.substr(0,character)) ;
+            timer.restart();
+        }
+    }
 }*/
+
 
 void Race::updateMenu()
 {
     testBottomLeft="Life: "+std::to_string(horsePlayer.getLife());
-    testTopLeft=track.getName()+"\nMoney: "+std::to_string(horsePlayer.getMoney());
+    testTopLeft=track->getName()+"\nMoney: "+std::to_string(horsePlayer.getMoney());
     menu.setPosition(posgameview);
     menu.UpdateText(testBottomLeft,testTopRight,testBottomCenter,testTopCenter,"",testTopLeft);
 
 }
 
-//game loop: it is executed until exit or errors
+
 void Race::update()
 {
-//    while (window.isOpen() && !gameerrorstate)
     {
         for(unsigned int i=0;i<40;i++)
             createWeather();
@@ -378,7 +406,7 @@ void Race::render(sf::RenderTarget &window)
 //    window.clear();
     for(unsigned int zlevel = 1; zlevel <= ZLEVELMAX; zlevel++)
     {
-        track.draw(window,states,zlevel);
+        track->draw(window,states,zlevel);
         if (winstate||gameoverstate)
         {
             ;//TODO
@@ -403,6 +431,7 @@ void Race::render(sf::RenderTarget &window)
 //class constructor: creates a SFML window and initializes objects
 Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
 {
+    track=NULL;
     gameoverstate=false;
     horseMaxYCreate();
     currentTrackIndex=1;
@@ -415,7 +444,7 @@ Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
     if(!gameerrorstate)
     {
         initHorses();
-        track = Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
+        track = new Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
         playSound();
         menu.Init(testBase, posgameview);
         loadExplosion();

@@ -60,19 +60,22 @@ public:
   void horseMove(bool go);
   void result();
   void finalResult();
+  void typeWriter(std::string str, sf::String bott);
   std::string order( map <std::string,float> results);
 
 private:
 //  State* currentState;
   unsigned int currentTrackIndex;
   unsigned int pathlen;
+  unsigned int character = 0;
   int weatherId;
+  sf::Clock timer;;
   PropertyManager propmgr;
   sf::Vector2f posgameview;
 
   bool mute;
 
-  Track track;
+  Track* track;
   Horse horsePlayer,horsePlayer2,horsePlayer3;
   unsigned int horseposymax[NMAXHORSE];
   std::vector<std::shared_ptr<Weather>> weath;

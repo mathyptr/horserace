@@ -30,6 +30,7 @@ public:
     void handleInput(sf::Event event, sf::RenderWindow &window) override;
     void playMusic() override;
     GameState getStateName() const override;
+    bool typeWriter;
 };
 
 #endif
