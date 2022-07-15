@@ -108,14 +108,14 @@ private:
   //Menu menu;
 
 //  State* createPointer(GameState state);
-  void processEvents();
-  void backgroundLoop();
+ // void processEvents();
+  //void backgroundLoop();
 
-  void initLayer();
+//  void initLayer();
 
   void loadResources();
   void horseMaxYCreate();
-  void chgState();
+//  void chgState();
 
   int createProbability();
 

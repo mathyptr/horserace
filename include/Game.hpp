@@ -6,7 +6,6 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
-//#include "MovingSprite.hpp"
 #include "Track.hpp"
 #include "Horse.hpp"
 #include "Weather.hpp"
@@ -21,7 +20,6 @@
 using namespace std;
 
 #define  CENTER_SPEED_FACTOR 4
-//#define  BOTTOM_SPEED_FACTOR 1
 #define  BOTTOM_SPEED_FACTOR 2
 #define  TOP_SPEED_FACTOR 10
 #define  ATMO_SPEED_FACTOR 20
@@ -74,62 +72,62 @@ private:
   unsigned int getCurrentTrack();
   unsigned int pathlen;
   unsigned int actchall;
-  int weatherId;
+  //int weatherId;
   PropertyManager propmgr;
   sf::RenderWindow window;
   sf::View gameview;
 
   bool mute;
 
-  Track chall;
-  Horse horsePlayer,horsePlayer2,horsePlayer3;
+  //Track chall;
+ // Horse horsePlayer,horsePlayer2,horsePlayer3;
   unsigned int horseposymax[NMAXHORSE];
   std::vector<std::shared_ptr<Weather>> weath;
   std::vector<std::shared_ptr<AnimatedSprite>> explosions;
-  Animation boom;
+  //Animation boom;
 
-  sf::Clock horsePlayerDeltaTime;
+/*  sf::Clock horsePlayerDeltaTime;
   sf::Clock weatherDeltaTime;
   sf::Clock weatherSpawnTimer;
   sf::Clock explosionDeltaTimer;
   float speedX;
-  float weatherMoveSpeed;
+  float weatherMoveSpeed;*/
   sf::Image icon;
 
-  bool winstate;
-  bool gameoverstate;
+ bool winstate;
+ bool gameoverstate;
   bool gameerrorstate;
 
   sf::Font font;
   sf::Text testBase;
-  sf::String testBottomCenter;
+ /* sf::String testBottomCenter;
   sf::String testTopCenter;
   sf::Texture weathtexture;
-  sf::Texture explosion;
+  sf::Texture explosion;*/
 
   State* createPointer(GameState state);
   void processEvents();
   void handleInput(sf::Event event, sf::RenderWindow &window);
-  void backgroundLoop();
+ // void backgroundLoop();
   void render();
-  void initLayer();
-  void updateMenu();
+ // void initLayer();
+  //void updateMenu();
   void loadResources();
-  void horseMaxYCreate();
+ /* void horseMaxYCreate();
   void chgState();
   void getNextChall();
   int createProbability();
   void playSound();
-  void stopSound();
+  void stopSound();*/
   void initHorses();
-  void horseMove();
+ /* void horseMove();
   bool checkWinner();
   void createWeather();
   void drawWeather();
-  void animateExplosion();
+  void animateExplosion();*/
   void collision();
-  void loadExplosion();
-  void drawExplosions();
+  //void loadExplosion();
+  //void drawExplosions();
 
 };
 #endif // GAME_INCLUDE
