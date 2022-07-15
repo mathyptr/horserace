@@ -23,8 +23,6 @@ using namespace std;
 #define  TOP_SPEED_FACTOR 10
 #define  ATMO_SPEED_FACTOR 20
 #define  FRONT_SPEED_FACTOR 1
-#define TEST_BOTTOM_CENTER_GAME "Press return key to see actual result"
-#define TEST_BOTTOM_CENTER_RESULT "Press up/down key (play/total result)"
 
 #define GVIEW_X 800
 #define GVIEW_Y 600
@@ -50,6 +48,7 @@ class Race
 public:
   Race(PropertyManager propmanager, const sf::Vector2f& pos);
   void update();
+ //   void updateMenu(sf::String bottLeft,sf::String topRight,sf::String topCenter,sf::String bottomRight,sf::String topLeft,sf::String bottomCenter);
   void render(sf::RenderTarget &target);
   bool checkWinner();
   void playSound();
@@ -58,25 +57,26 @@ public:
   void getNextTrack();
   //  void changeState(GameState nextGameState);
   void horseMove(bool go);
-  void result();
-  void finalResult();
+    sf::String result();
+    std::string finalResult();
   void typeWriter(std::string str, sf::String bott);
   std::string order( map <std::string,float> results);
+  unsigned int getCurrenteIndex();
+    Horse horsePlayer,horsePlayer2,horsePlayer3;
+    Track* track;
+    unsigned int character = 0;
 
 private:
 //  State* currentState;
   unsigned int currentTrackIndex;
   unsigned int pathlen;
-  unsigned int character = 0;
   int weatherId;
-  sf::Clock timer;;
+  sf::Clock timer;
   PropertyManager propmgr;
   sf::Vector2f posgameview;
 
   bool mute;
 
-  Track* track;
-  Horse horsePlayer,horsePlayer2,horsePlayer3;
   unsigned int horseposymax[NMAXHORSE];
   std::vector<std::shared_ptr<Weather>> weath;
   std::vector<std::shared_ptr<AnimatedSprite>> explosions;
@@ -94,25 +94,25 @@ private:
   bool gameoverstate;
   bool gameerrorstate;
 
-  sf::Font font;
+ /* sf::Font font;
   sf::Text testBase;
   sf::String testBottomCenter;
   sf::String testBottomLeft;
   sf::String testTopLeft;
   sf::String testTopRight;
-  sf::String testTopCenter;
+  sf::String testTopCenter;*/
 
 
   sf::Texture weathtexture;
   sf::Texture explosion;
-  Menu menu;
+  //Menu menu;
 
 //  State* createPointer(GameState state);
   void processEvents();
   void backgroundLoop();
 
   void initLayer();
-  void updateMenu();
+
   void loadResources();
   void horseMaxYCreate();
   void chgState();

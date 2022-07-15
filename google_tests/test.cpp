@@ -48,7 +48,8 @@ TEST(gameTest, checkWinner){
     zlevel++;
     horsePlayer1.init(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
 
-    unsigned int m,pathlen;
+    unsigned pathlen;
+    float m;
     pathlen=500;
     for(m=0;m<pathlen;m+=10)
     {

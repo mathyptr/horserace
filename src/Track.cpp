@@ -25,13 +25,13 @@ void Track::loadResources()
     frontpic.loadFromFile(propmgr.getTrackProperty(name, FRONT_PIC));
     soundchall = propmgr.getTrackProperty(name, SOUND);
 
-    font.loadFromFile(propmgr.getTrackProperty(name, FONT_FILE));
+   /* font.loadFromFile(propmgr.getTrackProperty(name, FONT_FILE));
     std::string fontSize = propmgr.getTrackProperty(name, FONT_SIZE);
     std::string fontColor = propmgr.getTrackProperty(name, FONT_COLOR);
 
     testBase.setFont(font);
     testBase.setCharacterSize(std::stoi(fontSize));
-    testBase.setColor(Utility::getColor(fontColor));
+    testBase.setColor(Utility::getColor(fontColor));*/
 
     if (!buffersound.loadFromFile(soundchall))
         nosound = true;

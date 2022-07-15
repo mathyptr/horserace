@@ -1,5 +1,6 @@
 #ifndef STATERACE_INCLUDE
 #define STATERACE_INCLUDE
+#define TEST_BOTTOM_CENTER_GAME "Press return key to see actual result"
 
 #include <SFML/Graphics.hpp>
 #include <vector>
@@ -30,6 +31,7 @@ public:
     void handleInput(sf::Event event, sf::RenderWindow &window) override;
     void playMusic() override;
     GameState getStateName() const override;
+    sf::String testBottomCenter;
 };
 
 #endif // STATERACE_INCLUDE

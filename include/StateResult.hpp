@@ -29,8 +29,11 @@ public:
     void update() override;
     void handleInput(sf::Event event, sf::RenderWindow &window) override;
     void playMusic() override;
+    void typeWriter();
     GameState getStateName() const override;
-    bool typeWriter;
+    bool typeW;
+    sf::Clock timer;
+    sf::String testTopCenter;
 };
 
 #endif

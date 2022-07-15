@@ -5,7 +5,6 @@
 #include "StateResult.hpp"
 
 
-//listens to events (in this case, closing the window by the cross button or by the escape key)
 void Game::processEvents()
 {
     sf::Event event;
@@ -30,94 +29,53 @@ void Game::handleInput(sf::Event event, sf::RenderWindow &window)
             changeState(GameState::STATE_RACE);
 }
 
-/*void Game::chgState()
-{
-
-    winstate=race->checkWinner();
-    if(winstate)
-    {
-        testBottomCenter="Press Return KEY to continue....";
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-        {
-            testBottomCenter="";
-            winstate=false;
-            race->stopSound();
-            race->initHorses();
-            race->getNextChall();
-        }
-    }
-    else
-    {
-        //gameoverstate=false;
-        if(gameoverstate)
-        {
-            race->stopSound();
-//            stopSound();
-            testBottomCenter="GAME OVER";
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-            {
-                testBottomCenter="";
-//                initHorses();
-            }
-        }
-        else
-        {
-           horseMove();
-            sf::RenderStates states;
-            drawWeather();
-            drawExplosions();
-        }
-    }
-}*/
-
+unsigned int Game::getCurrentTrack(){
+    return race->getCurrenteIndex();
+}
 
 void Game::render()
 {
     sf::RenderStates states;
-
     window.clear();
     currentState->draw(window);
+    window.draw(menu);
     window.display();
 }
 
-
+void Game::initMenu(){
+    actchall=getCurrentTrack();
+    font.loadFromFile(propmgr.getTrackProperty(actchall, FONT_FILE));
+    std::string fontSize= propmgr.getTrackProperty(actchall, FONT_SIZE);
+    std::string fontColor= propmgr.getTrackProperty(actchall, FONT_COLOR);
+    testBase.setFont(font);
+    testBase.setCharacterSize(std::stoi(fontSize));
+    testBase.setColor(Utility::getColor(fontColor));
+    menu.Init(testBase, gameview.getCenter());
+}
 
 void Game::loadResources()
 {
     gameerrorstate=true;
     if(propmgr.getStatus()==0)
     {
-
-
-    icon.loadFromFile("img/icon.png");
-
-/*    font.loadFromFile(propmgr.getTrackProperty(actchall, FONT_FILE));
-    std::string fontSize= propmgr.getTrackProperty(actchall, FONT_SIZE);
-    std::string fontColor= propmgr.getTrackProperty(actchall, FONT_COLOR);
-
-    testBase.setFont(font);
-    testBase.setCharacterSize(std::stoi(fontSize));
-    testBase.setColor(Utility::getColor(fontColor));
-*/
-    gameerrorstate=false;
+        actchall=getCurrentTrack();
+        icon.loadFromFile("img/icon.png");
+        gameerrorstate=false;
     }
 }
 
 
-//game loop: it is executed until exit or errors
 void Game::Run()
 {
     while (window.isOpen() && !gameerrorstate)
     {
         currentState->update();
         processEvents();
-//        chgState();
         render();
     }
 }
 
 State* Game::createPointer(GameState state) {
-   // return nullptr;
 
      if(state == GameState::STATE_RESULT){
         return new StateResult(this);
@@ -138,10 +96,7 @@ State* Game::createPointer(GameState state) {
 
 void Game::changeState(GameState nextGameState) {
    State* nextState= createPointer(nextGameState);
-    /*if(nextGameState==GameState::STATE_RESULT)
-        nextState=new StateResult(this);*/
     currentState->changeState(nextState);
-
 }
 
 
@@ -150,7 +105,6 @@ State *Game::getCurrentState() const {
 }
 
 void Game::setCurrentState(State *_currentState) {
-   // Game::
    currentState = _currentState;
     std::cout<<"stato: "<<currentState;
 }
@@ -160,24 +114,23 @@ bool Game::checkState(GameState state) const {
 }
 
 
-//class constructor: creates a SFML window and initializes objects
+
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
+    actchall=1;
     gameoverstate=false;
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
-
     propmgr =  PropertyManager(true);
     winstate=false;
-    loadResources();
     if(!gameerrorstate)
     {
-
-//        chall.init(propmgr);
-        window.setIcon(icon.getSize().x, icon.getSize().y,icon.getPixelsPtr());
         gameview.setCenter(GVIEW_X / 2,GVIEW_Y / 2);
         gameview.setSize(sf::Vector2f(GVIEW_X, GVIEW_Y));
         race= new Race(propmgr,gameview.getCenter());
+        loadResources();
+        window.setIcon(icon.getSize().x, icon.getSize().y,icon.getPixelsPtr());
+        initMenu();
         currentState = new StateRace(this);
     }
 };

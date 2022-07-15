@@ -61,17 +61,19 @@ public:
   Game();
   Game(std::string winTitle);
   void Run();
+  void initMenu();
   void changeState(GameState nextGameState);
   State* getCurrentState() const;
   void setCurrentState(State *_currentState);
   bool checkState(GameState state) const;
   Race* race;
+  Menu menu;
 
 private:
   State* currentState;
-
-  unsigned int actchall;
+  unsigned int getCurrentTrack();
   unsigned int pathlen;
+  unsigned int actchall;
   int weatherId;
   PropertyManager propmgr;
   sf::RenderWindow window;
@@ -104,7 +106,6 @@ private:
   sf::String testTopCenter;
   sf::Texture weathtexture;
   sf::Texture explosion;
-  Menu menu;
 
   State* createPointer(GameState state);
   void processEvents();

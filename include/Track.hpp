@@ -95,8 +95,8 @@ private:
     sf::SoundBuffer buffersound;
     bool nosound;
 
-    sf::Font font;
-    sf::Text testBase;
+    //sf::Font font;
+    //sf::Text testBase;
 
     PropertyManager propmgr;
 
