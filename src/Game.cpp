@@ -4,7 +4,6 @@
 #include "Race.hpp"
 #include "StateResult.hpp"
 
-
 //listens to events (in this case, closing the window by the cross button or by the escape key)
 void Game::processEvents()
 {
@@ -30,47 +29,6 @@ void Game::handleInput(sf::Event event, sf::RenderWindow &window)
             changeState(GameState::STATE_RACE);
 }
 
-/*void Game::chgState()
-{
-
-    winstate=race->checkWinner();
-    if(winstate)
-    {
-        testBottomCenter="Press Return KEY to continue....";
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-        {
-            testBottomCenter="";
-            winstate=false;
-            race->stopSound();
-            race->initHorses();
-            race->getNextChall();
-        }
-    }
-    else
-    {
-        //gameoverstate=false;
-        if(gameoverstate)
-        {
-            race->stopSound();
-//            stopSound();
-            testBottomCenter="GAME OVER";
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Return))
-            {
-                testBottomCenter="";
-//                initHorses();
-            }
-        }
-        else
-        {
-           horseMove();
-            sf::RenderStates states;
-            drawWeather();
-            drawExplosions();
-        }
-    }
-}*/
-
-
 void Game::render()
 {
     sf::RenderStates states;
@@ -79,8 +37,6 @@ void Game::render()
     currentState->draw(window);
     window.display();
 }
-
-
 
 void Game::loadResources()
 {
@@ -103,7 +59,6 @@ void Game::loadResources()
     }
 }
 
-
 //game loop: it is executed until exit or errors
 void Game::Run()
 {
@@ -116,7 +71,8 @@ void Game::Run()
     }
 }
 
-State* Game::createPointer(GameState state) {
+State* Game::createPointer(GameState state) 
+{
    // return nullptr;
 
      if(state == GameState::STATE_RESULT){
@@ -135,8 +91,8 @@ State* Game::createPointer(GameState state) {
    
 }
 
-
-void Game::changeState(GameState nextGameState) {
+void Game::changeState(GameState nextGameState) 
+{
    State* nextState= createPointer(nextGameState);
     /*if(nextGameState==GameState::STATE_RESULT)
         nextState=new StateResult(this);*/
@@ -144,36 +100,34 @@ void Game::changeState(GameState nextGameState) {
 
 }
 
-
-State *Game::getCurrentState() const {
+State *Game::getCurrentState() const 
+{
     return currentState;
 }
 
-void Game::setCurrentState(State *_currentState) {
-   // Game::
-   currentState = _currentState;
+void Game::setCurrentState(State *currentState) 
+{
+    this->currentState = currentState;
     std::cout<<"stato: "<<currentState;
 }
 
-bool Game::checkState(GameState state) const {
+bool Game::checkState(GameState state) const
+{
     return currentState->getStateName() == state;
 }
-
 
 //class constructor: creates a SFML window and initializes objects
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
-    gameoverstate=false;
+    gameoverstate = false;
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
 
     propmgr =  PropertyManager(true);
-    winstate=false;
+    winstate = false;
     loadResources();
     if(!gameerrorstate)
     {
-
-//        chall.init(propmgr);
         window.setIcon(icon.getSize().x, icon.getSize().y,icon.getPixelsPtr());
         gameview.setCenter(GVIEW_X / 2,GVIEW_Y / 2);
         gameview.setSize(sf::Vector2f(GVIEW_X, GVIEW_Y));

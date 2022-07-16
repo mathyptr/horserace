@@ -6,5 +6,5 @@
 namespace Utility
 {
     const sf::Color getColor(std::string colorName);
-};
+}
 #endif //HORSERACE_UTILITY_HPP

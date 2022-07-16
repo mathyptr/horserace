@@ -79,13 +79,6 @@ private:
 
   bool mute;
 
-  Track chall;
-  Horse horsePlayer,horsePlayer2,horsePlayer3;
-  unsigned int horseposymax[NMAXHORSE];
-  std::vector<std::shared_ptr<Weather>> weath;
-  std::vector<std::shared_ptr<AnimatedSprite>> explosions;
-  Animation boom;
-
   sf::Clock horsePlayerDeltaTime;
   sf::Clock weatherDeltaTime;
   sf::Clock weatherSpawnTimer;
@@ -115,7 +108,6 @@ private:
   void updateMenu();
   void loadResources();
   void horseMaxYCreate();
-  void chgState();
   void getNextChall();
   int createProbability();
   void playSound();
@@ -123,12 +115,6 @@ private:
   void initHorses();
   void horseMove();
   bool checkWinner();
-  void createWeather();
-  void drawWeather();
-  void animateExplosion();
-  void collision();
-  void loadExplosion();
-  void drawExplosions();
 
 };
 #endif // GAME_INCLUDE
