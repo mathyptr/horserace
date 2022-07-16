@@ -5,17 +5,12 @@
 void Race::horseMove(bool go)
 {
     const auto elapsed = horsePlayerDeltaTime.getElapsedTime();
-
-    int realSpeed = abs(speedX);
     if (go)
         horsePlayer.move(true, elapsed.asSeconds());
     else
         horsePlayer.move(false, elapsed.asSeconds());// o un qualsiasi altro tasto
-
     speedX=horsePlayer.getSpeed();
-
     float rspeed= elapsed.asSeconds() * speedX;
-
     track->move(rspeed);
     horsePlayer2.move(rspeed, 0, elapsed.asSeconds());
     horsePlayer3.move(rspeed, 0, elapsed.asSeconds());
@@ -27,50 +22,53 @@ bool Race::checkWinner()
 {
     unsigned int travel;
     travel=horsePlayer.getTravelled();
-
     if (travel >= pathlen)
     {
-        testBottomCenter=TEST_BOTTOM_CENTER_GAME;
         speedX = 0;
         winstate=true;
         return true;
     }
     else
-    {
-        ;//TODO
         return false;
+}
+
+bool Race::checkFinalLine()
+{
+    unsigned int travel;
+    travel=horsePlayer.getTravelled();
+    if (pathlen-travel <= 2*MAX_HORIZONTAL_X)
+    {
+        track->setfinalLineState();
+        return true;
     }
+    else
+        return false;
 }
 
 void Race::animateExplosion()
 {
     const auto explosionDeltaTime = explosionDeltaTimer.getElapsedTime();
-    //loop tru explosions vector and animate the pointers
     for (auto i = explosions.begin(); i != explosions.end(); i++)
     {
         (*i)->play(boom);
         (*i)->update(explosionDeltaTime);
         (*i)->move(speedX*explosionDeltaTime.asSeconds(),0);
     }
-    //remove pointer from vector if isAlive returns false.
     explosions.erase(std::remove_if(explosions.begin(), explosions.end(),[this](const std::shared_ptr<AnimatedSprite>& o){ return !o->isAlive(); }), explosions.end());
     explosionDeltaTimer.restart();
 }
 
 void Race::createWeather()
 {
-    //create random starting position
     int posx = rand() % 2350 + (-750);
     int posy = -20;
     unsigned int zlevel = rand() % (HORSEZLEVELMAX - HORSEZLEVELMIN) + HORSEZLEVELMIN;
     const auto spawnSome = weatherSpawnTimer.getElapsedTime();
     const auto timeSinceStart = weatherDeltaTime.getElapsedTime();
-//Mathy  timerDifficulty = sf::seconds(5.f);
     sf::Time timerDifficulty = sf::seconds(1.f);
-    if (spawnSome > timerDifficulty )//&& countDown > 10)
+    if (spawnSome > timerDifficulty )
     {
         unsigned int maxy=horseposymax[zlevel-HORSEZLEVELMIN];
-//        cout<<"ZLEVEL "<<zlevel-HORSEZLEVELMIN<<"MAXY "<<maxy<<"\n";
         auto weathptr = std::make_shared<Weather>(Weather(weathtexture,weatherMoveSpeed,posx,posy,zlevel,maxy));
         weath.push_back(weathptr);
         weatherSpawnTimer.restart();
@@ -80,18 +78,17 @@ void Race::createWeather()
         (*i)->updateWeather(speedX, timeSinceStart.asSeconds());
 
     weath.erase(std::remove_if(weath.begin(), weath.end(),[this](const std::shared_ptr<Weather> o)
-                                {
-                                    //delete enemy if isenemy alive returns true. create explosion @ same cordinates
-                                    if (!(*o).isWeatherAlive())
-                                    {
-                                        auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
-                                        pExplosion->setPosition(o->getWeatherPosition());
-                                        explosions.push_back(pExplosion);
-                                        return true;
-                                    }
-                                    else
-                                        return false;
-                                }
+    {
+        if (!(*o).isWeatherAlive())
+        {
+            auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
+            pExplosion->setPosition(o->getWeatherPosition());
+            explosions.push_back(pExplosion);
+            return true;
+        }
+        else
+            return false;
+    }
     ), weath.end());
 
     weatherDeltaTime.restart();
@@ -105,15 +102,12 @@ void Race::collision()
         {
             sf::FloatRect playerbox = horsePlayer.getGlobalBounds();
             sf::FloatRect weatherbox =   (*i)->getWeatherGlobalBounds();
-            //cout<<"Player:"<< playerbox.height<<" "<<playerbox.width<<" "<<playerbox.left<<" "<<playerbox.top<<" "<<"\n";
-            //cout<<"weatherbox:"<< weatherbox.height<<" "<<weatherbox.width<<" "<<weatherbox.left<<" "<<weatherbox.top<<" "<<"\n";
             if (playerbox.intersects((*i)->getWeatherGlobalBounds()))
             {
                 auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
                 pExplosion->setPosition(horsePlayer.getPosition());
                 explosions.push_back(pExplosion);
                 speedX = 0;
-                ;//TODO dec energy horse
                 cout<<"Hit!!\n";
                 weath.erase(i);
                 if(!horsePlayer.decLife())
@@ -126,7 +120,6 @@ void Race::collision()
 
 void Race::loadExplosion()
 {
-    //create animation using 16 images sheet. all sprites 30x30px big
     boom.setSpriteSheet(explosion);
     for (unsigned j = 0; j < explosion.getSize().y; j+=30)
         for (unsigned i = 0; i < explosion.getSize().x; i+=30)
@@ -174,20 +167,8 @@ void Race::loadResources()
         explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(weatherId)));
         if(track!=NULL)
             track->setName(propmgr.getTrackProperty(currentTrackIndex, "name"));
-
-        std::cout<<"length: "<<propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH);
-
         pathlen=stoi(propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH));
         icon.loadFromFile("img/icon.png");
-
-        font.loadFromFile(propmgr.getTrackProperty(currentTrackIndex, FONT_FILE));
-        std::string fontSize= propmgr.getTrackProperty(currentTrackIndex, FONT_SIZE);
-        std::string fontColor= propmgr.getTrackProperty(currentTrackIndex, FONT_COLOR);
-
-        testBase.setFont(font);
-        testBase.setCharacterSize(std::stoi(fontSize));
-        testBase.setColor(Utility::getColor(fontColor));
-
         gameerrorstate=false;
     }
 }
@@ -196,12 +177,8 @@ void Race::getNextTrack()
 {
     horsePlayer.incMoney(currentTrackIndex*5);
     winstate=false;
-    testBottomCenter="";
-    testTopRight="";
-    testTopCenter="";
     currentTrackIndex++;
     character=0;
-    std::cout<<"track n."<<currentTrackIndex;
     initHorses();
     loadResources();
     if(!gameerrorstate)
@@ -209,7 +186,6 @@ void Race::getNextTrack()
         if(track!=NULL)
             delete track;
         track = new Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
-        menu.Init(testBase, posgameview);
     }
     playSound();
 }
@@ -265,49 +241,21 @@ std::string Race::order( map <std::string,float> results){
     return "Result\n"+res;
 }
 
-void Race::result()
+sf::String Race::result()
 {
+    std::string str;
     horsePlayer.setTotalTravelled(horsePlayer.getPosition().x);
     horsePlayer2.setTotalTravelled(horsePlayer2.getPosition().x);
     horsePlayer3.setTotalTravelled(horsePlayer3.getPosition().x);
-    testTopRight=order({{"Player",horsePlayer.getPosition().x},{"Salazar",horsePlayer2.getPosition().x},{"Sarah",horsePlayer3.getPosition().x}});
-    testBottomCenter=TEST_BOTTOM_CENTER_RESULT;
-    updateMenu();
+    str=order({{"Player",horsePlayer.getPosition().x},{"Salazar",horsePlayer2.getPosition().x},{"Sarah",horsePlayer3.getPosition().x}});
+    return  str;
 }
 
-void Race::finalResult()
+std::string Race::finalResult()
 {
     std::string str;
     str="Total "+order({{"Player",horsePlayer.getTotalTravelled()},{"Salazar",horsePlayer2.getTotalTravelled()},{"Sarah",horsePlayer3.getTotalTravelled()}});
-    if ((timer.getElapsedTime().asSeconds() > 0.01) && character < str.length())
-    {
-        character++;
-        if (timer.getElapsedTime() > sf::milliseconds(1)){
-            testTopCenter=(str.substr(0,character)) ;
-            timer.restart();
-        }
-    }
-}
-
-/*void Race::typeWriter(std::string str, sf::String bott){
-    //std::string str ="Total "+order({{"Player",horsePlayer.getTotalTravelled()},{"Salazar",horsePlayer2.getTotalTravelled()},{"Sarah",horsePlayer3.getTotalTravelled()}});
-     if ((timer.getElapsedTime().asSeconds() > 0.01) && character < str.length())
-    {
-        character++;
-        if (timer.getElapsedTime() > sf::milliseconds(1)){
-            bott=(str.substr(0,character)) ;
-            timer.restart();
-        }
-    }
-}*/
-
-void Race::updateMenu()
-{
-    testBottomLeft="Life: "+std::to_string(horsePlayer.getLife());
-    testTopLeft=track->getName()+"\nMoney: "+std::to_string(horsePlayer.getMoney());
-    menu.setPosition(posgameview);
-    menu.UpdateText(testBottomLeft,testTopRight,testBottomCenter,testTopCenter,"",testTopLeft);
-
+    return str;
 }
 
 void Race::update()
@@ -317,35 +265,23 @@ void Race::update()
             createWeather();
         animateExplosion();
         collision();
-//        processEvents();
-        updateMenu();
-//        chgState();
-     if(!winstate){
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            horseMove(true);
+        if(!winstate){
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+               horseMove(true);
         else
             horseMove(false);
+        checkFinalLine();
         checkWinner();
      }
-
-        /*drawWeather();
-        drawExplosions();
-        render(window);*/
     }
 }
 
 void Race::render(sf::RenderTarget &window)
 {
     sf::RenderStates states;
-
-//    window.clear();
     for(unsigned int zlevel = 1; zlevel <= ZLEVELMAX; zlevel++)
     {
         track->draw(window,states,zlevel);
-        if (winstate||gameoverstate)
-        {
-            ;//TODO
-        }
         if(!winstate&&!gameoverstate)
         {
             horsePlayer.draw(window,states,zlevel);
@@ -357,8 +293,6 @@ void Race::render(sf::RenderTarget &window)
     }
     drawWeather(window);
     drawExplosions(window);
-    window.draw(menu);
-//    window.display();
 }
 
 //class constructor: creates a SFML window and initializes objects
@@ -379,7 +313,6 @@ Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
         initHorses();
         track = new Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
         playSound();
-        menu.Init(testBase, posgameview);
         loadExplosion();
     }
 };

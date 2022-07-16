@@ -21,6 +21,7 @@ using namespace std;
 #define FONT_COLOR "font_color"
 #define TOP_PIC "top_pic" 
 #define BOTTOM_PIC "bottom_pic"
+#define FINALLINE_PIC "finalline_pic"
 #define CENTER_PIC "center_pic"
 #define SKY_PIC "sky_pic"
 #define FRONT_PIC "front_pic"
@@ -45,7 +46,6 @@ public:
     std::string getWeatherProperty(int weatherID, std::string propName);
     std::string getWeatherProperty(std::string weatherName, std::string propName);
     std::string getWeatherProbability(int weatherID, int trackID);
-
     std::string getCurrentWeatherTexture(std::string weatherId);
     std::string getCurrentWeatherExplosion(std::string weatherId);
     std::string getProbability(std::string trackID, std::string weatherId);

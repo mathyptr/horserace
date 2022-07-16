@@ -10,7 +10,6 @@ class Animation
 public:
     Animation();
     Animation(const sf::Texture& texture);
-
     void addFrameRect(sf::IntRect rect);
     void setSpriteSheet(const sf::Texture& texture);
     const sf::Texture* getSpriteSheet() const;

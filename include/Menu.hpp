@@ -14,11 +14,11 @@ public:
     sf::Vector2f getPosition() const;
     void setPosition(sf::Vector2f pos);
     void move(float offsX, float offsY);
+
 private:
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
     sf::Texture     texture;
     sf::Vector2f    position;
-
     const float     mSpeedPerSecond;
     float           mDistanceTravelled;
     const float     mMaximumDistance;
@@ -42,6 +42,5 @@ private:
     sf::Vector2f BottomLeftPosition;
     sf::Vector2f BottomCenterPosition;
     sf::Vector2f BottomRightPosition;
-
 };
 #endif

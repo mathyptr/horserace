@@ -13,12 +13,12 @@ public:
     bool isWeatherAlive() const;
 
 private:
-    sf::Sprite      mSprite;
+    sf::Sprite mSprite;
     unsigned int zlevel;
     unsigned int maxy;
-    float           mSpeedPerSecond;
-    float           mDistanceTravelled;
-    const float     mMaximumDistance;
+    float mSpeedPerSecond;
+    float mDistanceTravelled;
+    const float mMaximumDistance;
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 };
 #endif

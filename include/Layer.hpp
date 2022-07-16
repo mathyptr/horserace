@@ -16,6 +16,7 @@ public:
     void setZLevel(unsigned int z);
     unsigned int getZLevel() const;
     void draw(sf::RenderTarget &target, sf::RenderStates &states, unsigned int z);
+
 private:
     sf::Texture texture;
     sf::Vector2f position;

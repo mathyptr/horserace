@@ -118,6 +118,7 @@ void Horse::move(bool go, float sec)
     }
     else
         decSpeed(sec);
+
     travelled -= getSpeed() * sec;
 }
 

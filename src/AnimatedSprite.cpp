@@ -48,7 +48,6 @@ void AnimatedSprite::setLooped(bool looped)
 
 void AnimatedSprite::setColor(const sf::Color& color)
 {
-    // Update the vertices' color
     vertices[0].color = color;
     vertices[1].color = color;
     vertices[2].color = color;
@@ -94,7 +93,6 @@ void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime)
 {
     if (animation)
     {
-        //calculate new vertex positions and texture coordiantes
         sf::IntRect rect = animation->getFrameRect(newFrame);
 
         vertices[0].position = sf::Vector2f(0.f, 0.f);
@@ -119,31 +117,20 @@ void AnimatedSprite::setFrame(std::size_t newFrame, bool resetTime)
 
 void AnimatedSprite::update(sf::Time deltaTime)
 {
-    // if not paused and we have a valid animation
     if (!isPaused && animation)
     {
-        // add delta time
         currentTime += deltaTime;
-
-        // if current time is bigger then the frame time advance one frame
         if (currentTime >= frameTime)
         {
-            // reset time, but keep the remainder
             currentTime = sf::microseconds(currentTime.asMicroseconds() % frameTime.asMicroseconds());
-
-            // get next Frame index
             if (currentFrame + 1 < animation->getFrameCount())
                 currentFrame++;
             else
             {
-                // animation has ended
-                currentFrame = 0; // reset to start
-
+                currentFrame = 0;
                 if (!_isLooped)
                     isPaused = true;
             }
-
-            // set the current frame, not reseting the time
             setFrame(currentFrame, false);
         }
     }
@@ -162,10 +149,8 @@ void AnimatedSprite::draw(sf::RenderTarget& target, sf::RenderStates states) con
 bool AnimatedSprite::isAlive() const
 {
     sf::Time die = timeToDie.getElapsedTime();
-
     if(die > sf::seconds(1.5f))
         return false;
-
     return true;
 }
 
