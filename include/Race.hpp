@@ -29,7 +29,6 @@ using namespace std;
 #define GVIEW_X 800
 #define GVIEW_Y 600
 
-
 #define  HORSEZLEVELMIN 5
 #define  HORSEZLEVELMAX 8
 
@@ -42,8 +41,6 @@ using namespace std;
 #define NMAXHORSE 3
 #define NMAXPROB 10
 #define NCHALL 5
-
-
 
 class Race
 {
@@ -102,7 +99,6 @@ private:
   sf::String testTopRight;
   sf::String testTopCenter;
 
-
   sf::Texture weathtexture;
   sf::Texture explosion;
   Menu menu;
@@ -115,7 +111,6 @@ private:
   void updateMenu();
   void loadResources();
   void horseMaxYCreate();
-  void chgState();
 
   int createProbability();
 

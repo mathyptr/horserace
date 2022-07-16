@@ -33,7 +33,14 @@ public:
     ////addede isalive method myself.
     bool isAlive() const;
 
-private:
+    unsigned int getZLevel() const;
+    void setZLevel(unsigned int z);
+
+    void move(float offsetX, float offsetY);
+
+protected:
+    unsigned int zLevel;
+
     sf::Clock timeToDie;
     const Animation* animation;
     sf::Time frameTime;
@@ -43,8 +50,8 @@ private:
     bool _isLooped;
     const sf::Texture* texture;
     sf::Vertex vertices[4];
-    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
+    virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 };
 
 #endif // ANIMATEDSPRITE_INCLUDE

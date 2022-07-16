@@ -168,3 +168,13 @@ bool AnimatedSprite::isAlive() const
 
     return true;
 }
+
+unsigned int AnimatedSprite::getZLevel() const
+{
+    return zLevel;
+}
+
+void AnimatedSprite::move(float offsetX, float offsetY)
+{
+    setPosition(getPosition() + sf::Vector2f(offsetX, offsetY));
+}
