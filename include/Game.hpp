@@ -69,11 +69,10 @@ private:
   unsigned int actchall;
   unsigned int horseposymax[NMAXHORSE];
   PropertyManager propmgr;
-  std::vector<std::shared_ptr<Weather>> weath;
-  std::vector<std::shared_ptr<AnimatedSprite>> explosions;
-  sf::Image icon;
   sf::RenderWindow window;
   sf::View gameview;
+
+  sf::Image icon;
   sf::Font font;
   sf::Text testBase;
   bool mute;
@@ -86,5 +85,6 @@ private:
   void handleInput(sf::Event event, sf::RenderWindow &window);
   void render();
   void loadResources();
+ 
 };
 #endif // GAME_INCLUDE

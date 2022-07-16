@@ -102,6 +102,7 @@ bool Game::checkState(GameState state) const {
     return currentState->getStateName() == state;
 }
 
+//class constructor: creates a SFML window and initializes objects
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
     actchall=1;

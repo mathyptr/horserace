@@ -210,13 +210,10 @@ void Race::initHorses()
     posy=HORSE1_POSY;
     zlevel=5;
     horsePlayer2 = new Horse(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
-//    horsePlayer2.init(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
     zlevel++;
     horsePlayer3 = new Horse(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
-//    horsePlayer3.init(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
     zlevel++;
     horsePlayer = new Horse(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
-//    horsePlayer.init(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
 }
 
 void Race::horseMaxYCreate()
@@ -244,10 +241,12 @@ std::string Race::order( map <std::string,float> results){
 sf::String Race::result()
 {
     std::string str;
+
     horsePlayer->setTotalTravelled(horsePlayer->getPosition().x);
     horsePlayer2->setTotalTravelled(horsePlayer2->getPosition().x);
     horsePlayer3->setTotalTravelled(horsePlayer3->getPosition().x);
     str=order({{"Player",horsePlayer->getPosition().x},{"Salazar",horsePlayer2->getPosition().x},{"Sarah",horsePlayer3->getPosition().x}});
+
     return  str;
 }
 
@@ -300,10 +299,12 @@ void Race::render(sf::RenderTarget &window)
     drawExplosions(window);
 }
 
+
 void Race::setDemo(bool state)
 {
     demo=state;
 }
+
 
 Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
 {
