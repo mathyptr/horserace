@@ -120,6 +120,7 @@ void Horse::move(bool go, float sec)
         decSpeed(sec);
 
     travelled -= getSpeed() * sec;
+//    std::cout<<"Travelled: "<<travelled<<std::endl;
 }
 
 unsigned int Horse::getTravelled() const

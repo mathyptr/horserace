@@ -2,6 +2,32 @@
 #include "Utility.hpp"
 #include "Game.hpp"
 
+Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
+{
+    gameoverstate=false;
+    demo=false;
+    horsePlayer=NULL;
+    horsePlayer2=NULL;
+    horsePlayer3=NULL;
+    track=NULL;
+    horseMaxYCreate();
+    currentTrackIndex=1;
+    speedX = 0;
+    propmgr = propmanager;
+    winstate=false;
+    weatherMoveSpeed=40.f;
+    posgameview=posgv;
+//    loadResources();
+    if(!gameerrorstate)
+    {
+        initHorses();
+        track = new Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
+        loadResources();
+        playSound();
+        loadExplosion();
+    }
+}
+
 void Race::horseMove(bool go)
 {
     const auto elapsed = horsePlayerDeltaTime.getElapsedTime();
@@ -164,26 +190,39 @@ void Race::loadResources()
         explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(weatherId)));
         if(track!=NULL)
             track->setName(propmgr.getTrackProperty(currentTrackIndex, "name"));
+        else
+            cout<<"Track is NULL!!!"<<endl;
         pathlen=stoi(propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH));
         icon.loadFromFile("img/icon.png");
         gameerrorstate=false;
     }
+    else
+        cout<<"Error load Resources"<<endl;
 }
 
 void Race::getNextTrack()
 {
     horsePlayer->incMoney(currentTrackIndex*5);
     winstate=false;
-    currentTrackIndex=(currentTrackIndex++)%propmgr.getTrackCount()+1;
+    gameoverstate=false;
+//    cout<<"Old Track n: "<<currentTrackIndex<<endl;
+    currentTrackIndex=currentTrackIndex%propmgr.getTrackCount()+1;
     character=0;
-    initHorses();
-    loadResources();
+//    initHorses();
+//    loadResources();
+//    cout<<"Track n: "<<currentTrackIndex<<endl;
     if(!gameerrorstate)
     {
         if(track!=NULL)
             delete track;
+        else
+            cout<<"Track is NULL!!"<<endl;
         track = new Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
+        initHorses();
+        loadResources();
     }
+    else
+        cout<<"gameerrorstate!!!"<<endl;
     playSound();
 }
 
@@ -209,10 +248,16 @@ void Race::initHorses()
     posx=HORSE1_POSX;
     posy=HORSE1_POSY;
     zlevel=5;
+    if (horsePlayer2!=NULL)
+        delete horsePlayer2;
     horsePlayer2 = new Horse(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
     zlevel++;
+    if (horsePlayer3!=NULL)
+        delete horsePlayer3;
     horsePlayer3 = new Horse(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
     zlevel++;
+    if (horsePlayer!=NULL)
+        delete horsePlayer;
     horsePlayer = new Horse(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
 }
 
@@ -267,11 +312,11 @@ void Race::update()
         if(!winstate){
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)||demo)
                horseMove(true);
-        else
-            horseMove(false);
-        checkFinalLine();
-        checkWinner();
-     }
+            else
+                horseMove(false);
+            checkFinalLine();
+            checkWinner();
+        }
     }
 }
 
@@ -304,26 +349,3 @@ void Race::setDemo(bool state)
 {
     demo=state;
 }
-
-
-Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
-{
-    track=NULL;
-    gameoverstate=false;
-    demo=false;
-    horseMaxYCreate();
-    currentTrackIndex=1;
-    speedX = 0;
-    propmgr = propmanager;
-    winstate=false;
-    weatherMoveSpeed=40.f;
-    posgameview=posgv;
-    loadResources();
-    if(!gameerrorstate)
-    {
-        initHorses();
-        track = new Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
-        playSound();
-        loadExplosion();
-    }
-};

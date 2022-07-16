@@ -50,6 +50,14 @@ void StateResult::handleInput(sf::Event event, sf::RenderWindow &window)
         typeW=true;
         typeWriter();
     }
+    if (event.type == sf::Event::KeyReleased)
+    {
+      if (event.key.code == sf::Keyboard::Up){
+        game->race->getNextTrack();
+        game->initMenu();
+        game->changeState(GameState::STATE_RACE);
+        }
+    }
 }
 
 GameState StateResult::getStateName() const

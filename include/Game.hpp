@@ -62,6 +62,8 @@ public:
   State* getCurrentState() const;
   Race* race;
   Menu menu;
+  void setDemo(bool d);
+  bool getDemo();
 
 private:
   unsigned int getCurrentTrack();
@@ -79,6 +81,7 @@ private:
   bool winstate;
   bool gameoverstate;
   bool gameerrorstate;
+  bool demo;
   State* createPointer(GameState state);
   State* currentState;
   void processEvents();

@@ -32,7 +32,6 @@ public:
     void playMusic() override;
     GameState getStateName() const override;
     sf::String testBottomCenter;
-    bool demo;
 };
 
 #endif // STATERACE_INCLUDE

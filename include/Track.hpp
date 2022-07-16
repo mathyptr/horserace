@@ -65,7 +65,7 @@ public:
     std::string getName();
     void setfinalLineState();
     void draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel);
-
+    ~Track();
 private:
     void loadResources();
     void initLayer();

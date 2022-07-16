@@ -21,11 +21,12 @@ void Game::processEvents()
 void Game::handleInput(sf::Event event, sf::RenderWindow &window)
 {
     currentState->handleInput(event, window);
-    if (event.type == sf::Event::KeyReleased)
+/*    if (event.type == sf::Event::KeyReleased)
         if (event.key.code == sf::Keyboard::Enter)
             changeState(GameState::STATE_RESULT);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             changeState(GameState::STATE_RACE);
+            */
 }
 
 unsigned int Game::getCurrentTrack(){
@@ -102,11 +103,21 @@ bool Game::checkState(GameState state) const {
     return currentState->getStateName() == state;
 }
 
+void Game::setDemo(bool d)
+{
+    demo=d;
+}
+bool Game::getDemo()
+{
+    return demo;
+}
+
 //class constructor: creates a SFML window and initializes objects
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
     actchall=1;
     gameoverstate=false;
+    demo=false;
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
     propmgr =  PropertyManager(true);
