@@ -47,16 +47,6 @@ void MovingSprite::setZLevel(unsigned int z)
     zLevel = z;
 }
 
-sf::Vector2f MovingSprite::getScale() const
-{
-    return sprite.getScale();
-}
-
-void MovingSprite::setScale(float factorX, float factorY)
-{
-    sprite.setScale(factorX, factorY);
-}
-
 void MovingSprite::setTexture(sf::Texture &tex)
 {
     texture = tex;

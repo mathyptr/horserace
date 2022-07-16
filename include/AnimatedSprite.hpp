@@ -30,7 +30,6 @@ public:
     bool isPlaying() const;
     sf::Time getFrameTime() const;
     void setFrame(std::size_t newFrame, bool resetTime = true);
-    ////addede isalive method myself.
     bool isAlive() const;
 
 private:

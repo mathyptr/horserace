@@ -38,12 +38,10 @@ void Layer::move(float offsetX, float offsetY)
     tile.move(oX, oY);
     tileR.move(oX, oY);
     tileL.move(oX, oY);
-
     if (getPosition().x > MAX_HORIZONTAL_X)
         setPosition(-MAX_HORIZONTAL_X, position.y);
     else if (getPosition().x < -MAX_HORIZONTAL_X)
         setPosition(MAX_HORIZONTAL_X, position.y);
-
     position = tile.getPosition();
 }
 

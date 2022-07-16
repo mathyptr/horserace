@@ -48,40 +48,33 @@ class Race
 public:
   Race(PropertyManager propmanager, const sf::Vector2f& pos);
   void update();
- //   void updateMenu(sf::String bottLeft,sf::String topRight,sf::String topCenter,sf::String bottomRight,sf::String topLeft,sf::String bottomCenter);
   void render(sf::RenderTarget &target);
   bool checkWinner();
   void playSound();
   void stopSound();
   void initHorses();
   void getNextTrack();
-  //  void changeState(GameState nextGameState);
   void horseMove(bool go);
-    sf::String result();
-    std::string finalResult();
-  void typeWriter(std::string str, sf::String bott);
+  sf::String result();
+  std::string finalResult();
   std::string order( map <std::string,float> results);
   unsigned int getCurrenteIndex();
-    Horse horsePlayer,horsePlayer2,horsePlayer3;
-    Track* track;
-    unsigned int character = 0;
+  Horse horsePlayer,horsePlayer2,horsePlayer3;
+  Track* track;
+  int weatherId;
+  unsigned int character = 0;
 
 private:
-//  State* currentState;
   unsigned int currentTrackIndex;
   unsigned int pathlen;
-  int weatherId;
   sf::Clock timer;
   PropertyManager propmgr;
   sf::Vector2f posgameview;
-
   bool mute;
-
   unsigned int horseposymax[NMAXHORSE];
   std::vector<std::shared_ptr<Weather>> weath;
   std::vector<std::shared_ptr<AnimatedSprite>> explosions;
   Animation boom;
-
   sf::Clock horsePlayerDeltaTime;
   sf::Clock weatherDeltaTime;
   sf::Clock weatherSpawnTimer;
@@ -89,36 +82,15 @@ private:
   float speedX;
   float weatherMoveSpeed;
   sf::Image icon;
-
   bool winstate;
   bool gameoverstate;
   bool gameerrorstate;
-
- /* sf::Font font;
-  sf::Text testBase;
-  sf::String testBottomCenter;
-  sf::String testBottomLeft;
-  sf::String testTopLeft;
-  sf::String testTopRight;
-  sf::String testTopCenter;*/
-
-
   sf::Texture weathtexture;
   sf::Texture explosion;
-  //Menu menu;
-
-//  State* createPointer(GameState state);
- // void processEvents();
-  //void backgroundLoop();
-
-//  void initLayer();
-
+  bool checkFinalLine();
   void loadResources();
   void horseMaxYCreate();
-//  void chgState();
-
   int createProbability();
-
   void createWeather();
   void drawWeather(sf::RenderTarget &target);
   void animateExplosion();

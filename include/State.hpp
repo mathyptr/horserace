@@ -15,6 +15,7 @@ public:
     virtual GameState getStateName() const = 0;
     virtual void playMusic() = 0;
     GameState stateName;
+
 protected:
     Game* game;
     sf::Music music;

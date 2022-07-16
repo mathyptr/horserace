@@ -3,7 +3,6 @@
 Weather::Weather(const sf::Texture& texture, float enemeyMoveSpeed, float posx, float posy,unsigned int zlevel,unsigned int maxy) :
      mSprite(texture),
      mDistanceTravelled(0),
-//     mMaximumDistance(600.f)
      mMaximumDistance(maxy)
 {
     this->mSpeedPerSecond = enemeyMoveSpeed;
@@ -15,11 +14,8 @@ Weather::Weather(const sf::Texture& texture, float enemeyMoveSpeed, float posx, 
 void Weather::updateWeather(float speedX, float timeDelta)
 {
     auto distanceTravelledThisUpdate = mSpeedPerSecond * timeDelta;
-
     mDistanceTravelled += distanceTravelledThisUpdate;
-
     mSprite.move(speedX*timeDelta, distanceTravelledThisUpdate);
-
     if (mSprite.getPosition().x > 1600)
     {
         mSprite.setPosition(-800, mSprite.getPosition().y);

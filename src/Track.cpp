@@ -11,6 +11,7 @@ Track::Track(PropertyManager propManager, std::string name)
     zlevelAct=0;
     zlevelMax=0;
     this->name = name;
+    finalLineState=false;
     propmgr = propManager;
     loadResources();
     initLayer();
@@ -22,23 +23,16 @@ void Track::loadResources()
     bottompic.loadFromFile(propmgr.getTrackProperty(name, BOTTOM_PIC));
     centerpic.loadFromFile(propmgr.getTrackProperty(name, CENTER_PIC));
     atmopic.loadFromFile(propmgr.getTrackProperty(name, SKY_PIC));
+    finalLinepic.loadFromFile(propmgr.getTrackProperty(name, FINALLINE_PIC));
     frontpic.loadFromFile(propmgr.getTrackProperty(name, FRONT_PIC));
     soundchall = propmgr.getTrackProperty(name, SOUND);
-
-   /* font.loadFromFile(propmgr.getTrackProperty(name, FONT_FILE));
-    std::string fontSize = propmgr.getTrackProperty(name, FONT_SIZE);
-    std::string fontColor = propmgr.getTrackProperty(name, FONT_COLOR);
-
-    testBase.setFont(font);
-    testBase.setCharacterSize(std::stoi(fontSize));
-    testBase.setColor(Utility::getColor(fontColor));*/
-
     if (!buffersound.loadFromFile(soundchall))
         nosound = true;
 }
 
 void Track::initLayer()
 {
+    finalLineState=false;
     unsigned int zlevel;
     zlevel=1;
     layerTop = new Layer(toppic,TOP_SPEED_FACTOR,sf::IntRect(LAYER_TOP_RECTLEFT, LAYER_TOP_RECTTOP, LAYER_TOP_RECWIDTH,LAYER_TOP_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_TOP_POSX),static_cast<float>(LAYER_TOP_POSY)),zlevel);
@@ -48,6 +42,7 @@ void Track::initLayer()
     layerCenter =new Layer(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(LAYER_CENTER_RECTLEFT, LAYER_CENTER_RECTTOP, LAYER_CENTER_RECWIDTH, LAYER_CENTER_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_CENTER_POSX),static_cast<float>(LAYER_CENTER_POSY)),zlevel);
     zlevel++;
     layerBottom =new Layer(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
+    layerFinalLine =new Layer(finalLinepic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
     layerFront =new Layer(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(LAYER_FRONT_RECTLEFT, LAYER_FRONT_RECTTOP, LAYER_FRONT_RECWIDTH,LAYER_FRONT_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_FRONT_POSX),static_cast<float>(LAYER_FRONT_POSY)),ZLEVELMAX);
 
     zlevelAct=0;
@@ -56,13 +51,15 @@ void Track::initLayer()
     layerTop->setPosition(LAYER_TOP_POSX,LAYER_TOP_POSY);
     layerCenter->setPosition(LAYER_CENTER_POSX,LAYER_CENTER_POSY);
     layerBottom->setPosition(LAYER_BOTTOM_POSX,LAYER_BOTTOM_POSY);
+    layerFinalLine->setPosition(LAYER_BOTTOM_POSX,LAYER_BOTTOM_POSY);
     layerFront->setPosition(LAYER_FRONT_POSX,LAYER_FRONT_POSY);
-
 }
 
 void Track:: move(float speed)
 {
     layerBottom->move(speed,0);
+    if(finalLineState)
+        layerFinalLine->move(speed,0);
     layerCenter->move(speed,0);
     layerTop->move(speed,0);
     layerAtmo->move(speed,0);
@@ -92,9 +89,9 @@ unsigned int Track::getZLevel()
     return zlevelAct;
 }
 
-void Track::incZLevel()
+void Track::setfinalLineState()
 {
-    zlevelAct = (zlevelAct + 1) % ZLEVELMAX;
+    finalLineState=true;
 }
 
 void Track::setName(std::string trackName)
@@ -113,7 +110,7 @@ void Track::draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlev
     layerAtmo->draw(target, states, actzlevel);
     layerCenter->draw(target, states, actzlevel);
     layerBottom->draw(target, states, actzlevel);
+    if(finalLineState)
+        layerFinalLine->draw(target, states, actzlevel);
     layerFront->draw(target, states, actzlevel);
-
-    //incZLevel();
 }

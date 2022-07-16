@@ -60,46 +60,38 @@ public:
     void playSound();
     void stopSound();
     void setZLevel(int z);
-    void incZLevel();
     unsigned int getZLevel();
     void setName(std::string trackName);
     std::string getName();
+    void setfinalLineState();
     void draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel);
+
 private:
     void loadResources();
     void initLayer();
-
     unsigned int zlevelAct;
     unsigned int zlevelMax;
-// unsigned int zlevel;
-
+    bool finalLineState;
     std::string name;
-
     sf::Texture texture;
     sf::Vector2f position;
-
     sf::Texture centerpic;
     sf::Texture bottompic;
     sf::Texture toppic;
     sf::Texture atmopic;
     sf::Texture frontpic;
-
+    sf::Texture finalLinepic;
     Layer* layerBottom;
     Layer* layerCenter;
     Layer* layerTop;
     Layer* layerAtmo;
     Layer* layerFront;
-
+    Layer* layerFinalLine;
     std::string soundchall;
     sf::Sound sound;
     sf::SoundBuffer buffersound;
     bool nosound;
-
-    //sf::Font font;
-    //sf::Text testBase;
-
     PropertyManager propmgr;
-
     unsigned int speedFactor;
 };
 #endif

@@ -68,11 +68,6 @@ void Horse::setTexture()
     sheetIndex = (sheetIndex + 1) % HORSE_SHEETS_NUM;
 }
 
-void Horse::setScale(float factorX, float factorY)
-{
-    sprite.setScale(factorX, factorY);
-}
-
 float Horse::getSpeed() const
 {
     return speed;
@@ -142,9 +137,7 @@ void Horse::move(bool go, float sec)
     }
     else
         decSpeed(sec);
-//    std::cout << "speed:"<< speed << "second:"<< sec << std::endl;
     travelled+=-getSpeed()*sec;
-//    std::cout << "Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; sec: "<< sec << "; travelled: "<< travelled << std::endl;
 }
 unsigned int Horse::getTravelled() const
 {
@@ -166,11 +159,9 @@ void Horse::move(float offsetX, float offsetY)
     float oX,oY;
     oX=speedFactor+offsetX/speedFactor;
     oY=offsetY*speedFactor;
-//    incSpeed(oX);
     travelled+=abs(oX);
     setTexture();
     sprite.move(oX, oY);
-//    std::cout <<"Horse num: "<<horseNumber<<"; Speed: "<< getSpeed() << "; travelled: "<< travelled << std::endl;
 }
 
 sf::FloatRect Horse::getHorseGlobalBounds() const

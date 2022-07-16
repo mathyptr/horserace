@@ -86,8 +86,7 @@ void Menu::Init(sf::Text testBase, const sf::Vector2f& pos)
   BottomRightPosition=sf::Vector2f(280,270);
 
   setPosition(position);
- 
-  
+
   BottomLeft.setString("");
   BottomLeft.setFont(font);
   BottomLeft.setCharacterSize(csize);
@@ -130,7 +129,6 @@ void Menu::UpdateText( const sf::String BottomL, const  sf::String TopR, const s
   TopCenter.setString(TopC);
   BottomRight.setString(BottomR);
   TopLeft.setString(TopL);
-
 }
 
 

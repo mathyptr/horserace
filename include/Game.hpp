@@ -31,7 +31,6 @@ using namespace std;
 
 #define  HORSEZLEVELMIN 5
 #define  HORSEZLEVELMAX 8
-
 #define  HORSE1_POSX 400
 #define  HORSE1_POSY 472
 #define  HORSE2_POSX 400
@@ -45,11 +44,8 @@ using namespace std;
 class State;
 enum class GameState
 {
-  STATE_AWARD,
   STATE_RACE,
-  STATE_RESULT,
-  STATE_MAIN_MENU,
-  STATE_PAUSE_MENU
+  STATE_RESULT
 };
 
 
@@ -61,73 +57,34 @@ public:
   void Run();
   void initMenu();
   void changeState(GameState nextGameState);
-  State* getCurrentState() const;
   void setCurrentState(State *_currentState);
   bool checkState(GameState state) const;
+  State* getCurrentState() const;
   Race* race;
   Menu menu;
 
 private:
-  State* currentState;
   unsigned int getCurrentTrack();
   unsigned int pathlen;
   unsigned int actchall;
-  //int weatherId;
-  PropertyManager propmgr;
-  sf::RenderWindow window;
-  sf::View gameview;
-
-  bool mute;
-
-  //Track chall;
- // Horse horsePlayer,horsePlayer2,horsePlayer3;
   unsigned int horseposymax[NMAXHORSE];
+  PropertyManager propmgr;
   std::vector<std::shared_ptr<Weather>> weath;
   std::vector<std::shared_ptr<AnimatedSprite>> explosions;
-  //Animation boom;
-
-/*  sf::Clock horsePlayerDeltaTime;
-  sf::Clock weatherDeltaTime;
-  sf::Clock weatherSpawnTimer;
-  sf::Clock explosionDeltaTimer;
-  float speedX;
-  float weatherMoveSpeed;*/
   sf::Image icon;
-
- bool winstate;
- bool gameoverstate;
-  bool gameerrorstate;
-
+  sf::RenderWindow window;
+  sf::View gameview;
   sf::Font font;
   sf::Text testBase;
- /* sf::String testBottomCenter;
-  sf::String testTopCenter;
-  sf::Texture weathtexture;
-  sf::Texture explosion;*/
-
+  bool mute;
+  bool winstate;
+  bool gameoverstate;
+  bool gameerrorstate;
   State* createPointer(GameState state);
+  State* currentState;
   void processEvents();
   void handleInput(sf::Event event, sf::RenderWindow &window);
- // void backgroundLoop();
   void render();
- // void initLayer();
-  //void updateMenu();
   void loadResources();
- /* void horseMaxYCreate();
-  void chgState();
-  void getNextChall();
-  int createProbability();
-  void playSound();
-  void stopSound();*/
-  void initHorses();
- /* void horseMove();
-  bool checkWinner();
-  void createWeather();
-  void drawWeather();
-  void animateExplosion();*/
-  void collision();
-  //void loadExplosion();
-  //void drawExplosions();
-
 };
 #endif // GAME_INCLUDE

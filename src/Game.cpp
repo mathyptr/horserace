@@ -8,7 +8,6 @@
 void Game::processEvents()
 {
     sf::Event event;
-
     while (window.pollEvent(event))
     {
         if (event.type == sf::Event::Closed)
@@ -24,7 +23,7 @@ void Game::handleInput(sf::Event event, sf::RenderWindow &window)
     currentState->handleInput(event, window);
     if (event.type == sf::Event::KeyReleased)
         if (event.key.code == sf::Keyboard::Enter)
-        changeState(GameState::STATE_RESULT);
+            changeState(GameState::STATE_RESULT);
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
             changeState(GameState::STATE_RACE);
 }
@@ -76,21 +75,13 @@ void Game::Run()
 }
 
 State* Game::createPointer(GameState state) {
-
-     if(state == GameState::STATE_RESULT){
+    if(state == GameState::STATE_RESULT){
         return new StateResult(this);
     }
     else if (state == GameState::STATE_RACE)
         return new StateRace(this);
-
-    
-    else if (state == GameState::STATE_MAIN_MENU)
-        return nullptr;
-    else if (state == GameState::STATE_PAUSE_MENU)
-        return nullptr;
     else
         return nullptr;
-   
 }
 
 
@@ -106,14 +97,11 @@ State *Game::getCurrentState() const {
 
 void Game::setCurrentState(State *_currentState) {
    currentState = _currentState;
-    std::cout<<"stato: "<<currentState;
 }
 
 bool Game::checkState(GameState state) const {
     return currentState->getStateName() == state;
 }
-
-
 
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {

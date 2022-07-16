@@ -52,6 +52,7 @@ public:
     void setTexture();
     void setScale(float factorX, float factorY);
     void draw(sf::RenderTarget &target, sf::RenderStates states, unsigned int z);
+
 private:
     std::string horseName;
     unsigned int horseNumber;

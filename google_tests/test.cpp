@@ -65,3 +65,30 @@ TEST(gameTest, checkWinner){
     ASSERT_TRUE(horsePlayer2.getTravelled() < pathlen);
     ASSERT_TRUE(horsePlayer3.getTravelled() < pathlen);
 }
+
+TEST(horseTest, incMoney){
+    Horse horsePlayer;
+    int startMoney,finalMoney;
+    startMoney= horsePlayer.getMoney();
+    horsePlayer.incMoney(100);
+    finalMoney= horsePlayer.getMoney();;
+    ASSERT_TRUE(finalMoney >startMoney);
+}
+
+TEST(horseTest, decLife){
+    Horse horsePlayer;
+    int startLife,finalLife;
+    startLife= horsePlayer.getLife();
+    horsePlayer.decLife();
+    finalLife= horsePlayer.getLife();;
+    ASSERT_TRUE(startLife >finalLife);
+}
+
+TEST(raceTest, createProbability){
+    sf::View gameview;
+    int weathIndex;
+    PropertyManager propmgr =  PropertyManager(true);
+    Race* race= new Race(propmgr,gameview.getCenter());
+    weathIndex= race->weatherId;
+    ASSERT_EQ(weathIndex,1);
+}
