@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <vector>
 #include <iostream>
+#include "AnimatedSprite.hpp"
 #include "MovingSprite.hpp"
 
 #define HORSE_SHEETS_NUM 5
@@ -11,6 +12,10 @@
 #define SPEEDTHRESHOLD 100.f
 #define SPEEDFACTOR 10.f
 #define SPEEDSMOOTH 40.f
+
+#define SHEET_COUNT 5
+#define SHEET_HEIGHT 51
+#define SHEET_WIDTH 64
 
 /*
 #include "log4cpp/Category.hh"
@@ -23,34 +28,27 @@
 
 */
 
-class Horse
+class Horse : public AnimatedSprite
 {
 public:
     Horse();
-    void init(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z);
-    void setName(std::string name);
+    Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z);
     std::string getName() const;
-    sf::FloatRect getHorseGlobalBounds() const;
-    sf::Vector2f getHorsePosition() const;
-    void setHorsePosition(float x, float y);
-    void setHorseOrigin(float x, float y);
-    unsigned int getZLevel() const;
+    void setName(std::string name);
     void move(bool go, float sec);
-    void move(float offsetX, float offsetY);
+    void move(float offsetX, float offsetY, float sec);
     float getSpeed() const;
     void incSpeed(float sec);
     void decSpeed(float sec);
-    bool decLife();
-    void incLife();
     int getLife() const;
-    bool decMoney();
-    void incMoney(int coin);
+    void incLife();
+    bool decLife();
     int getMoney() const;
+    void incMoney(int coin);
+    bool decMoney();
     unsigned int getTravelled() const;
     float getTotalTravelled() const;
     void setTotalTravelled(float inc);
-    void setTexture();
-    void setScale(float factorX, float factorY);
     void draw(sf::RenderTarget &target, sf::RenderStates states, unsigned int z);
 
 private:
@@ -60,13 +58,9 @@ private:
     float totalTravelled;
     float speed;
     float speedFactor;
-    unsigned int zlevel;
-    MovingSprite sprite;
-    std::vector<sf::Texture> sheets;
-    int sheetIndex;
+
     int life;
     int money;
-    void loadImage();
     void setPropHorse();
 };
 #endif // HORSE_INCLUDE

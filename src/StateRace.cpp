@@ -5,6 +5,7 @@ StateRace::StateRace(Game *gamePtr)
 {
     testBottomCenter="";
     game = gamePtr;
+    demo=false;
     stateName = GameState ::STATE_RACE;
 }
 
@@ -27,7 +28,7 @@ void StateRace::update()
     if(game->race->checkWinner())
         testBottomCenter=TEST_BOTTOM_CENTER_GAME;
      game->race->update();
-     game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer.getLife()),"",testBottomCenter,"","",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer.getMoney()));
+     game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),"",testBottomCenter,"","",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
 }
 
 void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
@@ -37,6 +38,12 @@ void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
             game->race->getNextTrack();
             game->initMenu();
         }
+        else if (event.key.code == sf::Keyboard::D){
+            demo=!demo;
+            game->race->setDemo(demo);
+        }
+
+
 }
 
 GameState StateRace::getStateName() const

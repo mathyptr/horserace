@@ -27,7 +27,6 @@ using namespace std;
 #define GVIEW_X 800
 #define GVIEW_Y 600
 
-
 #define  HORSEZLEVELMIN 5
 #define  HORSEZLEVELMAX 8
 
@@ -40,8 +39,6 @@ using namespace std;
 #define NMAXHORSE 3
 #define NMAXPROB 10
 #define NCHALL 5
-
-
 
 class Race
 {
@@ -59,7 +56,8 @@ public:
   std::string finalResult();
   std::string order( map <std::string,float> results);
   unsigned int getCurrenteIndex();
-  Horse horsePlayer,horsePlayer2,horsePlayer3;
+  void setDemo(bool state);
+  Horse *horsePlayer, *horsePlayer2,*horsePlayer3;
   Track* track;
   int weatherId;
   unsigned int character = 0;
@@ -71,6 +69,7 @@ private:
   PropertyManager propmgr;
   sf::Vector2f posgameview;
   bool mute;
+  bool demo;
   unsigned int horseposymax[NMAXHORSE];
   std::vector<std::shared_ptr<Weather>> weath;
   std::vector<std::shared_ptr<AnimatedSprite>> explosions;
@@ -85,11 +84,13 @@ private:
   bool winstate;
   bool gameoverstate;
   bool gameerrorstate;
+
   sf::Texture weathtexture;
   sf::Texture explosion;
   bool checkFinalLine();
   void loadResources();
   void horseMaxYCreate();
+
   int createProbability();
   void createWeather();
   void drawWeather(sf::RenderTarget &target);

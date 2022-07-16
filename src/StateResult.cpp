@@ -40,7 +40,7 @@ void StateResult::typeWriter(){
 }
 
 void StateResult::update() {
-    game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer.getLife()),game->race->result(),TEST_BOTTOM_CENTER_RESULT,testTopCenter,"",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer.getMoney()));
+    game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),game->race->result(),TEST_BOTTOM_CENTER_RESULT,testTopCenter,"",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
 }
 
 

@@ -75,9 +75,8 @@ void Game::Run()
 }
 
 State* Game::createPointer(GameState state) {
-    if(state == GameState::STATE_RESULT){
-        return new StateResult(this);
-    }
+    if(state == GameState::STATE_RESULT)
+        return new StateResult(this);   
     else if (state == GameState::STATE_RACE)
         return new StateRace(this);
     else

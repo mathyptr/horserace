@@ -2,26 +2,25 @@
 #include "Utility.hpp"
 #include "Game.hpp"
 
-
 void Race::horseMove(bool go)
 {
     const auto elapsed = horsePlayerDeltaTime.getElapsedTime();
     if (go)
-        horsePlayer.move(true, elapsed.asSeconds());
+        horsePlayer->move(true, elapsed.asSeconds());
     else
-        horsePlayer.move(false, elapsed.asSeconds());// o un qualsiasi altro tasto
-    speedX=horsePlayer.getSpeed();
+        horsePlayer->move(false, elapsed.asSeconds());// o un qualsiasi altro tasto
+    speedX=horsePlayer->getSpeed();
     float rspeed= elapsed.asSeconds() * speedX;
     track->move(rspeed);
-    horsePlayer2.move(rspeed,0);
-    horsePlayer3.move(rspeed,0);
+    horsePlayer2->move(rspeed, 0, elapsed.asSeconds());
+    horsePlayer3->move(rspeed, 0, elapsed.asSeconds());
     horsePlayerDeltaTime.restart();
 }
 
 bool Race::checkWinner()
 {
     unsigned int travel;
-    travel=horsePlayer.getTravelled();
+    travel=horsePlayer->getTravelled();
     if (travel >= pathlen)
     {
         speedX = 0;
@@ -35,7 +34,7 @@ bool Race::checkWinner()
 bool Race::checkFinalLine()
 {
     unsigned int travel;
-    travel=horsePlayer.getTravelled();
+    travel=horsePlayer->getTravelled();
     if (pathlen-travel <= 2*MAX_HORIZONTAL_X)
     {
         track->setfinalLineState();
@@ -96,30 +95,26 @@ void Race::createWeather()
 
 void Race::collision()
 {
-
     for (auto i = weath.begin(); i != weath.end(); i++)
     {
-        if(horsePlayer.getZLevel()==(*i)->getZLevel())
-            {
-            sf::FloatRect playerbox = horsePlayer.getHorseGlobalBounds();
+        if(horsePlayer->getZLevel()==(*i)->getZLevel())
+        {
+            sf::FloatRect playerbox = horsePlayer->getGlobalBounds();
             if (playerbox.intersects((*i)->getWeatherGlobalBounds()))
-                if (playerbox.intersects((*i)->getWeatherGlobalBounds()))
             {
                 auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
-                pExplosion->setPosition(horsePlayer.getHorsePosition());
+                pExplosion->setPosition(horsePlayer->getPosition());
                 explosions.push_back(pExplosion);
                 speedX = 0;
                 cout<<"Hit!!\n";
                 weath.erase(i);
-                if(!horsePlayer.decLife())
+                if(!horsePlayer->decLife())
                     gameoverstate=true;
                 break;
             }
         }
     }
-
 }
-
 
 void Race::loadExplosion()
 {
@@ -141,7 +136,8 @@ void Race::drawExplosions(sf::RenderTarget &window)
         window.draw(*(*x));
 }
 
-int Race::createProbability(){
+int Race::createProbability()
+{
     int probability;
     int actprob;
     int prob[NMAXPROB];
@@ -158,29 +154,27 @@ int Race::createProbability(){
     return actprob;
 }
 
-
 void Race::loadResources()
 {
     gameerrorstate=true;
     if(propmgr.getStatus()==0)
     {
-    weatherId=createProbability();
-    std::cout<<"Load Probability: "<<endl;
-    weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(weatherId)));
-    explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(weatherId)));
-    if(track!=NULL)
-        track->setName(propmgr.getTrackProperty(currentTrackIndex, "name"));
-    pathlen=stoi(propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH));
-    icon.loadFromFile("img/icon.png");
-    gameerrorstate=false;
+        weatherId=createProbability();
+        weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(weatherId)));
+        explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(weatherId)));
+        if(track!=NULL)
+            track->setName(propmgr.getTrackProperty(currentTrackIndex, "name"));
+        pathlen=stoi(propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH));
+        icon.loadFromFile("img/icon.png");
+        gameerrorstate=false;
     }
 }
 
 void Race::getNextTrack()
 {
-    horsePlayer.incMoney(currentTrackIndex*5);
+    horsePlayer->incMoney(currentTrackIndex*5);
     winstate=false;
-    currentTrackIndex++;
+    currentTrackIndex=(currentTrackIndex++)%propmgr.getTrackCount()+1;
     character=0;
     initHorses();
     loadResources();
@@ -215,11 +209,14 @@ void Race::initHorses()
     posx=HORSE1_POSX;
     posy=HORSE1_POSY;
     zlevel=5;
-    horsePlayer2.init(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
+    horsePlayer2 = new Horse(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
+//    horsePlayer2.init(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
     zlevel++;
-    horsePlayer3.init(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
+    horsePlayer3 = new Horse(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
+//    horsePlayer3.init(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
     zlevel++;
-    horsePlayer.init(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
+    horsePlayer = new Horse(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
+//    horsePlayer.init(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
 }
 
 void Race::horseMaxYCreate()
@@ -244,18 +241,20 @@ std::string Race::order( map <std::string,float> results){
     return "Result\n"+res;
 }
 
-sf::String Race::result(){
+sf::String Race::result()
+{
     std::string str;
-    horsePlayer.setTotalTravelled(horsePlayer.getHorsePosition().x);
-    horsePlayer2.setTotalTravelled(horsePlayer2.getHorsePosition().x);
-    horsePlayer3.setTotalTravelled(horsePlayer3.getHorsePosition().x);
-    str=order({{"Player",horsePlayer.getHorsePosition().x},{"Salazar",horsePlayer2.getHorsePosition().x},{"Sarah",horsePlayer3.getHorsePosition().x}});
+    horsePlayer->setTotalTravelled(horsePlayer->getPosition().x);
+    horsePlayer2->setTotalTravelled(horsePlayer2->getPosition().x);
+    horsePlayer3->setTotalTravelled(horsePlayer3->getPosition().x);
+    str=order({{"Player",horsePlayer->getPosition().x},{"Salazar",horsePlayer2->getPosition().x},{"Sarah",horsePlayer3->getPosition().x}});
     return  str;
 }
 
-std::string Race::finalResult(){
+std::string Race::finalResult()
+{
     std::string str;
-    str="Total "+order({{"Player",horsePlayer.getTotalTravelled()},{"Salazar",horsePlayer2.getTotalTravelled()},{"Sarah",horsePlayer3.getTotalTravelled()}});
+    str="Total "+order({{"Player",horsePlayer->getTotalTravelled()},{"Salazar",horsePlayer2->getTotalTravelled()},{"Sarah",horsePlayer3->getTotalTravelled()}});
     return str;
 }
 
@@ -267,7 +266,7 @@ void Race::update()
         animateExplosion();
         collision();
         if(!winstate){
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)||demo)
                horseMove(true);
         else
             horseMove(false);
@@ -290,9 +289,9 @@ void Race::render(sf::RenderTarget &window)
         track->draw(window,states,zlevel);
         if(!winstate&&!gameoverstate)
         {
-            horsePlayer.draw(window,states,zlevel);
-            horsePlayer2.draw(window,states,zlevel);
-            horsePlayer3.draw(window,states,zlevel);
+            horsePlayer->draw(window,states,zlevel);
+            horsePlayer2->draw(window,states,zlevel);
+            horsePlayer3->draw(window,states,zlevel);
             drawExplosions(window);
         }
 
@@ -301,12 +300,16 @@ void Race::render(sf::RenderTarget &window)
     drawExplosions(window);
 }
 
-
+void Race::setDemo(bool state)
+{
+    demo=state;
+}
 
 Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
 {
     track=NULL;
     gameoverstate=false;
+    demo=false;
     horseMaxYCreate();
     currentTrackIndex=1;
     speedX = 0;

@@ -39,6 +39,13 @@ std::string PropertyManager::getTrackProperty(std::string trackName, std::string
     return sendQuery(sql);
 }
 
+
+int PropertyManager::getTrackCount()
+{
+    std::string sql = "select count(*) from track";
+    return std::stoi(sendQuery(sql));
+}
+
 std::string PropertyManager::sendQuery(std::string sql)
 {
     int rc;

@@ -42,7 +42,7 @@ public:
 	int getStatus();
 	std::string getTrackProperty(int trackID, std::string propName);
 	std::string getTrackProperty(std::string trackName, std::string propName);
-    std::string getTrackCount();
+    int getTrackCount();
     std::string getWeatherProperty(int weatherID, std::string propName);
     std::string getWeatherProperty(std::string weatherName, std::string propName);
     std::string getWeatherProbability(int weatherID, int trackID);
