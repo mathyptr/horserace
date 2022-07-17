@@ -20,8 +20,9 @@ TEST(horseraceTest, setName){
 }
 
 TEST(trackTest, setNameTrack){
-
-    Track chall;
+    PropertyManager propmgr(true);
+    int currentTrackIndex=1;
+    Track chall(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
     std::string name="Desert";
     chall.setName(name);
     ASSERT_EQ(chall.getName(),"Desert");
@@ -49,7 +50,7 @@ TEST(gameTest, checkWinner){
     zlevel++;
     horsePlayer1= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
 
-    unsigned pathlen;
+    float pathlen;
     float m;
     pathlen=500;
     for(m=0;m<pathlen;m+=10)

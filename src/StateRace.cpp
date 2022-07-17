@@ -41,17 +41,12 @@ void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
               game->changeState(GameState::STATE_RESULT);
       }
       else
-    /*    if (event.key.code == sf::Keyboard::Up){
-            game->race->getNextTrack();
-            game->initMenu();
-        }
-        else*/
-        {
-            if (event.key.code == sf::Keyboard::D)
-            {
+      {
+          if (event.key.code == sf::Keyboard::D)
+          {
             game->setDemo(!game->getDemo());
             game->race->setDemo(game->getDemo());
-        }
+          }
       }
 
 }

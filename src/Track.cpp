@@ -35,15 +35,15 @@ void Track::initLayer()
     finalLineState=false;
     unsigned int zlevel;
     zlevel=1;
-    layerTop = new Layer(toppic,TOP_SPEED_FACTOR,sf::IntRect(LAYER_TOP_RECTLEFT, LAYER_TOP_RECTTOP, LAYER_TOP_RECWIDTH,LAYER_TOP_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_TOP_POSX),static_cast<float>(LAYER_TOP_POSY)),zlevel);
+    layerTop = std::make_unique<Layer>(toppic,TOP_SPEED_FACTOR,sf::IntRect(LAYER_TOP_RECTLEFT, LAYER_TOP_RECTTOP, LAYER_TOP_RECWIDTH,LAYER_TOP_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_TOP_POSX),static_cast<float>(LAYER_TOP_POSY)),zlevel);
     zlevel++;
-    layerAtmo =new Layer(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(LAYER_ATMO_RECTLEFT, LAYER_ATMO_RECTTOP, LAYER_ATMO_RECWIDTH,LAYER_ATMO_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_ATMO_POSX),static_cast<float>(LAYER_TOP_POSY)),zlevel);
+    layerAtmo = std::make_unique<Layer>(atmopic,ATMO_SPEED_FACTOR,sf::IntRect(LAYER_ATMO_RECTLEFT, LAYER_ATMO_RECTTOP, LAYER_ATMO_RECWIDTH,LAYER_ATMO_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_ATMO_POSX),static_cast<float>(LAYER_TOP_POSY)),zlevel);
     zlevel++;
-    layerCenter =new Layer(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(LAYER_CENTER_RECTLEFT, LAYER_CENTER_RECTTOP, LAYER_CENTER_RECWIDTH, LAYER_CENTER_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_CENTER_POSX),static_cast<float>(LAYER_CENTER_POSY)),zlevel);
+    layerCenter = std::make_unique<Layer>(centerpic,CENTER_SPEED_FACTOR,sf::IntRect(LAYER_CENTER_RECTLEFT, LAYER_CENTER_RECTTOP, LAYER_CENTER_RECWIDTH, LAYER_CENTER_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_CENTER_POSX),static_cast<float>(LAYER_CENTER_POSY)),zlevel);
     zlevel++;
-    layerBottom =new Layer(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
-    layerFinalLine =new Layer(finalLinepic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
-    layerFront =new Layer(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(LAYER_FRONT_RECTLEFT, LAYER_FRONT_RECTTOP, LAYER_FRONT_RECWIDTH,LAYER_FRONT_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_FRONT_POSX),static_cast<float>(LAYER_FRONT_POSY)),ZLEVELMAX);
+    layerBottom = std::make_unique<Layer>(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
+    layerFinalLine = std::make_unique<Layer>(finalLinepic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
+    layerFront = std::make_unique<Layer>(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(LAYER_FRONT_RECTLEFT, LAYER_FRONT_RECTTOP, LAYER_FRONT_RECWIDTH,LAYER_FRONT_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_FRONT_POSX),static_cast<float>(LAYER_FRONT_POSY)),ZLEVELMAX);
 
     zlevelAct=0;
 
@@ -115,7 +115,7 @@ void Track::draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlev
     layerFront->draw(target, states, actzlevel);
 }
 
-Track::~Track()
+/*Track::~Track()
 {
     delete layerBottom;
     delete layerCenter;
@@ -123,4 +123,4 @@ Track::~Track()
     delete layerAtmo;
     delete layerFront;
     delete layerFinalLine;
-}
+}*/

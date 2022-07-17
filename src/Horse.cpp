@@ -9,28 +9,28 @@ Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned 
 {
     horseName = "My horse";
     horseNumber = number;
-    speed = 0;
-    travelled = 0;
     totalTravelled = 0;
     setPropHorse();
-
-    setPosition(pos);
-    setOrigin(orig);
     zLevel = z;
-
     life = 10;
     money = 0;
-
+    startPos(orig,pos);
     sf::Texture* tex = new sf::Texture();
     tex->setSmooth(true);
     if(!tex->loadFromFile("./img/horse" + std::to_string(horseNumber) + ".png"))
         std::cerr << "Texture cavallo non caricata correttamente.\n";
     texture = tex;
-
     Animation* an = new Animation(*texture);
     for (int i = 0; i < SHEET_COUNT; i++)
         an->addFrameRect(sf::IntRect(0, i * SHEET_HEIGHT, SHEET_WIDTH, SHEET_HEIGHT));
     play(*an);
+}
+
+void Horse::startPos(sf::Vector2f orig, sf::Vector2f pos){
+    speed = 0;
+    travelled = 0;
+    setPosition(pos);
+    setOrigin(orig);
 }
 
 void Horse::setName(std::string name)
@@ -112,15 +112,12 @@ void Horse::move(bool go, float sec)
 {
     if (go)
     {
-        //setTexture();
         update(sf::seconds(sec));
         incSpeed(sec);
     }
     else
         decSpeed(sec);
-
     travelled -= getSpeed() * sec;
-//    std::cout<<"Travelled: "<<travelled<<std::endl;
 }
 
 unsigned int Horse::getTravelled() const

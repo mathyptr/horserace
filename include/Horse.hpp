@@ -46,6 +46,7 @@ public:
     int getMoney() const;
     void incMoney(int coin);
     bool decMoney();
+    void startPos(sf::Vector2f orig, sf::Vector2f pos);
     unsigned int getTravelled() const;
     float getTotalTravelled() const;
     void setTotalTravelled(float inc);
@@ -58,7 +59,6 @@ private:
     float totalTravelled;
     float speed;
     float speedFactor;
-
     int life;
     int money;
     void setPropHorse();

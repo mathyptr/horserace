@@ -65,7 +65,8 @@ public:
     std::string getName();
     void setfinalLineState();
     void draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel);
-    ~Track();
+    //~Track();
+
 private:
     void loadResources();
     void initLayer();
@@ -81,12 +82,12 @@ private:
     sf::Texture atmopic;
     sf::Texture frontpic;
     sf::Texture finalLinepic;
-    Layer* layerBottom;
-    Layer* layerCenter;
-    Layer* layerTop;
-    Layer* layerAtmo;
-    Layer* layerFront;
-    Layer* layerFinalLine;
+    unique_ptr<Layer> layerBottom;
+    unique_ptr<Layer> layerCenter;
+    unique_ptr<Layer> layerTop;
+    unique_ptr<Layer> layerAtmo;
+    unique_ptr<Layer> layerFront;
+    unique_ptr<Layer> layerFinalLine;
     std::string soundchall;
     sf::Sound sound;
     sf::SoundBuffer buffersound;
