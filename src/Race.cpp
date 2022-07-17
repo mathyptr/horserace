@@ -5,6 +5,7 @@
 Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
 {
     gameoverstate=false;
+    gameerrorstate=false;
     demo=false;
     horsePlayer=NULL;
     horsePlayer2=NULL;
@@ -192,7 +193,6 @@ void Race::loadResources()
         else
             cout<<"Track is NULL!!!"<<endl;
         pathlen=stoi(propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH));
-        icon.loadFromFile("img/icon.png");
         gameerrorstate=false;
     }
     else

@@ -80,7 +80,6 @@ private:
   sf::Clock explosionDeltaTimer;
   float speedX;
   float weatherMoveSpeed;
-  sf::Image icon;
   bool winstate;
   bool gameoverstate;
   bool gameerrorstate;
