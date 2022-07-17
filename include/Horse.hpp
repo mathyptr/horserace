@@ -5,7 +5,6 @@
 #include <vector>
 #include <iostream>
 #include "AnimatedSprite.hpp"
-#include "MovingSprite.hpp"
 
 #define HORSE_SHEETS_NUM 5
 #define MAXSPEED 500.f
