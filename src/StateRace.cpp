@@ -23,16 +23,11 @@ void StateRace::draw(sf::RenderWindow &window)
 
 void StateRace::update() 
 {
-            cout << "Esghere";
     testBottomCenter="";
-            cout << "Esghere";
     if(game->race->checkWinner())
         testBottomCenter=TEST_BOTTOM_CENTER_GAME;
-            cout << "Esghere";
-     game->race->update();
-            cout << "Esghere";
-     game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),"",testBottomCenter,"","",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
-            cout << "Esghere";
+    game->race->update();
+    game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),"",testBottomCenter,"","",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
     game->race->setDemo(game->getDemo());
 }
 

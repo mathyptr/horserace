@@ -47,13 +47,9 @@ void Game::Run()
 {
     while (window.isOpen() && !gameerrorstate)
     {
-            cout << "Esghere";
         currentState->update();
-            cout << "Esghere";
         processEvents();
-            cout << "Esghere";
         render();
-            cout << "Esghere";
     }
 }
 
