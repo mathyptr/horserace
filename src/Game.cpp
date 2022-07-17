@@ -43,24 +43,17 @@ void Game::initMenu()
     menu.Init(testBase, gameview.getCenter());
 }
 
-void Game::loadResources()
-{
-    gameerrorstate=true;
-    if(propmgr.getStatus()==0)
-    {
-        currentTrack=getCurrentTrack();
-        icon.loadFromFile("img/icon.png");
-        gameerrorstate=false;
-    }
-}
-
 void Game::Run()
 {
     while (window.isOpen() && !gameerrorstate)
     {
+            cout << "Esghere";
         currentState->update();
+            cout << "Esghere";
         processEvents();
+            cout << "Esghere";
         render();
+            cout << "Esghere";
     }
 }
 
@@ -85,9 +78,9 @@ State *Game::getCurrentState() const
     return currentState;
 }
 
-void Game::setCurrentState(State *_currentState) 
+void Game::setCurrentState(State *currentState) 
 {
-   currentState = _currentState;
+    this->currentState = currentState;
 }
 
 bool Game::checkState(GameState state) const 
@@ -108,21 +101,25 @@ bool Game::getDemo()
 //class constructor: creates a SFML window and initializes objects
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
-    currentTrack=1;
-    gameoverstate=false;
-    demo=false;
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
-    propmgr =  PropertyManager(true);
-    winstate=false;
-    if(!gameerrorstate)
+    gameview.setCenter(GVIEW_X / 2,GVIEW_Y / 2);
+    gameview.setSize(sf::Vector2f(GVIEW_X, GVIEW_Y));
+    
+    propmgr = PropertyManager(true);
+    gameerrorstate=true;
+    if(propmgr.getStatus() == 0)
     {
-        gameview.setCenter(GVIEW_X / 2,GVIEW_Y / 2);
-        gameview.setSize(sf::Vector2f(GVIEW_X, GVIEW_Y));
-        race= new Race(propmgr,gameview.getCenter());
-        loadResources();
-        window.setIcon(icon.getSize().x, icon.getSize().y,icon.getPixelsPtr());
-        initMenu();
-        currentState = new StateRace(this);
+        icon.loadFromFile("img/icon.png");
+        gameerrorstate=false;
     }
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    
+    race = new Race(propmgr, gameview.getCenter());
+    currentState = new StateRace(this);
+    currentTrack = getCurrentTrack();
+    gameoverstate = false;
+    winstate = false;
+    demo = false;
+    initMenu();
 };

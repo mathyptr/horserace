@@ -17,14 +17,14 @@
 
 using namespace std;
 
+#define GVIEW_X 800
+#define GVIEW_Y 600
+
 #define  CENTER_SPEED_FACTOR 4
 #define  BOTTOM_SPEED_FACTOR 2
 #define  TOP_SPEED_FACTOR 10
 #define  ATMO_SPEED_FACTOR 20
 #define  FRONT_SPEED_FACTOR 1
-
-#define GVIEW_X 800
-#define GVIEW_Y 600
 
 #define  HORSEZLEVELMIN 5
 #define  HORSEZLEVELMAX 8
@@ -61,26 +61,25 @@ public:
     bool getDemo();
 
 private:
-  unsigned int getCurrentTrack();
-  unsigned int currentTrack;
-  PropertyManager propmgr;
-  sf::RenderWindow window;
-  sf::View gameview;
+    unsigned int getCurrentTrack();
+    unsigned int currentTrack;
+    PropertyManager propmgr;
+    sf::RenderWindow window;
+    sf::View gameview;
 
-  sf::Image icon;
-  sf::Font font;
-  sf::Text testBase;
-  bool mute;
-  bool winstate;
-  bool gameoverstate;
-  bool gameerrorstate;
-  bool demo;
-  State* createPointer(GameState state);
-  State* currentState;
-  void processEvents();
-  void handleInput(sf::Event event, sf::RenderWindow &window);
-  void render();
-  void loadResources();
+    sf::Image icon;
+    sf::Font font;
+    sf::Text testBase;
+    bool mute;
+    bool winstate;
+    bool gameoverstate;
+    bool gameerrorstate;
+    bool demo;
+    State* createPointer(GameState state);
+    State* currentState;
+    void processEvents();
+    void handleInput(sf::Event event, sf::RenderWindow &window);
+    void render();
  
 };
 #endif // GAME_INCLUDE
