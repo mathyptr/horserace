@@ -6,6 +6,7 @@
 #include "Track.hpp"
 #include "Race.hpp"
 #include "MovingSprite.hpp"
+#include "PropertyManager.hpp"
 #include "SFML/Graphics.hpp"
 
 #define  HORSE1_POSX 400

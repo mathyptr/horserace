@@ -64,6 +64,8 @@ std::string PropertyManager::sendQuery(std::string sql)
             prop=(char *)sqlite3_column_text(stmt, 0);
         sqlite3_finalize(stmt);
     }
+    /*cout<<"query: "<<sql<<endl;
+    cout<<"resp: "<<prop<<endl;*/
     return prop;
 }
 

@@ -98,7 +98,6 @@ bool Game::getDemo()
     return demo;
 }
 
-//class constructor: creates a SFML window and initializes objects
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
     window.setMouseCursorVisible(false);

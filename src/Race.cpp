@@ -17,11 +17,10 @@ Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
     winstate=false;
     weatherMoveSpeed=40.f;
     posgameview=posgv;
-//    loadResources();
     if(!gameerrorstate)
     {
         initHorses();
-        track = new Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
+        track = std::make_unique<Track>(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
         loadResources();
         playSound();
         loadExplosion();
@@ -205,19 +204,11 @@ void Race::getNextTrack()
     horsePlayer->incMoney(currentTrackIndex*5);
     winstate=false;
     gameoverstate=false;
-//    cout<<"Old Track n: "<<currentTrackIndex<<endl;
     currentTrackIndex=currentTrackIndex%propmgr.getTrackCount()+1;
     character=0;
-//    initHorses();
-//    loadResources();
-//    cout<<"Track n: "<<currentTrackIndex<<endl;
     if(!gameerrorstate)
     {
-        if(track!=NULL)
-            delete track;
-        else
-            cout<<"Track is NULL!!"<<endl;
-        track = new Track(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
+        track = std::make_unique<Track>(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
         initHorses();
         loadResources();
     }
@@ -240,25 +231,25 @@ void Race::initHorses()
 {
     unsigned int zlevel;
     float posx,posy,posx2,posy2,posx3,posy3;
-
     posx3=HORSE3_POSX;
     posy3=HORSE3_POSY;
     posx2=HORSE2_POSX;
     posy2=HORSE2_POSY;
     posx=HORSE1_POSX;
     posy=HORSE1_POSY;
-    zlevel=5;
-    if (horsePlayer2!=NULL)
-        delete horsePlayer2;
-    horsePlayer2 = new Horse(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
-    zlevel++;
-    if (horsePlayer3!=NULL)
-        delete horsePlayer3;
-    horsePlayer3 = new Horse(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
-    zlevel++;
-    if (horsePlayer!=NULL)
-        delete horsePlayer;
-    horsePlayer = new Horse(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
+    if(horsePlayer==NULL){
+        zlevel=5;
+        horsePlayer2 = std::make_unique<Horse>(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
+        zlevel++;
+        horsePlayer3 = std::make_unique<Horse>(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
+        zlevel++;
+        horsePlayer = std::make_unique<Horse>(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
+    }
+    else{
+        horsePlayer->startPos(sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)));
+        horsePlayer2->startPos(sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)));
+        horsePlayer3->startPos(sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)));
+    }
 }
 
 void Race::horseMaxYCreate()

@@ -57,8 +57,8 @@ public:
   std::string order( map <std::string,float> results);
   unsigned int getCurrentIndex();
   void setDemo(bool state);
-  Horse *horsePlayer, *horsePlayer2,*horsePlayer3;
-  Track* track;
+  unique_ptr<Horse> horsePlayer, horsePlayer2,horsePlayer3;
+  unique_ptr<Track> track;
   int weatherId;
   unsigned int character = 0;
 
@@ -84,13 +84,11 @@ private:
   bool winstate;
   bool gameoverstate;
   bool gameerrorstate;
-
   sf::Texture weathtexture;
   sf::Texture explosion;
   bool checkFinalLine();
   void loadResources();
   void horseMaxYCreate();
-
   int createProbability();
   void createWeather();
   void drawWeather(sf::RenderTarget &target);
