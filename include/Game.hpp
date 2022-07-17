@@ -12,10 +12,8 @@
 #include "Layer.hpp"
 #include "Menu.hpp"
 #include "Race.hpp"
-
 #include "PropertyManager.hpp"
 #include "AnimatedSprite.hpp"
-
 
 using namespace std;
 
@@ -28,7 +26,6 @@ using namespace std;
 #define GVIEW_X 800
 #define GVIEW_Y 600
 
-
 #define  HORSEZLEVELMIN 5
 #define  HORSEZLEVELMAX 8
 #define  HORSE1_POSX 400
@@ -40,36 +37,32 @@ using namespace std;
 #define NMAXHORSE 3
 #define NMAXPROB 10
 
-
 class State;
 enum class GameState
 {
-  STATE_RACE,
-  STATE_RESULT
+    STATE_RACE,
+    STATE_RESULT
 };
-
 
 class Game
 {
 public:
-  Game();
-  Game(std::string winTitle);
-  void Run();
-  void initMenu();
-  void changeState(GameState nextGameState);
-  void setCurrentState(State *_currentState);
-  bool checkState(GameState state) const;
-  State* getCurrentState() const;
-  Race* race;
-  Menu menu;
-  void setDemo(bool d);
-  bool getDemo();
+    Game();
+    Game(std::string winTitle);
+    void Run();
+    void initMenu();
+    void changeState(GameState nextGameState);
+    void setCurrentState(State *_currentState);
+    bool checkState(GameState state) const;
+    State* getCurrentState() const;
+    Race* race;
+    Menu menu;
+    void setDemo(bool d);
+    bool getDemo();
 
 private:
   unsigned int getCurrentTrack();
-  unsigned int pathlen;
-  unsigned int actchall;
-  unsigned int horseposymax[NMAXHORSE];
+  unsigned int currentTrack;
   PropertyManager propmgr;
   sf::RenderWindow window;
   sf::View gameview;

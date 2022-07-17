@@ -55,7 +55,7 @@ public:
   sf::String result();
   std::string finalResult();
   std::string order( map <std::string,float> results);
-  unsigned int getCurrenteIndex();
+  unsigned int getCurrentIndex();
   void setDemo(bool state);
   Horse *horsePlayer, *horsePlayer2,*horsePlayer3;
   Track* track;

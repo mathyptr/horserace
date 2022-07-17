@@ -4,7 +4,6 @@
 #include "Race.hpp"
 #include "StateResult.hpp"
 
-
 void Game::processEvents()
 {
     sf::Event event;
@@ -14,23 +13,13 @@ void Game::processEvents()
             window.close();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             window.close();
-        handleInput(event, window);
+        currentState->handleInput(event, window);
     }
 }
 
-void Game::handleInput(sf::Event event, sf::RenderWindow &window)
+unsigned int Game::getCurrentTrack()
 {
-    currentState->handleInput(event, window);
-/*    if (event.type == sf::Event::KeyReleased)
-        if (event.key.code == sf::Keyboard::Enter)
-            changeState(GameState::STATE_RESULT);
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-            changeState(GameState::STATE_RACE);
-            */
-}
-
-unsigned int Game::getCurrentTrack(){
-    return race->getCurrenteIndex();
+    return race->getCurrentIndex();
 }
 
 void Game::render()
@@ -42,11 +31,12 @@ void Game::render()
     window.display();
 }
 
-void Game::initMenu(){
-    actchall=getCurrentTrack();
-    font.loadFromFile(propmgr.getTrackProperty(actchall, FONT_FILE));
-    std::string fontSize= propmgr.getTrackProperty(actchall, FONT_SIZE);
-    std::string fontColor= propmgr.getTrackProperty(actchall, FONT_COLOR);
+void Game::initMenu()
+{
+    currentTrack=getCurrentTrack();
+    font.loadFromFile(propmgr.getTrackProperty(currentTrack, FONT_FILE));
+    std::string fontSize= propmgr.getTrackProperty(currentTrack, FONT_SIZE);
+    std::string fontColor= propmgr.getTrackProperty(currentTrack, FONT_COLOR);
     testBase.setFont(font);
     testBase.setCharacterSize(std::stoi(fontSize));
     testBase.setColor(Utility::getColor(fontColor));
@@ -58,12 +48,11 @@ void Game::loadResources()
     gameerrorstate=true;
     if(propmgr.getStatus()==0)
     {
-        actchall=getCurrentTrack();
+        currentTrack=getCurrentTrack();
         icon.loadFromFile("img/icon.png");
         gameerrorstate=false;
     }
 }
-
 
 void Game::Run()
 {
@@ -75,7 +64,8 @@ void Game::Run()
     }
 }
 
-State* Game::createPointer(GameState state) {
+State* Game::createPointer(GameState state) 
+{
     if(state == GameState::STATE_RESULT)
         return new StateResult(this);   
     else if (state == GameState::STATE_RACE)
@@ -84,22 +74,24 @@ State* Game::createPointer(GameState state) {
         return nullptr;
 }
 
-
-void Game::changeState(GameState nextGameState) {
-   State* nextState= createPointer(nextGameState);
+void Game::changeState(GameState nextGameState) 
+{
+    State* nextState = createPointer(nextGameState);
     currentState->changeState(nextState);
 }
 
-
-State *Game::getCurrentState() const {
+State *Game::getCurrentState() const 
+{
     return currentState;
 }
 
-void Game::setCurrentState(State *_currentState) {
+void Game::setCurrentState(State *_currentState) 
+{
    currentState = _currentState;
 }
 
-bool Game::checkState(GameState state) const {
+bool Game::checkState(GameState state) const 
+{
     return currentState->getStateName() == state;
 }
 
@@ -107,6 +99,7 @@ void Game::setDemo(bool d)
 {
     demo=d;
 }
+
 bool Game::getDemo()
 {
     return demo;
@@ -115,7 +108,7 @@ bool Game::getDemo()
 //class constructor: creates a SFML window and initializes objects
 Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
 {
-    actchall=1;
+    currentTrack=1;
     gameoverstate=false;
     demo=false;
     window.setMouseCursorVisible(false);
