@@ -9,7 +9,7 @@ class Layer : public AnimatedSprite
 {
 public:
     Layer();
-    Layer(const sf::Texture& tex, float speedFactor, const sf::IntRect& rect, const sf::Vector2f& position, unsigned int z);
+    Layer(sf::Texture& tex, float speedFactor, const sf::IntRect& rect, const sf::Vector2f& position, unsigned int z);
     void draw(sf::RenderTarget &target, sf::RenderStates &states, unsigned int z);
 
 private:
