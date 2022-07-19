@@ -1,7 +1,6 @@
 #ifndef MENU_INCLUDE
 #define MENU_INCLUDE
 #include <SFML/Graphics.hpp>
-#include "MovingSprite.hpp"
 
 using namespace std;
 

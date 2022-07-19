@@ -5,6 +5,7 @@
 Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
 {
     gameoverstate=false;
+    gameerrorstate=false;
     demo=false;
     horsePlayer=NULL;
     horsePlayer2=NULL;

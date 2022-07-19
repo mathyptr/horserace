@@ -23,12 +23,19 @@ void StateRace::draw(sf::RenderWindow &window)
 
 void StateRace::update() 
 {
-    testBottomCenter="";
+    if(game->getDemo())
+        testBottomCenter="Press key to play";
+    else
+        testBottomCenter="";
     if(game->race->checkWinner())
         testBottomCenter=TEST_BOTTOM_CENTER_GAME;
-     game->race->update();
-     game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),"",testBottomCenter,"","",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
+    game->race->update();
+    game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),"",testBottomCenter,"","",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
     game->race->setDemo(game->getDemo());
+    if(game->getDemo()&&game->race->checkWinner()){
+            game->race->getNextTrack();
+            game->initMenu();
+    }
 }
 
 void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
@@ -40,15 +47,6 @@ void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
           if (event.key.code == sf::Keyboard::Enter)
               game->changeState(GameState::STATE_RESULT);
       }
-      else
-      {
-          if (event.key.code == sf::Keyboard::D)
-          {
-            game->setDemo(!game->getDemo());
-            game->race->setDemo(game->getDemo());
-          }
-      }
-
 }
 
 GameState StateRace::getStateName() const

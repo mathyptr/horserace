@@ -54,6 +54,7 @@ public:
   void horseMove(bool go);
   sf::String result();
   std::string finalResult();
+  void collision();
   std::string order( map <std::string,float> results);
   unsigned int getCurrenteIndex();
   void setDemo(bool state);
@@ -93,7 +94,6 @@ private:
   void createWeather();
   void drawWeather(sf::RenderTarget &target);
   void animateExplosion();
-  void collision();
   void loadExplosion();
   void drawExplosions(sf::RenderTarget &target);
 };

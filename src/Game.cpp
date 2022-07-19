@@ -20,6 +20,16 @@ void Game::processEvents()
 
 void Game::handleInput(sf::Event event, sf::RenderWindow &window)
 {
+    if (event.type == sf::Event::KeyReleased)
+    {
+        if (event.key.code == sf::Keyboard::Enter){
+            if(demo){
+                demo=false;
+                delete(race);
+                race= new Race(propmgr,gameview.getCenter());
+            }
+        }
+    }
     currentState->handleInput(event, window);
 }
 
@@ -110,7 +120,7 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
 {
     actchall=1;
     gameoverstate=false;
-    demo=false;
+    demo=true;
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
     propmgr =  PropertyManager(true);
