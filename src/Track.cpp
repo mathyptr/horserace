@@ -114,13 +114,3 @@ void Track::draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlev
         layerFinalLine->draw(target, states, actzlevel);
     layerFront->draw(target, states, actzlevel);
 }
-
-/*Track::~Track()
-{
-    delete layerBottom;
-    delete layerCenter;
-    delete layerTop;
-    delete layerAtmo;
-    delete layerFront;
-    delete layerFinalLine;
-}*/

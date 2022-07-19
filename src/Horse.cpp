@@ -66,6 +66,11 @@ void Horse::decSpeed(float sec)
     speed -= speed * SPEEDSMOOTH * adjsec / MAXSPEED;
 }
 
+void Horse::setSpeed(float sec)
+{
+   speed=sec;
+}
+
 void Horse::incLife()
 {
     if(life<10)
