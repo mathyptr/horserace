@@ -39,17 +39,22 @@ std::string PropertyManager::getTrackProperty(std::string trackName, std::string
     return sendQuery(sql);
 }
 
-
 int PropertyManager::getTrackCount()
 {
     std::string sql = "select count(*) from track";
     return std::stoi(sendQuery(sql));
 }
 
+std::string PropertyManager::getHorseProperty(int horseID, std::string propName)
+{
+    std::string sql = "select " + propName + " from horse where horse.id = " + std::to_string(horseID) + ";";
+    return sendQuery(sql);
+}
+
 std::string PropertyManager::sendQuery(std::string sql)
 {
     int rc;
-    std::string  prop="NONE";
+    std::string prop="NONE";
     sqlite3_stmt *stmt;
     if(status != SQLITE_OK)
         cout << "Database failed to read data" << endl;
@@ -61,11 +66,9 @@ std::string PropertyManager::sendQuery(std::string sql)
         rc = sqlite3_step(stmt);
 
         if (rc != SQLITE_DONE)
-            prop=(char *)sqlite3_column_text(stmt, 0);
+            prop=std::string((char *)sqlite3_column_text(stmt, 0));
         sqlite3_finalize(stmt);
     }
-    /*cout<<"query: "<<sql<<endl;
-    cout<<"resp: "<<prop<<endl;*/
     return prop;
 }
 

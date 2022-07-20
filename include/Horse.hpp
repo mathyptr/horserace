@@ -5,6 +5,7 @@
 #include <vector>
 #include <iostream>
 #include "AnimatedSprite.hpp"
+#include "PropertyManager.hpp"
 
 #define HORSE_SHEETS_NUM 5
 #define MAXSPEED 500.f
@@ -31,7 +32,7 @@ class Horse : public AnimatedSprite
 {
 public:
     Horse();
-    Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z);
+    Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z, PropertyManager propMgr);
     std::string getName() const;
     void setName(std::string name);
     void move(bool go, float sec);
@@ -53,6 +54,7 @@ public:
     void draw(sf::RenderTarget &target, sf::RenderStates states, unsigned int z);
 
 private:
+    PropertyManager propMgr;
     std::string horseName;
     unsigned int horseNumber;
     unsigned int travelled;
