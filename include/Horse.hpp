@@ -39,6 +39,7 @@ public:
     float getSpeed() const;
     void incSpeed(float sec);
     void decSpeed(float sec);
+    void setSpeed(float sec);
     int getLife() const;
     void incLife();
     bool decLife();

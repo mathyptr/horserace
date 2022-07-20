@@ -6,6 +6,8 @@
 #include "Track.hpp"
 #include "Race.hpp"
 #include "MovingSprite.hpp"
+#include "Game.hpp"
+#include "State.hpp"
 #include "PropertyManager.hpp"
 #include "SFML/Graphics.hpp"
 

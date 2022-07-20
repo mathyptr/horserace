@@ -108,3 +108,33 @@ TEST(raceTest, result){
     std::string str="Result\n1. Player\n2. Salazar\n3. Sarah\n";
     ASSERT_EQ(str,race->order({{"Player",horsePlayer->getPosition().x},{"Salazar",horsePlayer2->getPosition().x},{"Sarah",horsePlayer3->getPosition().x}}));
 }
+
+TEST(stateTest, changeState){
+    Game* game= new Game("Horse Racing");
+    game->changeState(GameState::STATE_RESULT);
+    ASSERT_EQ(game->getCurrentState()->getStateName(),GameState::STATE_RESULT);
+}
+
+
+TEST(raceTest, collision){
+    sf::View gameview;
+    int startLife,finalLife;
+    PropertyManager propmgr =  PropertyManager(true);
+    Race* race= new Race(propmgr,gameview.getCenter());
+    Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POSX),static_cast<float>(HORSE1_POSY)),7);
+    startLife=horsePlayer->getLife();
+    sf::Texture weathtexture;
+    weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(1)));
+    Weather weath = Weather(weathtexture,100,HORSE1_POSX,HORSE1_POSY,7,HORSE1_POSY);
+    if(horsePlayer->getZLevel()==weath.getZLevel())
+    {
+        sf::FloatRect playerbox = horsePlayer->getGlobalBounds();
+        if (playerbox.intersects(weath.getWeatherGlobalBounds()))
+        {
+            cout<<"Hit!!\n";
+            horsePlayer->decLife();
+        }
+    }
+    finalLife=horsePlayer->getLife();
+    ASSERT_TRUE(startLife>finalLife);
+}
