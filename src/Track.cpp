@@ -55,7 +55,7 @@ void Track::initLayer()
     layerFront->setPosition(LAYER_FRONT_POSX,LAYER_FRONT_POSY);
 }
 
-void Track:: move(float speed)
+/* void Track:: move(float speed)
 {
     layerBottom->move(speed,0);
     if(finalLineState)
@@ -64,8 +64,18 @@ void Track:: move(float speed)
     layerTop->move(speed,0);
     layerAtmo->move(speed,0);
     layerFront->move(speed,0);
-}
+} */
 
+void Track::move(sf::Time sec)
+{
+    layerBottom->update(sec);
+    if(finalLineState)
+        layerFinalLine->update(sec);
+    layerCenter->update(sec);
+    layerTop->update(sec);
+    layerAtmo->update(sec);
+    layerFront->update(sec);
+}
 
 void Track:: playSound()
 {
@@ -114,13 +124,3 @@ void Track::draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlev
         layerFinalLine->draw(target, states, actzlevel);
     layerFront->draw(target, states, actzlevel);
 }
-
-/*Track::~Track()
-{
-    delete layerBottom;
-    delete layerCenter;
-    delete layerTop;
-    delete layerAtmo;
-    delete layerFront;
-    delete layerFinalLine;
-}*/

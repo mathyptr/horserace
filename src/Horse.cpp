@@ -26,7 +26,8 @@ Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned 
     play(*an);
 }
 
-void Horse::startPos(sf::Vector2f orig, sf::Vector2f pos){
+void Horse::startPos(sf::Vector2f orig, sf::Vector2f pos)
+{
     speed = 0;
     travelled = 0;
     setPosition(pos);

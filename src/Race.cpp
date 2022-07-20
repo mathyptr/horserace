@@ -32,12 +32,14 @@ void Race::horseMove(bool go)
 {
     const auto elapsed = horsePlayerDeltaTime.getElapsedTime();
     if (go)
+    {
+        track->move(elapsed);
         horsePlayer->move(true, elapsed.asSeconds());
+    }
     else
         horsePlayer->move(false, elapsed.asSeconds());// o un qualsiasi altro tasto
     speedX=horsePlayer->getSpeed();
     float rspeed= elapsed.asSeconds() * speedX;
-    track->move(rspeed);
     horsePlayer2->move(rspeed, 0, elapsed.asSeconds());
     horsePlayer3->move(rspeed, 0, elapsed.asSeconds());
     horsePlayerDeltaTime.restart();
@@ -295,19 +297,21 @@ std::string Race::finalResult()
 
 void Race::update()
 {
+    for(unsigned int i=0;i<40;i++)
+        createWeather();
+    animateExplosion();
+    collision();
+    if(!winstate)
     {
-        for(unsigned int i=0;i<40;i++)
-            createWeather();
-        animateExplosion();
-        collision();
-        if(!winstate){
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)||demo)
-               horseMove(true);
-            else
-                horseMove(false);
-            checkFinalLine();
-            checkWinner();
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)||demo)
+        {
+            //layer.update(sf::seconds(0.02)); in Track.cpp
+            horseMove(true);
         }
+        else
+            horseMove(false);
+        checkFinalLine();
+        checkWinner();
     }
 }
 

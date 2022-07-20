@@ -56,7 +56,8 @@ class Track
 public:
     Track();
     Track(PropertyManager propManager, std::string name);
-    void move(float speed);
+    /* void move(float speed); */
+    void move(sf::Time sec);
     void playSound();
     void stopSound();
     void setZLevel(int z);
