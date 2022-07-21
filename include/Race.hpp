@@ -4,8 +4,6 @@
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
 #include <vector>
-#include <algorithm>
-#include <memory>
 #include "Track.hpp"
 #include "Horse.hpp"
 #include "Weather.hpp"
@@ -13,18 +11,6 @@
 #include "Menu.hpp"
 #include "PropertyManager.hpp"
 #include "AnimatedSprite.hpp"
-
-using namespace std;
-
-#define  CENTER_SPEED_FACTOR 4
-//#define  BOTTOM_SPEED_FACTOR 1
-#define  BOTTOM_SPEED_FACTOR 2
-#define  TOP_SPEED_FACTOR 10
-#define  ATMO_SPEED_FACTOR 20
-#define  FRONT_SPEED_FACTOR 1
-
-#define GVIEW_X 800
-#define GVIEW_Y 600
 
 #define  HORSEZLEVELMIN 5
 #define  HORSEZLEVELMAX 8
@@ -37,7 +23,7 @@ using namespace std;
 #define  HORSE3_POSY 562
 #define NMAXHORSE 3
 #define NMAXPROB 10
-#define NCHALL 5
+#define TRACK_COUNT 6
 
 class Race
 {

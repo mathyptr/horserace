@@ -6,6 +6,7 @@ Layer::Layer(sf::Texture& tex, float speedF, const sf::IntRect& rect, const sf::
     zLevel = z;
     setPosition(pos);    
     tex.setRepeated(true);
+    tex.setSmooth(true);
     texture = &tex;
 
     Animation* an = new Animation(*texture);
