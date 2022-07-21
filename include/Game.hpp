@@ -63,7 +63,6 @@ public:
 private:
     unsigned int getCurrentTrack();
     unsigned int currentTrack;
-    PropertyManager propmgr;
     sf::RenderWindow window;
     sf::View gameview;
 

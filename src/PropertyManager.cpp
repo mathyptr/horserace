@@ -1,9 +1,17 @@
 #include "PropertyManager.hpp"
 
-PropertyManager::PropertyManager(bool autoConnect)
+PropertyManager* PropertyManager::instance = nullptr;
+
+PropertyManager::PropertyManager()
 {
-    if(autoConnect)
-        connect();
+    
+}
+
+PropertyManager* PropertyManager::getInstance()
+{
+    if (instance == nullptr)
+        instance = new PropertyManager();
+    return instance;
 }
 
 int PropertyManager::connect()

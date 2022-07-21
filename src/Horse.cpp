@@ -5,9 +5,8 @@ Horse::Horse()
 
 }
 
-Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z, PropertyManager propMgr) : AnimatedSprite(sf::seconds(0.05f))
+Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z) : AnimatedSprite(sf::seconds(0.05f))
 {
-    this->propMgr = propMgr;
     horseName = "My horse";
     horseNumber = number;
     totalTravelled = 0;
@@ -18,7 +17,7 @@ Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned 
     startPos(orig,pos);
     sf::Texture* tex = new sf::Texture();
     tex->setSmooth(true);
-    tex->loadFromFile(this->propMgr.getHorseProperty(horseNumber, "texture"));
+    tex->loadFromFile(getDBInstance()->getHorseProperty(horseNumber, "texture"));
     texture = tex;
     Animation* an = new Animation(*texture);
     for (int i = 0; i < SHEET_COUNT; i++)

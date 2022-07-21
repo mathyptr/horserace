@@ -5,15 +5,7 @@
 #include <iostream>
 using namespace std;
 
-/*
-#include "log4cpp/Category.hh"
-#include "log4cpp/Appender.hh"
-#include "log4cpp/FileAppender.hh"
-#include "log4cpp/OstreamAppender.hh"
-#include "log4cpp/Layout.hh"
-#include "log4cpp/BasicLayout.hh"
-#include "log4cpp/Priority.hh"
-*/
+#define getDBInstance() PropertyManager::getInstance()
 
 #define FONT_FILE "font_file"
 #define FONT_SIZE "font_size"
@@ -35,10 +27,12 @@ using namespace std;
 class PropertyManager
 {
 public:
-	PropertyManager(bool autoConnect = false);
+	static PropertyManager* getInstance();
+
 	int connect();
 	void close();
 	int getStatus();
+
 	std::string getTrackProperty(int trackID, std::string propName);
 	std::string getTrackProperty(std::string trackName, std::string propName);
     int getTrackCount();
@@ -51,6 +45,9 @@ public:
     std::string getProbability(std::string trackID, std::string weatherId);
 
 private:
+	PropertyManager();
+	static PropertyManager* instance;
+
 	sqlite3* db;
 	int status;
 	std::string sendQuery(std::string sql);

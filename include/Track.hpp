@@ -55,7 +55,7 @@ class Track
 {
 public:
     Track();
-    Track(PropertyManager propManager, std::string name);
+    Track(std::string name);
     /* void move(float speed); */
     void move(sf::Time sec);
     void playSound();
@@ -93,7 +93,6 @@ private:
     sf::Sound sound;
     sf::SoundBuffer buffersound;
     bool nosound;
-    PropertyManager propmgr;
     unsigned int speedFactor;
 };
 #endif

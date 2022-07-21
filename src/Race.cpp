@@ -2,7 +2,7 @@
 #include "Utility.hpp"
 #include "Game.hpp"
 
-Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
+Race::Race(const sf::Vector2f& posgv)
 {
     gameoverstate=false;
     gameerrorstate=false;
@@ -14,14 +14,13 @@ Race::Race(PropertyManager propmanager, const sf::Vector2f& posgv)
     horseMaxYCreate();
     currentTrackIndex=1;
     speedX = 0;
-    propmgr = propmanager;
     winstate=false;
     weatherMoveSpeed=40.f;
     posgameview=posgv;
     if(!gameerrorstate)
     {
         initHorses();
-        track = std::make_unique<Track>(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
+        track = std::make_unique<Track>(getDBInstance()->getTrackProperty(currentTrackIndex, "name"));
         loadResources();
         playSound();
         loadExplosion();
@@ -171,7 +170,7 @@ int Race::createProbability()
     int prob[NMAXPROB];
     int j=0;
     for(int i=1,j=0;i<4;i++){
-        probability=std::stoi(propmgr.getProbability(std::to_string(currentTrackIndex),std::to_string(i)));
+        probability=std::stoi(getDBInstance()->getProbability(std::to_string(currentTrackIndex),std::to_string(i)));
         while(j<NMAXPROB&&probability>0){
             prob[j]=i;
             probability--;
@@ -185,16 +184,16 @@ int Race::createProbability()
 void Race::loadResources()
 {
     gameerrorstate=true;
-    if(propmgr.getStatus()==0)
+    if(getDBInstance()->getStatus()==0)
     {
         weatherId=createProbability();
-        weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(weatherId)));
-        explosion.loadFromFile(propmgr.getCurrentWeatherExplosion(std::to_string(weatherId)));
+        weathtexture.loadFromFile(getDBInstance()->getCurrentWeatherTexture(std::to_string(weatherId)));
+        explosion.loadFromFile(getDBInstance()->getCurrentWeatherExplosion(std::to_string(weatherId)));
         if(track!=NULL)
-            track->setName(propmgr.getTrackProperty(currentTrackIndex, "name"));
+            track->setName(getDBInstance()->getTrackProperty(currentTrackIndex, "name"));
         else
             cout<<"Track is NULL!!!"<<endl;
-        pathlen=stoi(propmgr.getTrackProperty(currentTrackIndex, PATHLENGTH));
+        pathlen=stoi(getDBInstance()->getTrackProperty(currentTrackIndex, PATHLENGTH));
         gameerrorstate=false;
     }
     else
@@ -206,11 +205,11 @@ void Race::getNextTrack()
     horsePlayer->incMoney(currentTrackIndex*5);
     winstate=false;
     gameoverstate=false;
-    currentTrackIndex=currentTrackIndex%propmgr.getTrackCount()+1;
+    currentTrackIndex=currentTrackIndex%getDBInstance()->getTrackCount()+1;
     character=0;
     if(!gameerrorstate)
     {
-        track = std::make_unique<Track>(propmgr, propmgr.getTrackProperty(currentTrackIndex, "name"));
+        track = std::make_unique<Track>(getDBInstance()->getTrackProperty(currentTrackIndex, "name"));
         initHorses();
         loadResources();
     }
@@ -241,11 +240,11 @@ void Race::initHorses()
     posy=HORSE1_POSY;
     if(horsePlayer==NULL){
         zlevel=5;
-        horsePlayer2 = std::make_unique<Horse>(4,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel, propmgr);
+        horsePlayer2 = std::make_unique<Horse>(4,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
         zlevel++;
-        horsePlayer3 = std::make_unique<Horse>(6,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel, propmgr);
+        horsePlayer3 = std::make_unique<Horse>(6,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel);
         zlevel++;
-        horsePlayer = std::make_unique<Horse>(5,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel, propmgr);
+        horsePlayer = std::make_unique<Horse>(5,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel);
     }
     else{
         horsePlayer->startPos(sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)));

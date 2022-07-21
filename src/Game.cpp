@@ -25,7 +25,7 @@ void Game::handleInput(sf::Event event, sf::RenderWindow &window)
             if(demo){
                 demo=false;
                 delete(race);
-                race= new Race(propmgr,gameview.getCenter());
+                race= new Race(gameview.getCenter());
             }
         }
     }
@@ -49,9 +49,9 @@ void Game::render()
 void Game::initMenu()
 {
     currentTrack=getCurrentTrack();
-    font.loadFromFile(propmgr.getTrackProperty(currentTrack, FONT_FILE));
-    std::string fontSize= propmgr.getTrackProperty(currentTrack, FONT_SIZE);
-    std::string fontColor= propmgr.getTrackProperty(currentTrack, FONT_COLOR);
+    font.loadFromFile(getDBInstance()->getTrackProperty(currentTrack, FONT_FILE));
+    std::string fontSize= getDBInstance()->getTrackProperty(currentTrack, FONT_SIZE);
+    std::string fontColor= getDBInstance()->getTrackProperty(currentTrack, FONT_COLOR);
     testBase.setFont(font);
     testBase.setCharacterSize(std::stoi(fontSize));
     testBase.setColor(Utility::getColor(fontColor));
@@ -116,16 +116,16 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), win
     gameview.setCenter(GVIEW_X / 2,GVIEW_Y / 2);
     gameview.setSize(sf::Vector2f(GVIEW_X, GVIEW_Y));
     
-    propmgr = PropertyManager(true);
+    getDBInstance()->connect();
     gameerrorstate=true;
-    if(propmgr.getStatus() == 0)
+    if(getDBInstance()->getStatus() == 0)
     {
         icon.loadFromFile("img/icon.png");
         gameerrorstate=false;
     }
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
     
-    race = new Race(propmgr, gameview.getCenter());
+    race = new Race(gameview.getCenter());
     currentState = new StateRace(this);
     currentTrack = getCurrentTrack();
     gameoverstate = false;

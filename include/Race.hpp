@@ -6,7 +6,6 @@
 #include <vector>
 #include <algorithm>
 #include <memory>
-//#include "MovingSprite.hpp"
 #include "Track.hpp"
 #include "Horse.hpp"
 #include "Weather.hpp"
@@ -43,7 +42,7 @@ using namespace std;
 class Race
 {
 public:
-  Race(PropertyManager propmanager, const sf::Vector2f& pos);
+  Race(const sf::Vector2f& pos);
   void update();
   void render(sf::RenderTarget &target);
   bool checkWinner();
@@ -67,7 +66,6 @@ private:
   unsigned int currentTrackIndex;
   unsigned int pathlen;
   sf::Clock timer;
-  PropertyManager propmgr;
   sf::Vector2f posgameview;
   bool mute;
   bool demo;

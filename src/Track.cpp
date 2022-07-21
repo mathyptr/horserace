@@ -6,26 +6,25 @@ Track::Track()
 
 }
 
-Track::Track(PropertyManager propManager, std::string name)
+Track::Track(std::string name)
 {
     zlevelAct=0;
     zlevelMax=0;
     this->name = name;
     finalLineState=false;
-    propmgr = propManager;
     loadResources();
     initLayer();
 }
 
 void Track::loadResources()
 {
-    toppic.loadFromFile(propmgr.getTrackProperty(name, TOP_PIC));
-    bottompic.loadFromFile(propmgr.getTrackProperty(name, BOTTOM_PIC));
-    centerpic.loadFromFile(propmgr.getTrackProperty(name, CENTER_PIC));
-    atmopic.loadFromFile(propmgr.getTrackProperty(name, SKY_PIC));
-    finalLinepic.loadFromFile(propmgr.getTrackProperty(name, FINALLINE_PIC));
-    frontpic.loadFromFile(propmgr.getTrackProperty(name, FRONT_PIC));
-    soundchall = propmgr.getTrackProperty(name, SOUND);
+    toppic.loadFromFile(getDBInstance()->getTrackProperty(name, TOP_PIC));
+    bottompic.loadFromFile(getDBInstance()->getTrackProperty(name, BOTTOM_PIC));
+    centerpic.loadFromFile(getDBInstance()->getTrackProperty(name, CENTER_PIC));
+    atmopic.loadFromFile(getDBInstance()->getTrackProperty(name, SKY_PIC));
+    finalLinepic.loadFromFile(getDBInstance()->getTrackProperty(name, FINALLINE_PIC));
+    frontpic.loadFromFile(getDBInstance()->getTrackProperty(name, FRONT_PIC));
+    soundchall = getDBInstance()->getTrackProperty(name, SOUND);
     if (!buffersound.loadFromFile(soundchall))
         nosound = true;
 }
