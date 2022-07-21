@@ -1,15 +1,7 @@
 #include "Track.hpp"
-#include "Utility.hpp"
-
-Track::Track()
-{
-
-}
 
 Track::Track(std::string name)
 {
-    zlevelAct=0;
-    zlevelMax=0;
     this->name = name;
     finalLineState=false;
     loadResources();
@@ -24,8 +16,8 @@ void Track::loadResources()
     atmopic.loadFromFile(getDBInstance()->getTrackProperty(name, SKY_PIC));
     finalLinepic.loadFromFile(getDBInstance()->getTrackProperty(name, FINALLINE_PIC));
     frontpic.loadFromFile(getDBInstance()->getTrackProperty(name, FRONT_PIC));
-    soundchall = getDBInstance()->getTrackProperty(name, SOUND);
-    if (!buffersound.loadFromFile(soundchall))
+    soundPath = getDBInstance()->getTrackProperty(name, SOUND);
+    if (!buffersound.loadFromFile(soundPath))
         nosound = true;
 }
 
@@ -43,8 +35,6 @@ void Track::initLayer()
     layerBottom = std::make_unique<Layer>(bottompic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
     layerFinalLine = std::make_unique<Layer>(finalLinepic,BOTTOM_SPEED_FACTOR,sf::IntRect(LAYER_BOTTOM_RECTLEFT, LAYER_BOTTOM_RECTTOP, LAYER_BOTTOM_RECWIDTH,LAYER_BOTTOM_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_BOTTOM_POSX),static_cast<float>(LAYER_BOTTOM_POSY)),zlevel);
     layerFront = std::make_unique<Layer>(frontpic,FRONT_SPEED_FACTOR,sf::IntRect(LAYER_FRONT_RECTLEFT, LAYER_FRONT_RECTTOP, LAYER_FRONT_RECWIDTH,LAYER_FRONT_RECTHEIGHT),sf::Vector2f(static_cast<float>(LAYER_FRONT_POSX),static_cast<float>(LAYER_FRONT_POSY)),ZLEVELMAX);
-
-    zlevelAct=0;
 
     layerAtmo->setPosition(LAYER_ATMO_POSX,LAYER_ATMO_POSY);
     layerTop->setPosition(LAYER_TOP_POSX,LAYER_TOP_POSY);
@@ -76,26 +66,16 @@ void Track::move(sf::Time sec)
     layerFront->update(sec);
 }
 
-void Track:: playSound()
+void Track::playSound()
 {
     sound.setBuffer(buffersound);
     sound.setLoop(true);
     sound.play();
 }
 
-void Track:: stopSound()
+void Track::stopSound()
 {
     sound.stop();
-}
-
-void Track::setZLevel(int z)
-{
-    zlevelAct = z;
-}
-
-unsigned int Track::getZLevel()
-{
-    return zlevelAct;
 }
 
 void Track::setfinalLineState()

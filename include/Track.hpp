@@ -5,12 +5,11 @@
 #include "Layer.hpp"
 #include "PropertyManager.hpp"
 
-#define  CENTER_SPEED_FACTOR 4
-//#define  BOTTOM_SPEED_FACTOR 1
-#define  BOTTOM_SPEED_FACTOR 2
-#define  TOP_SPEED_FACTOR 10
-#define  ATMO_SPEED_FACTOR 20
-#define  FRONT_SPEED_FACTOR 1
+#define CENTER_SPEED_FACTOR 4
+#define BOTTOM_SPEED_FACTOR 2
+#define TOP_SPEED_FACTOR 10
+#define ATMO_SPEED_FACTOR 20
+#define FRONT_SPEED_FACTOR 1
 
 #define ZLEVELMAX 10
 
@@ -54,25 +53,19 @@
 class Track
 {
 public:
-    Track();
     Track(std::string name);
     /* void move(float speed); */
     void move(sf::Time sec);
     void playSound();
     void stopSound();
-    void setZLevel(int z);
-    unsigned int getZLevel();
     void setName(std::string trackName);
     std::string getName();
     void setfinalLineState();
     void draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel);
-    //~Track();
 
 private:
     void loadResources();
     void initLayer();
-    unsigned int zlevelAct;
-    unsigned int zlevelMax;
     bool finalLineState;
     std::string name;
     sf::Texture texture;
@@ -89,7 +82,7 @@ private:
     unique_ptr<Layer> layerAtmo;
     unique_ptr<Layer> layerFront;
     unique_ptr<Layer> layerFinalLine;
-    std::string soundchall;
+    std::string soundPath;
     sf::Sound sound;
     sf::SoundBuffer buffersound;
     bool nosound;
