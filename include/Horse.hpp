@@ -2,12 +2,9 @@
 #define HORSE_INCLUDE
 
 #include <SFML/Graphics.hpp>
-#include <vector>
-#include <iostream>
 #include "AnimatedSprite.hpp"
 #include "PropertyManager.hpp"
 
-#define HORSE_SHEETS_NUM 5
 #define MAXSPEED 500.f
 #define SPEEDTHRESHOLD 100.f
 #define SPEEDFACTOR 10.f
@@ -16,17 +13,6 @@
 #define SHEET_COUNT 5
 #define SHEET_HEIGHT 51
 #define SHEET_WIDTH 64
-
-/*
-#include "log4cpp/Category.hh"
-#include "log4cpp/Appender.hh"
-#include "log4cpp/FileAppender.hh"
-#include "log4cpp/OstreamAppender.hh"
-#include "log4cpp/Layout.hh"
-#include "log4cpp/BasicLayout.hh"
-#include "log4cpp/Priority.hh"
-
-*/
 
 class Horse : public AnimatedSprite
 {
@@ -60,6 +46,7 @@ private:
     float totalTravelled;
     float speed;
     float speedFactor;
+    float agility;
     int life;
     int money;
     void setPropHorse();

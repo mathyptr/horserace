@@ -1,10 +1,5 @@
 #include "Layer.hpp"
 
-Layer::Layer()
-{
-    
-}
-
 Layer::Layer(sf::Texture& tex, float speedF, const sf::IntRect& rect, const sf::Vector2f& pos, unsigned int z) : AnimatedSprite(sf::seconds(0.02))
 {
     speedFactor = speedF;
@@ -16,7 +11,7 @@ Layer::Layer(sf::Texture& tex, float speedF, const sf::IntRect& rect, const sf::
     Animation* an = new Animation(*texture);
     int frameCount = 50;
     for (int i = 0; i < frameCount; i++)
-        an->addFrameRect(sf::IntRect(rect.left + ((float)i / frameCount) * rect.width, rect.top, rect.width, rect.height));
+        an->addFrameRect(sf::IntRect(rect.left + ((float)i / frameCount) * rect.width /* / speedF */, rect.top, rect.width, rect.height));
     setLooped(true);
     play(*an);
 }
