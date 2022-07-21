@@ -3,6 +3,7 @@
 
 #include <SFML/System.hpp>
 #include <iostream>
+#include "sqlite3.h"
 using namespace std;
 
 #define getDBInstance() PropertyManager::getInstance()
@@ -21,8 +22,6 @@ using namespace std;
 
 #define WEATHER_TEX "main_texture"
 #define WEATHER_EXP "explosion_texture"
-
-#include "sqlite3.h"
 
 class PropertyManager
 {

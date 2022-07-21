@@ -9,10 +9,11 @@ void Game::processEvents()
     sf::Event event;
     while (window.pollEvent(event))
     {
-        if (event.type == sf::Event::Closed)
+        if (event.type == sf::Event::Closed || sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
+        {
+            getDBInstance()->close();
             window.close();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
-            window.close();
+        }
         handleInput(event, window);
     }
 }
@@ -21,11 +22,13 @@ void Game::handleInput(sf::Event event, sf::RenderWindow &window)
 {
     if (event.type == sf::Event::KeyReleased)
     {
-        if (event.key.code == sf::Keyboard::Enter){
-            if(demo){
-                demo=false;
+        if (event.key.code == sf::Keyboard::Enter)
+        {
+            if(demo)
+            {
+                demo = false;
                 delete(race);
-                race= new Race(gameview.getCenter());
+                race = new Race(gameview.getCenter());
             }
         }
     }
@@ -39,7 +42,6 @@ unsigned int Game::getCurrentTrack()
 
 void Game::render()
 {
-    sf::RenderStates states;
     window.clear();
     currentState->draw(window);
     window.draw(menu);
