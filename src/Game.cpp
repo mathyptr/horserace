@@ -13,7 +13,7 @@ void Game::processEvents()
             window.close();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape))
             window.close();
-        currentState->handleInput(event, window);
+        handleInput(event, window);
     }
 }
 

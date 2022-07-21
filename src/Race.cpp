@@ -241,11 +241,11 @@ void Race::initHorses()
     posy=HORSE1_POSY;
     if(horsePlayer==NULL){
         zlevel=5;
-        horsePlayer2 = std::make_unique<Horse>(2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel, propmgr);
+        horsePlayer2 = std::make_unique<Horse>(4,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel, propmgr);
         zlevel++;
-        horsePlayer3 = std::make_unique<Horse>(3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel, propmgr);
+        horsePlayer3 = std::make_unique<Horse>(6,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx3),static_cast<float>(posy3)),zlevel, propmgr);
         zlevel++;
-        horsePlayer = std::make_unique<Horse>(1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel, propmgr);
+        horsePlayer = std::make_unique<Horse>(5,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)),zlevel, propmgr);
     }
     else{
         horsePlayer->startPos(sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx),static_cast<float>(posy)));
