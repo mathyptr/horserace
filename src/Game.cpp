@@ -104,20 +104,20 @@ void Game::setDemo(bool d)
     demo=d;
 }
 
-bool Game::getDemo()
+bool Game::getDemo() const
 {
     return demo;
 }
 
-Game::Game(const std::string winTitle) : window(sf::VideoMode(800, 600, 32), winTitle)
+Game::Game(const std::string winTitle) : window(sf::VideoMode(GAME_VIEW_X, GAME_VIEW_Y, 32), winTitle)
 {
     window.setMouseCursorVisible(false);
     window.setFramerateLimit(60);
-    gameview.setCenter(GVIEW_X / 2,GVIEW_Y / 2);
-    gameview.setSize(sf::Vector2f(GVIEW_X, GVIEW_Y));
+    gameview.setCenter(GAME_VIEW_X / 2,GAME_VIEW_Y / 2);
+    gameview.setSize(GAME_VIEW_X, GAME_VIEW_Y);
     
-    getDBInstance()->connect();
     gameerrorstate=true;
+    getDBInstance()->connect();
     if(getDBInstance()->getStatus() == 0)
     {
         icon.loadFromFile("img/icon.png");

@@ -3,9 +3,6 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
-#include <vector>
-#include <algorithm>
-#include <memory>
 #include "Track.hpp"
 #include "Horse.hpp"
 #include "Weather.hpp"
@@ -13,12 +10,9 @@
 #include "Menu.hpp"
 #include "Race.hpp"
 #include "PropertyManager.hpp"
-#include "AnimatedSprite.hpp"
 
-using namespace std;
-
-#define GVIEW_X 800
-#define GVIEW_Y 600
+#define GAME_VIEW_X 800
+#define GAME_VIEW_Y 600
 
 #define  CENTER_SPEED_FACTOR 4
 #define  BOTTOM_SPEED_FACTOR 2
@@ -47,18 +41,17 @@ enum class GameState
 class Game
 {
 public:
-    Game();
     Game(std::string winTitle);
     void Run();
     void initMenu();
     void changeState(GameState nextGameState);
     void setCurrentState(State *_currentState);
     bool checkState(GameState state) const;
+    void setDemo(bool d);
+    bool getDemo() const;
     State* getCurrentState() const;
     Race* race;
     Menu menu;
-    void setDemo(bool d);
-    bool getDemo();
 
 private:
     unsigned int getCurrentTrack();
