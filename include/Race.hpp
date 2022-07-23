@@ -53,7 +53,6 @@ private:
   unsigned int pathlen;
   sf::Clock timer;
   sf::Vector2f posgameview;
-  bool mute;
   bool demo;
   unsigned int horseposymax[NMAXHORSE];
   std::vector<std::shared_ptr<Weather>> weath;

@@ -1,8 +1,8 @@
 #include "Game.hpp"
-#include "Utility.hpp"
 #include "Race.hpp"
 #include "StateRace.hpp"
 #include "StateResult.hpp"
+#include "Utility.hpp"
 
 Game::Game(const std::string winTitle) : window(sf::VideoMode(GAME_VIEW_X, GAME_VIEW_Y, 32), winTitle)
 {
@@ -26,6 +26,7 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(GAME_VIEW_X, GAME_
     gameoverstate = false;
     winstate = false;
     demo = true;
+    mute = false;
 }
 
 void Game::run()
@@ -48,25 +49,30 @@ void Game::processEvents()
             getDBInstance()->close();
             window.close();
         }
-        handleInput(event, window);
-    }
-}
-
-void Game::handleInput(sf::Event event, sf::RenderWindow &window)
-{
-    if (event.type == sf::Event::KeyReleased)
-    {
-        if (event.key.code == sf::Keyboard::Enter)
+        else if (event.type == sf::Event::KeyReleased)
         {
-            if(demo)
+            switch (event.key.code)
             {
-                demo = false;
-                delete(race);
-                race = new Race(gameview.getCenter());
+                case sf::Keyboard::Enter:
+                    if(demo)
+                    {
+                        demo = false;
+                        delete(race);
+                        race = new Race(gameview.getCenter());
+                    }
+                    break;
+                case sf::Keyboard::M:
+                    mute = !mute;
+                    if(mute)
+                        race->stopSound();
+                    else
+                        race->playSound();
+                default:
+                    break;
             }
         }
+        currentState->handleInput(event, window);
     }
-    currentState->handleInput(event, window);
 }
 
 void Game::render()
