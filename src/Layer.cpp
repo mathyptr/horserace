@@ -1,9 +1,7 @@
 #include "Layer.hpp"
 
-Layer::Layer(sf::Texture& tex, float speedFactor, const sf::IntRect& rect, const sf::Vector2f& pos, unsigned int z) : AnimatedSprite()/*  : AnimatedSprite(sf::milliseconds(5) * rect.width / 800) */
+Layer::Layer(sf::Texture& tex, float speedFactor, const sf::IntRect& rect, const sf::Vector2f& pos, unsigned int z) : AnimatedSprite(sf::milliseconds(30))
 {
-    frameTime = sf::milliseconds(30);
-
     this->speedFactor = speedFactor;
     zLevel = z;
     setPosition(pos);    
