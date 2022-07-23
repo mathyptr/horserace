@@ -1,8 +1,42 @@
 #include "Game.hpp"
 #include "Utility.hpp"
-#include "StateRace.hpp"
 #include "Race.hpp"
+#include "StateRace.hpp"
 #include "StateResult.hpp"
+
+Game::Game(const std::string winTitle) : window(sf::VideoMode(GAME_VIEW_X, GAME_VIEW_Y, 32), winTitle)
+{
+    window.setMouseCursorVisible(false);
+    window.setFramerateLimit(60);
+    gameview.setCenter(GAME_VIEW_X / 2,GAME_VIEW_Y / 2);
+    gameview.setSize(GAME_VIEW_X, GAME_VIEW_Y);
+    
+    gameerrorstate = true;
+    getDBInstance()->connect();
+    if(getDBInstance()->getStatus() == 0)
+    {
+        icon.loadFromFile("img/icon.png");
+        gameerrorstate = false;
+    }
+    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    
+    race = new Race(gameview.getCenter());
+    menu = new Menu(gameview.getCenter());
+    currentState = new StateRace(this);
+    gameoverstate = false;
+    winstate = false;
+    demo = true;
+}
+
+void Game::run()
+{
+    while (window.isOpen() && !gameerrorstate)
+    {
+        currentState->update();
+        processEvents();
+        render();
+    }
+}
 
 void Game::processEvents()
 {
@@ -35,49 +69,25 @@ void Game::handleInput(sf::Event event, sf::RenderWindow &window)
     currentState->handleInput(event, window);
 }
 
-unsigned int Game::getCurrentTrack()
-{
-    return race->getCurrentIndex();
-}
-
 void Game::render()
 {
     window.clear();
     currentState->draw(window);
-    window.draw(menu);
+    window.draw(*menu);
     window.display();
-}
-
-void Game::initMenu()
-{
-    currentTrack=getCurrentTrack();
-    font.loadFromFile(getDBInstance()->getTrackProperty(currentTrack, FONT_FILE));
-    std::string fontSize= getDBInstance()->getTrackProperty(currentTrack, FONT_SIZE);
-    std::string fontColor= getDBInstance()->getTrackProperty(currentTrack, FONT_COLOR);
-    testBase.setFont(font);
-    testBase.setCharacterSize(std::stoi(fontSize));
-    testBase.setColor(Utility::getColor(fontColor));
-    menu.Init(testBase, gameview.getCenter());
-}
-
-void Game::Run()
-{
-    while (window.isOpen() && !gameerrorstate)
-    {
-        currentState->update();
-        processEvents();
-        render();
-    }
 }
 
 State* Game::createPointer(GameState state) 
 {
-    if(state == GameState::STATE_RESULT)
-        return new StateResult(this);   
-    else if (state == GameState::STATE_RACE)
-        return new StateRace(this);
-    else
-        return nullptr;
+    switch (state)
+    {
+        case GameState::STATE_RESULT:
+            return new StateResult(this);   
+        case GameState::STATE_RACE:
+            return new StateRace(this);
+        default:
+            return nullptr;
+    }
 }
 
 void Game::changeState(GameState nextGameState) 
@@ -103,35 +113,10 @@ bool Game::checkState(GameState state) const
 
 void Game::setDemo(bool d)
 {
-    demo=d;
+    demo = d;
 }
 
 bool Game::getDemo() const
 {
     return demo;
 }
-
-Game::Game(const std::string winTitle) : window(sf::VideoMode(GAME_VIEW_X, GAME_VIEW_Y, 32), winTitle)
-{
-    window.setMouseCursorVisible(false);
-    window.setFramerateLimit(60);
-    gameview.setCenter(GAME_VIEW_X / 2,GAME_VIEW_Y / 2);
-    gameview.setSize(GAME_VIEW_X, GAME_VIEW_Y);
-    
-    gameerrorstate=true;
-    getDBInstance()->connect();
-    if(getDBInstance()->getStatus() == 0)
-    {
-        icon.loadFromFile("img/icon.png");
-        gameerrorstate=false;
-    }
-    window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-    
-    race = new Race(gameview.getCenter());
-    currentState = new StateRace(this);
-    currentTrack = getCurrentTrack();
-    gameoverstate = false;
-    winstate = false;
-    demo = true;
-    initMenu();
-};

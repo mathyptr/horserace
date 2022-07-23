@@ -39,10 +39,10 @@ void StateResult::typeWriter(){
     }
 }
 
-void StateResult::update() {
-    game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),game->race->result(),TEST_BOTTOM_CENTER_RESULT,testTopCenter,"",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
+void StateResult::update() 
+{
+    game->menu->updateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),game->race->result(),TEST_BOTTOM_CENTER_RESULT,testTopCenter,"",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
 }
-
 
 void StateResult::handleInput(sf::Event event, sf::RenderWindow &window) 
 {
@@ -54,7 +54,7 @@ void StateResult::handleInput(sf::Event event, sf::RenderWindow &window)
     {
       if (event.key.code == sf::Keyboard::Up){
         game->race->getNextTrack();
-        game->initMenu();
+        //game->initMenu();
         game->changeState(GameState::STATE_RACE);
         }
     }

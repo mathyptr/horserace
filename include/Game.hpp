@@ -36,8 +36,8 @@ class Game
 {
 public:
     Game(std::string winTitle);
-    void Run();
-    void initMenu();
+    void run();
+    //void initMenu();
     void changeState(GameState nextGameState);
     void setCurrentState(State *_currentState);
     bool checkState(GameState state) const;
@@ -45,16 +45,15 @@ public:
     bool getDemo() const;
     State* getCurrentState() const;
     Race* race;
-    Menu menu;
+    Menu* menu;
 
 private:
-    unsigned int getCurrentTrack();
-    unsigned int currentTrack;
     sf::RenderWindow window;
     sf::View gameview;
-
     sf::Image icon;
+    
     sf::Font font;
+
     sf::Text testBase;
     bool mute;
     bool winstate;

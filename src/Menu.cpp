@@ -1,167 +1,78 @@
 #include "Menu.hpp"
+#include "Utility.hpp"
+#include "PropertyManager.hpp"
 
-Menu::Menu():
-  mSpeedPerSecond(800.f),
-  mDistanceTravelled(0),
-  mMaximumDistance(900.f)
+Menu::Menu()
 {
-  
-  font.loadFromFile("font/default_font.ttf");
-
-  sf::Color ccol=sf::Color::Red;
-  unsigned int csize=24;
-
-  testBase.setFont(font);
-  testBase.setCharacterSize(csize);
-  testBase.setColor(ccol);
-
-  BottomLeftLabel="";
-  TopRightLabel="";
-  BottomCenterLabel="";
-  TopCenterLabel="";
-  BottomRightLabel="";
-  TopLeftLabel="";
-
-
-  TopLeftPosition=sf::Vector2f(-390,-300);
-  TopCenterPosition=sf::Vector2f(-120,-300);
-  TopRightPosition=sf::Vector2f(240,-300);
-  BottomLeftPosition=sf::Vector2f(-390,270);
-  BottomCenterPosition=sf::Vector2f(-120,270);
-  BottomRightPosition=sf::Vector2f(280,270);
-  
-  BottomLeft.setFont(font);
-  BottomLeft.setString("");
-  BottomLeft.setCharacterSize(csize);
-  BottomLeft.setColor(ccol);
-
-  TopRight.setFont(font);
-  TopRight.setString("");
-  TopRight.setCharacterSize(csize);
-  TopRight.setColor(ccol);
-
-  BottomCenter.setFont(font);
-  BottomCenter.setString("");
-  BottomCenter.setCharacterSize(csize);
-  BottomCenter.setColor(ccol);
-
-  TopCenter.setFont(font);
-  TopCenter.setString("");
-  TopCenter.setCharacterSize(csize);
-  TopCenter.setColor(ccol);
-
-  BottomRight.setFont(font);
-  BottomRight.setString("");
-  BottomRight.setCharacterSize(csize);
-  BottomRight.setColor(ccol);
-
-  TopLeft.setFont(font);
-  TopLeft.setString("");
-  TopLeft.setCharacterSize(csize);
-  TopLeft.setColor(ccol);
 
 }
 
-void Menu::Init(sf::Text testBase, const sf::Vector2f& pos)
+Menu::Menu(const sf::Vector2f& position)
 {
-  testBase=testBase;
-  font=*testBase.getFont();
-  unsigned int csize=testBase.getCharacterSize();
-  sf::Color ccol=testBase.getColor();
+    font.loadFromFile("font/default_font.ttf");
+    fontColor = Utility::getColor(getDBInstance()->getTrackProperty(1, FONT_COLOR));    //calcolare il vero track index
+    fontSize = stoi(getDBInstance()->getTrackProperty(1, FONT_SIZE));                   //anche qua
 
-  position=pos;
+    TopLeftPosition = sf::Vector2f(-390, -300);
+    TopCenterPosition = sf::Vector2f(-120, -300);
+    TopRightPosition = sf::Vector2f(240, -300);
+    BottomLeftPosition = sf::Vector2f(-390, 270);
+    BottomCenterPosition = sf::Vector2f(-120, 270);
+    BottomRightPosition = sf::Vector2f(280, 270);
 
-  BottomLeftLabel="";
-  TopRightLabel="";
-  BottomCenterLabel="";
-  TopCenterLabel="";
-  BottomRightLabel="";
-  TopLeftLabel="";
+    topLeftText = sf::Text("", font, fontSize);
+    topLeftText.setColor(fontColor);
 
-  TopLeftPosition=sf::Vector2f(-390,-300);
-  TopCenterPosition=sf::Vector2f(-120,-300);
-  TopRightPosition=sf::Vector2f(240,-300);
-  BottomLeftPosition=sf::Vector2f(-390,270);
-  BottomCenterPosition=sf::Vector2f(-120,270);
-  BottomRightPosition=sf::Vector2f(280,270);
+    bottomLeftText = sf::Text("", font, fontSize);
+    bottomLeftText.setColor(fontColor);
+    
+    topCenterText = sf::Text("", font, fontSize);
+    topCenterText.setColor(fontColor);
 
-  setPosition(position);
+    bottomCenterText = sf::Text("", font, fontSize);
+    bottomCenterText.setColor(fontColor);
 
-  BottomLeft.setString("");
-  BottomLeft.setFont(font);
-  BottomLeft.setCharacterSize(csize);
-  BottomLeft.setColor(ccol);
+    topRightText = sf::Text("", font, fontSize);
+    topRightText.setColor(fontColor);
 
-  TopRight.setString("");
-  TopRight.setFont(font);
-  TopRight.setCharacterSize(csize);
-  TopRight.setColor(ccol);
+    bottomRightText = sf::Text("", font, fontSize);
+    bottomRightText.setColor(fontColor);
 
-  BottomCenter.setString("");
-  BottomCenter.setFont(font);
-  BottomCenter.setCharacterSize(csize);
-  BottomCenter.setColor(ccol);
-  
-  TopCenter.setString("");
-  TopCenter.setFont(font);
-  TopCenter.setCharacterSize(csize);
-  TopCenter.setColor(ccol);
-
-  BottomRight.setString("");
-  BottomRight.setFont(font);
-  BottomRight.setCharacterSize(csize);
-  BottomRight.setColor(ccol);
-  BottomRight.setString("");
-
-  TopLeft.setString("");
-  TopLeft.setFont(font);
-  TopLeft.setCharacterSize(csize);
-  TopLeft.setColor(ccol);
+    setPosition(position);
 }
 
-
-
-void Menu::UpdateText( const sf::String BottomL, const  sf::String TopR, const sf::String BottomC,  const sf::String TopC, const sf::String BottomR, const sf::String TopL)
+void Menu::updateText(const sf::String bottomL, const sf::String topR, const sf::String bottomC, const sf::String topC, const sf::String bottomR, const sf::String topL)
 {
-  BottomLeft.setString(BottomL);
-  TopRight.setString(TopR);
-  BottomCenter.setString(BottomC);
-  TopCenter.setString(TopC);
-  BottomRight.setString(BottomR);
-  TopLeft.setString(TopL);
+    topLeftText.setString(topL);
+    bottomLeftText.setString(bottomL);
+    topCenterText.setString(topC);
+    bottomCenterText.setString(bottomC);
+    topRightText.setString(topR);
+    bottomRightText.setString(bottomR);
 }
-
 
 sf::Vector2f Menu::getPosition() const
 {
-  return position;
+    return position;
 }
 
 void Menu::setPosition(sf::Vector2f pos)
 {
-  position=pos;
-  BottomLeft.setPosition(position+BottomLeftPosition);
-  TopRight.setPosition(position+TopRightPosition);
-  BottomCenter.setPosition(position+BottomCenterPosition);
-  TopCenter.setPosition(position+TopCenterPosition);
-  BottomRight.setPosition(position+BottomRightPosition);
-  TopLeft.setPosition(position+TopLeftPosition);
+    position = pos;
+    topLeftText.setPosition(position + TopLeftPosition);
+    bottomLeftText.setPosition(position + BottomLeftPosition);
+    topCenterText.setPosition(position + TopCenterPosition);
+    bottomCenterText.setPosition(position + BottomCenterPosition);
+    topRightText.setPosition(position + TopRightPosition);
+    bottomRightText.setPosition(position + BottomRightPosition);
 }
-
-
-void Menu::move(float offsX, float offsY)
-{
-  position.x=offsX;
-  position.y=offsY;
-}
-
 
 void Menu::draw(sf::RenderTarget &target, sf::RenderStates states) const
 {
-  target.draw(BottomLeft,  states);
-  target.draw(TopRight);
-  target.draw(BottomCenter);
-  target.draw(TopCenter);
-  target.draw(BottomRight);
-  target.draw(TopLeft);
+    target.draw(topLeftText/* , states */);
+    target.draw(bottomLeftText/* , states */);
+    target.draw(topCenterText/* , states */);
+    target.draw(bottomCenterText/* , states */);
+    target.draw(topRightText/* , states */);
+    target.draw(bottomRightText/* , states */);
 }

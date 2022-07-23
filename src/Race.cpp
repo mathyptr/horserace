@@ -316,7 +316,7 @@ void Race::update()
     }
 }
 
-unsigned int Race::getCurrentIndex()
+unsigned int Race::getCurrentTrackIndex()
 {
     return currentTrackIndex;
 }

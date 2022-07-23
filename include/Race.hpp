@@ -41,7 +41,7 @@ public:
   std::string finalResult();
   void collision();
   std::string order( map <std::string,float> results);
-  unsigned int getCurrentIndex();
+  unsigned int getCurrentTrackIndex();
   void setDemo(bool state);
   unique_ptr<Horse> horsePlayer, horsePlayer2,horsePlayer3;
   unique_ptr<Track> track;

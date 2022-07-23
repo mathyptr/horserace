@@ -30,11 +30,11 @@ void StateRace::update()
     if(game->race->checkWinner())
         testBottomCenter=TEST_BOTTOM_CENTER_GAME;
     game->race->update();
-    game->menu.UpdateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),"",testBottomCenter,"","",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
+    game->menu->updateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),"",testBottomCenter,"","",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
     game->race->setDemo(game->getDemo());
     if(game->getDemo()&&game->race->checkWinner()){
             game->race->getNextTrack();
-            game->initMenu();
+            //game->initMenu();
     }
 }
 
