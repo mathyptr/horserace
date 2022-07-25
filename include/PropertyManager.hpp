@@ -36,6 +36,7 @@ public:
 	std::string getTrackProperty(std::string trackName, std::string propName);
     int getTrackCount();
 	std::string getHorseProperty(int horseID, std::string propName);
+    int getHorseCount();
     std::string getWeatherProperty(int weatherID, std::string propName);
     std::string getWeatherProperty(std::string weatherName, std::string propName);
     std::string getWeatherProbability(int weatherID, int trackID);

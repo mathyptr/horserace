@@ -4,11 +4,14 @@
 #include <SFML/System.hpp>
 #include <SFML/Audio.hpp>
 #include "Menu.hpp"
+#include "HorseMenu.hpp"
 #include "Race.hpp"
 #include "PropertyManager.hpp"
 
 #define GAME_VIEW_X 800
 #define GAME_VIEW_Y 600
+
+class HorseMenu;
 
 class State;
 enum class GameState
@@ -28,14 +31,20 @@ public:
     void setDemo(bool d);
     bool getDemo() const;
     bool getMute() const;
+    sf::Time getTime() const;
+    sf::Time getDeltaTime() const;
     State* getCurrentState() const;
     Race* race;
     Menu* menu;
+    HorseMenu* horseMenu;
 
 private:
     sf::RenderWindow window;
     sf::View gameview;
     sf::Image icon;
+
+    sf::Clock timeClock;
+    sf::Clock deltaTimeClock;
 
     bool mute;
     bool winstate;

@@ -7,14 +7,14 @@ Horse::Horse()
 
 Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z) : AnimatedSprite(sf::seconds(0.05f))
 {
-    horseName = "My horse";
     horseNumber = number;
+    horseName = getDBInstance()->getHorseProperty(horseNumber, "name");
     totalTravelled = 0;
     setPropHorse();
     zLevel = z;
     life = 10;
     money = 0;
-    startPos(orig,pos);
+    startPos(orig, pos);
     sf::Texture* tex = new sf::Texture();
     tex->setSmooth(true);
     tex->loadFromFile(getDBInstance()->getHorseProperty(horseNumber, "texture"));

@@ -23,7 +23,6 @@
 #define  HORSE3_POSY 562
 #define NMAXHORSE 3
 #define NMAXPROB 10
-#define TRACK_COUNT 6
 
 class Race
 {

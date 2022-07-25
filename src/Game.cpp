@@ -22,11 +22,15 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(GAME_VIEW_X, GAME_
     
     race = new Race(gameview.getCenter());
     menu = new Menu(gameview.getCenter());
+    horseMenu = new HorseMenu(gameview.getCenter(), this);
     currentState = new StateRace(this);
     gameoverstate = false;
     winstate = false;
     demo = true;
     mute = false;
+
+    timeClock.restart();
+    deltaTimeClock.restart();
 }
 
 void Game::run()
@@ -36,6 +40,7 @@ void Game::run()
         currentState->update();
         processEvents();
         render();
+        deltaTimeClock.restart();
     }
 }
 
@@ -80,6 +85,7 @@ void Game::render()
     window.clear();
     currentState->draw(window);
     window.draw(*menu);
+    window.draw(*horseMenu);
     window.display();
 }
 
@@ -125,4 +131,14 @@ void Game::setDemo(bool d)
 bool Game::getDemo() const
 {
     return demo;
+}
+
+sf::Time Game::getTime() const
+{
+    return timeClock.getElapsedTime();
+}
+
+sf::Time Game::getDeltaTime() const
+{
+    return deltaTimeClock.getElapsedTime();
 }
