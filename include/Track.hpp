@@ -49,17 +49,15 @@
 #define  LAYER_FRONT_RECWIDTH 800
 #define  LAYER_FRONT_RECTHEIGHT 200
 
-
 class Track
 {
 public:
     Track(std::string name);
     /* void move(float speed); */
     void move(sf::Time sec);
-    void playSound();
-    void stopSound();
     void setName(std::string trackName);
     std::string getName();
+    unsigned int getPathLength() const;
     void setfinalLineState();
     void draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel);
 
@@ -82,10 +80,7 @@ private:
     unique_ptr<Layer> layerAtmo;
     unique_ptr<Layer> layerFront;
     unique_ptr<Layer> layerFinalLine;
-    std::string soundPath;
-    sf::Sound sound;
-    sf::SoundBuffer buffersound;
-    bool nosound;
     unsigned int speedFactor;
+    unsigned int pathLength;
 };
 #endif

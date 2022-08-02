@@ -6,7 +6,7 @@ TEST(spriteTest, setZlevel){
     float posx,posy;
     unsigned int zlevel=1;
     posx=HORSE3_POSX;
-    posy=HORSE3_POSY;
+    posy=HORSE3_POS_Y;
     sprite.setZLevel(zlevel);
     ASSERT_EQ(sprite.getZLevel(),zlevel);
 }
@@ -37,11 +37,11 @@ TEST(gameTest, checkWinner){
     float posx,posy,posx2,posy2,posx3,posy3;
 
     posx3=HORSE3_POSX;
-    posy3=HORSE3_POSY;
+    posy3=HORSE3_POS_Y;
     posx2=HORSE2_POSX;
-    posy2=HORSE2_POSY;
-    posx=HORSE1_POSX;
-    posy=HORSE1_POSY;
+    posy2=HORSE2_POS_Y;
+    posx=HORSE1_POS_X;
+    posy=HORSE1_POS_Y;
 
     zlevel=5;
     horsePlayer2= new Horse (2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(posx2),static_cast<float>(posy2)),zlevel);
@@ -69,7 +69,7 @@ TEST(gameTest, checkWinner){
 }
 
 TEST(horseTest, incMoney){
-    Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POSX),static_cast<float>(HORSE1_POSY)),7);
+    Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POS_X),static_cast<float>(HORSE1_POS_Y)),7);
     int startMoney,finalMoney;
     startMoney= horsePlayer->getMoney();
     horsePlayer->incMoney(100);
@@ -78,7 +78,7 @@ TEST(horseTest, incMoney){
 }
 
 TEST(horseTest, decLife){
-    Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POSX),static_cast<float>(HORSE1_POSY)),7);
+    Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POS_X),static_cast<float>(HORSE1_POS_Y)),7);
     int startLife,finalLife;
     startLife= horsePlayer->getLife();
     horsePlayer->decLife();
@@ -99,9 +99,9 @@ TEST(raceTest, result){
     sf::View gameview;
     PropertyManager propmgr =  PropertyManager(true);
     Race* race= new Race(propmgr,gameview.getCenter());
-    Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POSX),static_cast<float>(HORSE1_POSY)),7);
-    Horse *horsePlayer2= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE2_POSX),static_cast<float>(HORSE2_POSY)),7);
-    Horse *horsePlayer3= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE3_POSX),static_cast<float>(HORSE3_POSY)),7);
+    Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POS_X),static_cast<float>(HORSE1_POS_Y)),7);
+    Horse *horsePlayer2= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE2_POSX),static_cast<float>(HORSE2_POS_Y)),7);
+    Horse *horsePlayer3= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE3_POSX),static_cast<float>(HORSE3_POS_Y)),7);
     horsePlayer->setPosition(1000,200);
     horsePlayer2->setPosition(350,200);
     horsePlayer3->setPosition(200,200);
@@ -111,8 +111,8 @@ TEST(raceTest, result){
 
 TEST(stateTest, changeState){
     Game* game= new Game("Horse Racing");
-    game->changeState(GameState::STATE_RESULT);
-    ASSERT_EQ(game->getCurrentState()->getStateName(),GameState::STATE_RESULT);
+    game->changeState(GameState::STATE_RACE_RESULT);
+    ASSERT_EQ(game->getCurrentState()->getStateName(),GameState::STATE_RACE_RESULT);
 }
 
 
@@ -121,11 +121,11 @@ TEST(raceTest, collision){
     int startLife,finalLife;
     PropertyManager propmgr =  PropertyManager(true);
     Race* race= new Race(propmgr,gameview.getCenter());
-    Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POSX),static_cast<float>(HORSE1_POSY)),7);
+    Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POS_X),static_cast<float>(HORSE1_POS_Y)),7);
     startLife=horsePlayer->getLife();
     sf::Texture weathtexture;
     weathtexture.loadFromFile(propmgr.getCurrentWeatherTexture(std::to_string(1)));
-    Weather weath = Weather(weathtexture,100,HORSE1_POSX,HORSE1_POSY,7,HORSE1_POSY);
+    Weather weath = Weather(weathtexture,100,HORSE1_POS_X,HORSE1_POS_Y,7,HORSE1_POS_Y);
     if(horsePlayer->getZLevel()==weath.getZLevel())
     {
         sf::FloatRect playerbox = horsePlayer->getGlobalBounds();

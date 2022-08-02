@@ -4,20 +4,26 @@
 #include <SFML/Graphics/RenderWindow.hpp>
 #include "Game.hpp"
 
+class Game;
+
+enum class GameState
+{
+    STATE_DEMO,
+    STATE_HORSE_MENU,
+    STATE_RACE,
+    STATE_FINAL_RESULT
+};
+
 class State 
 {
 public:
-    virtual ~State() = default;
     virtual void draw(sf::RenderWindow& window) = 0;
-    virtual void changeState(State* nextState) = 0;
     virtual void update() = 0;
     virtual void handleInput(sf::Event event, sf::RenderWindow &window) = 0;
     virtual GameState getStateName() const = 0;
-    virtual void playMusic() = 0;
-    GameState stateName;
 
 protected:
     Game* game;
-    sf::Music music;
+    GameState stateName;
 };
 #endif

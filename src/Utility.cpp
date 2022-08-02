@@ -24,3 +24,32 @@ const sf::Color Utility::getColor(std::string colorName)
 
     return c;
 }
+
+int* Utility::getRandom(int start, int end, const int count)
+{
+    int* a = (int*)malloc(sizeof(int) * count);
+    int r;
+    bool exists;
+
+    srand(time(NULL));
+    for (int i = 0; i < count; i++)
+    {
+        do
+        {
+            r = start + rand() % (end - start + 1);
+            exists = false;
+            for (int j = 0; j < i; j++)
+            {
+                if(a[j] == r)
+                {
+                    exists = true;
+                    break;
+                }
+            }    
+        } 
+        while (exists);
+        
+        a[i] = r;
+    }
+    return a;
+}

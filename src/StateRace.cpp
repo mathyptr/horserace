@@ -1,52 +1,84 @@
 #include "StateRace.hpp"
-#include "Game.hpp"
 
 StateRace::StateRace(Game *gamePtr) 
 {
-    testBottomCenter="";
     game = gamePtr;
-    stateName = GameState ::STATE_RACE;
-}
+    stateName = GameState::STATE_RACE;
 
-void StateRace::changeState(State* nextState) 
-{
-    State* tmpState = game->getCurrentState();
-    game->setCurrentState(nextState);
-    delete tmpState;
+    int selectedHorseNumber = ((StateHorseMenu*)(game->getStatePointer(GameState::STATE_HORSE_MENU)))->getSelectedHorseIndex() + 1;
+    std::vector<int> numbers = { selectedHorseNumber };
+    //altri due numeri random per gli avversari
+    for (int i = 0; i < 2; i++)
+    {
+        int r = 0;
+        do
+            r = 1 + rand() % getDBInstance()->getHorseCount();
+        while (std::count(numbers.begin(), numbers.end(), r) != 0);
+        numbers.push_back(r);
+    }
+    
+    horseNumbers = (int*)malloc(sizeof(int) * HORSE_COUNT);
+    for (int i = 0; i < HORSE_COUNT; i++)
+        horseNumbers[i] = numbers.data()[i];        
+
+    race = new Race(game, horseNumbers, false);
+    rankingMenu = new RankingMenu(sf::Vector2f(GAME_VIEW_X / 2, GAME_VIEW_Y / 2), horseNumbers);
+    rankingMenu->setRankingMode(RankingMode::NONE, nullptr);
+    raceMenu = new RaceMenu(sf::Vector2f(GAME_VIEW_X / 2, GAME_VIEW_Y / 2));
 }
 
 void StateRace::draw(sf::RenderWindow &window) 
 {
-    game->race->render(window);
-
+    race->render(window);
+    window.draw(*raceMenu);
+    window.draw(*rankingMenu);
 }
 
 void StateRace::update() 
 {
-    if(game->getDemo())
-        testBottomCenter="Press key to play";
+    if(!race->horsePlayerFinished())
+    {
+        race->update(game->getDeltaTime());
+        raceMenu->update(game->getDeltaTime());
+        raceMenu->setTrackText(race->track->getName());
+        raceMenu->setLifeText("Life: " + std::to_string(race->horsePlayer->getLife()));
+        raceMenu->setMoneyText("Money: " + std::to_string(race->horsePlayer->getMoney()));
+    }
     else
-        testBottomCenter="";
-    if(game->race->checkWinner())
-        testBottomCenter=TEST_BOTTOM_CENTER_GAME;
-    game->race->update();
-    game->menu->updateText("Life: "+std::to_string(game->race->horsePlayer->getLife()),"",testBottomCenter,"","",game->race->track->getName()+"\nMoney: "+std::to_string(game->race->horsePlayer->getMoney()));
-    game->race->setDemo(game->getDemo());
-    if(game->getDemo()&&game->race->checkWinner()){
-            game->race->getNextTrack();
-            //game->initMenu();
+    {
+        if(rankingMenu->getRankingMode() == RankingMode::NONE)
+            rankingMenu->setRankingMode(RankingMode::RACE, race->getRanking());
+        rankingMenu->update(game->getDeltaTime());
     }
 }
 
 void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
 {
-  if (event.type == sf::Event::KeyReleased)
-      if(game->race->checkWinner())
-      {
-          game->race->setDemo(false);
-          if (event.key.code == sf::Keyboard::Enter)
-              game->changeState(GameState::STATE_RESULT);
-      }
+    //ogni volta che la tappa finisce:
+    //si va alla successiva (negozio?)
+    //se sono finite, si va alla premiazione
+
+    if(event.type == sf::Event::KeyReleased)
+    {
+        if(event.key.code == sf::Keyboard::Enter)
+        {
+            if(race->horsePlayerFinished())
+            {
+                switch (rankingMenu->getRankingMode())
+                {
+                    case RankingMode::RACE:
+                        calculateRanking();
+                        rankingMenu->setRankingMode(RankingMode::GLOBAL, getGlobalRanking());
+                        break;
+                    case RankingMode::GLOBAL:
+                        rankingMenu->setRankingMode(RankingMode::NONE, nullptr);
+                        if(!race->loadNextTrack(false))
+                            game->changeState(GameState::STATE_FINAL_RESULT);
+                        break;
+                }
+            }
+        }
+    }
 }
 
 GameState StateRace::getStateName() const
@@ -54,7 +86,26 @@ GameState StateRace::getStateName() const
     return stateName;
 }
 
-void StateRace::playMusic() 
+void StateRace::calculateRanking()
 {
-    music.play();
+    race->horsePlayer->setTotalTravelled(race->horsePlayer->getPosition().x);
+    race->horsePlayer2->setTotalTravelled(race->horsePlayer2->getPosition().x);
+    race->horsePlayer3->setTotalTravelled(race->horsePlayer3->getPosition().x);
+
+    std::vector<float> distances = { race->horsePlayer->getTotalTravelled(), race->horsePlayer2->getTotalTravelled(), race->horsePlayer3->getTotalTravelled() };
+    map<float, int> pairs = { { race->horsePlayer->getTotalTravelled(), race->horsePlayer->getNumber() }, { race->horsePlayer2->getTotalTravelled(), race->horsePlayer2->getNumber() }, { race->horsePlayer3->getTotalTravelled(), race->horsePlayer3->getNumber() } };
+
+    std::sort(distances.begin(), distances.end());
+    for (int i = 0; i < HORSE_COUNT; i++)
+        globalRanking[HORSE_COUNT - i - 1] = pairs[distances[i]];
+}
+
+const int* StateRace::getGlobalRanking() const
+{
+    return globalRanking;
+}
+
+int* StateRace::getHorseNumbers() const
+{
+    return horseNumbers;
 }

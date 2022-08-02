@@ -65,6 +65,13 @@ int PropertyManager::getHorseCount()
     return std::stoi(sendQuery(sql));
 }
 
+std::string PropertyManager::getMiscPath(std::string name)
+{
+    std::string sql = "select path from misc_files where name = '" + name + "';";
+    return sendQuery(sql);
+}
+
+
 std::string PropertyManager::sendQuery(std::string sql)
 {
     int rc;

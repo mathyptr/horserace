@@ -16,9 +16,7 @@ void Track::loadResources()
     atmopic.loadFromFile(getDBInstance()->getTrackProperty(name, SKY_PIC));
     finalLinepic.loadFromFile(getDBInstance()->getTrackProperty(name, FINALLINE_PIC));
     frontpic.loadFromFile(getDBInstance()->getTrackProperty(name, FRONT_PIC));
-    soundPath = getDBInstance()->getTrackProperty(name, SOUND);
-    if (!buffersound.loadFromFile(soundPath))
-        nosound = true;
+    pathLength = stoi(getDBInstance()->getTrackProperty(name, PATHLENGTH));
 }
 
 void Track::initLayer()
@@ -66,18 +64,6 @@ void Track::move(sf::Time sec)
     layerFront->update(sec);
 }
 
-void Track::playSound()
-{
-    sound.setBuffer(buffersound);
-    sound.setLoop(true);
-    sound.play();
-}
-
-void Track::stopSound()
-{
-    sound.stop();
-}
-
 void Track::setfinalLineState()
 {
     finalLineState=true;
@@ -91,6 +77,11 @@ void Track::setName(std::string trackName)
 std::string Track::getName()
 {
     return name;
+}
+
+unsigned int Track::getPathLength() const
+{
+    return pathLength;
 }
 
 void Track::draw(sf::RenderTarget &target, sf::RenderStates &states, int actzlevel)

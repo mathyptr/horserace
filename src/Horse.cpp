@@ -33,6 +33,11 @@ void Horse::startPos(sf::Vector2f orig, sf::Vector2f pos)
     setOrigin(orig);
 }
 
+int Horse::getNumber() const
+{
+    return horseNumber;
+}
+
 void Horse::setName(std::string name)
 {
     horseName = name;

@@ -6,5 +6,6 @@
 namespace Utility
 {
     const sf::Color getColor(std::string colorName);
+    int* getRandom(int start, int end, const int count);
 }
-#endif //HORSERACE_UTILITY_HPP
+#endif

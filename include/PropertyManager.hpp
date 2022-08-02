@@ -43,6 +43,7 @@ public:
     std::string getCurrentWeatherTexture(std::string weatherId);
     std::string getCurrentWeatherExplosion(std::string weatherId);
     std::string getProbability(std::string trackID, std::string weatherId);
+	std::string getMiscPath(std::string name);
 
 private:
 	PropertyManager();

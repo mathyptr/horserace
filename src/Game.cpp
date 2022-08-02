@@ -1,7 +1,7 @@
 #include "Game.hpp"
 #include "Race.hpp"
 #include "StateRace.hpp"
-#include "StateResult.hpp"
+#include "StateDemo.hpp"
 #include "Utility.hpp"
 
 Game::Game(const std::string winTitle) : window(sf::VideoMode(GAME_VIEW_X, GAME_VIEW_Y, 32), winTitle)
@@ -11,26 +11,16 @@ Game::Game(const std::string winTitle) : window(sf::VideoMode(GAME_VIEW_X, GAME_
     gameview.setCenter(GAME_VIEW_X / 2,GAME_VIEW_Y / 2);
     gameview.setSize(GAME_VIEW_X, GAME_VIEW_Y);
     
-    gameerrorstate = true;
     getDBInstance()->connect();
-    if(getDBInstance()->getStatus() == 0)
-    {
-        icon.loadFromFile("img/icon.png");
-        gameerrorstate = false;
-    }
+    gameerrorstate = getDBInstance()->getStatus() != 0;
+    icon.loadFromFile(getDBInstance()->getMiscPath("icon"));
     window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
-    
-    race = new Race(gameview.getCenter());
-    menu = new Menu(gameview.getCenter());
-    horseMenu = new HorseMenu(gameview.getCenter(), this);
-    currentState = new StateRace(this);
-    gameoverstate = false;
-    winstate = false;
-    demo = true;
-    mute = false;
 
-    timeClock.restart();
-    deltaTimeClock.restart();
+    font.loadFromFile(getDBInstance()->getMiscPath("default_font"));
+    fontColor = Utility::getColor(getDBInstance()->getTrackProperty(1, FONT_COLOR));    //calcolare il vero track index
+    fontSize = stoi(getDBInstance()->getTrackProperty(1, FONT_SIZE));                   //anche qua
+
+    restart();
 }
 
 void Game::run()
@@ -40,10 +30,28 @@ void Game::run()
         currentState->update();
         processEvents();
         render();
-        deltaTimeClock.restart();
+        deltaTime = deltaTimeClock.restart();
     }
 }
 
+void Game::restart()
+{
+    demoState = nullptr;
+    horseMenuState = nullptr;
+    raceState = nullptr;
+    finalResultState = nullptr;
+    demoState = (StateDemo*)getStatePointer(GameState::STATE_DEMO);
+    currentState = demoState;
+
+    music.openFromFile(getDBInstance()->getMiscPath("intro_music"));
+    music.setLoop(true);
+    music.play();
+
+    timeClock.restart();
+    deltaTimeClock.restart();
+}
+
+//global events (not state-depending)
 void Game::processEvents()
 {
     sf::Event event;
@@ -58,20 +66,11 @@ void Game::processEvents()
         {
             switch (event.key.code)
             {
-                case sf::Keyboard::Enter:
-                    if(demo)
-                    {
-                        demo = false;
-                        delete(race);
-                        race = new Race(gameview.getCenter());
-                    }
-                    break;
                 case sf::Keyboard::M:
-                    mute = !mute;
-                    if(mute)
-                        race->stopSound();
+                    if(music.getVolume() > 0)
+                        music.setVolume(0);
                     else
-                        race->playSound();
+                        music.setVolume(100);
                 default:
                     break;
             }
@@ -84,53 +83,52 @@ void Game::render()
 {
     window.clear();
     currentState->draw(window);
-    window.draw(*menu);
-    window.draw(*horseMenu);
     window.display();
 }
 
-State* Game::createPointer(GameState state) 
+State* Game::getStatePointer(GameState state) 
 {
     switch (state)
     {
-        case GameState::STATE_RESULT:
-            return new StateResult(this);   
+        case GameState::STATE_DEMO:
+            if(demoState == nullptr)
+                demoState = new StateDemo(this);
+            return demoState;
+        case GameState::STATE_HORSE_MENU:
+            if(horseMenuState == nullptr)
+                horseMenuState = new StateHorseMenu(this);
+            return horseMenuState;
         case GameState::STATE_RACE:
-            return new StateRace(this);
+            if(raceState == nullptr)
+                raceState = new StateRace(this);
+            return raceState;
+        case GameState::STATE_FINAL_RESULT:
+            if(finalResultState == nullptr)
+                finalResultState = new StateFinalResult(this);
+            return finalResultState; 
         default:
             return nullptr;
     }
 }
 
-void Game::changeState(GameState nextGameState) 
-{
-    State* nextState = createPointer(nextGameState);
-    currentState->changeState(nextState);
-}
-
-State *Game::getCurrentState() const 
-{
-    return currentState;
-}
-
-void Game::setCurrentState(State *currentState) 
+void Game::changeState(State *currentState) 
 {
     this->currentState = currentState;
+}
+
+void Game::changeState(GameState nextGameState) 
+{
+    currentState = getStatePointer(nextGameState);
+}
+
+State* Game::getCurrentState() const 
+{
+    return currentState;
 }
 
 bool Game::checkState(GameState state) const 
 {
     return currentState->getStateName() == state;
-}
-
-void Game::setDemo(bool d)
-{
-    demo = d;
-}
-
-bool Game::getDemo() const
-{
-    return demo;
 }
 
 sf::Time Game::getTime() const
@@ -140,5 +138,13 @@ sf::Time Game::getTime() const
 
 sf::Time Game::getDeltaTime() const
 {
-    return deltaTimeClock.getElapsedTime();
+    return deltaTime;
+}
+
+sf::Texture* Game::getScreenshot() const
+{
+    sf::Texture* texture = new sf::Texture();
+    texture->create(window.getSize().x, window.getSize().y);
+    texture->update(window);
+    return texture;
 }

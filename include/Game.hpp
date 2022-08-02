@@ -7,6 +7,11 @@
 #include "HorseMenu.hpp"
 #include "Race.hpp"
 #include "PropertyManager.hpp"
+#include "State.hpp"
+#include "StateDemo.hpp"
+#include "StateHorseMenu.hpp"
+#include "StateRace.hpp"
+#include "StateFinalResult.hpp"
 
 #define GAME_VIEW_X 800
 #define GAME_VIEW_Y 600
@@ -14,29 +19,33 @@
 class HorseMenu;
 
 class State;
-enum class GameState
-{
-    STATE_RACE,
-    STATE_RESULT
-};
+class StateDemo;
+class StateHorseMenu;
+class StateRace;
+class StateFinalResult;
 
 class Game
 {
 public:
     Game(std::string winTitle);
     void run();
+    void restart();
+    void changeState(State *nextState);
     void changeState(GameState nextGameState);
-    void setCurrentState(State *_currentState);
+    State* getCurrentState() const;
     bool checkState(GameState state) const;
-    void setDemo(bool d);
-    bool getDemo() const;
-    bool getMute() const;
+    State* getStatePointer(GameState state);
+    sf::Texture* getScreenshot() const;
+    void getScreenshot(sf::Texture& texture) const;
+
     sf::Time getTime() const;
     sf::Time getDeltaTime() const;
-    State* getCurrentState() const;
-    Race* race;
-    Menu* menu;
-    HorseMenu* horseMenu;
+
+    sf::Music music;
+    
+    sf::Font font;
+    int fontSize;
+    sf::Color fontColor;
 
 private:
     sf::RenderWindow window;
@@ -45,16 +54,15 @@ private:
 
     sf::Clock timeClock;
     sf::Clock deltaTimeClock;
+    sf::Time deltaTime;
 
-    bool mute;
-    bool winstate;
-    bool gameoverstate;
     bool gameerrorstate;
-    bool demo;
     State* currentState;
-    State* createPointer(GameState state);
+    StateDemo* demoState;
+    StateHorseMenu* horseMenuState;
+    StateRace* raceState;
+    StateFinalResult* finalResultState;
     void processEvents();
     void render();
- 
 };
 #endif // GAME_INCLUDE

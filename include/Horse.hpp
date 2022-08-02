@@ -19,6 +19,7 @@ class Horse : public AnimatedSprite
 public:
     Horse();
     Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z);
+    int getNumber() const;
     std::string getName() const;
     void setName(std::string name);
     void move(bool go, float sec);
