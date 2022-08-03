@@ -19,6 +19,7 @@ using namespace std;
 #define FRONT_PIC "front_pic"
 #define SOUND "sound"
 #define PATHLENGTH "length"
+#define OBSTACLE_TEX "obstacle_texture"
 
 #define WEATHER_TEX "main_texture"
 #define WEATHER_EXP "explosion_texture"

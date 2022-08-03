@@ -10,10 +10,12 @@ Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned 
     horseNumber = number;
     horseName = getDBInstance()->getHorseProperty(horseNumber, "name");
     totalTravelled = 0;
+    jumpon= false;
     setPropHorse();
     zLevel = z;
     life = 10;
     money = 0;
+    this->pos=pos;
     startPos(orig, pos);
     sf::Texture* tex = new sf::Texture();
     tex->setSmooth(true);
@@ -120,6 +122,9 @@ void Horse::incMoney(int coin)
 
 void Horse::move(bool go, float sec)
 {
+    if(jumpon)
+        setPosition(sf::Vector2f(pos.x,static_cast<float>(yOnJump(speed))));
+
     if (go)
     {
         update(sf::seconds(sec));
@@ -128,6 +133,29 @@ void Horse::move(bool go, float sec)
     else
         decSpeed(sec);
     travelled -= getSpeed() * sec;
+}
+
+void Horse::SetJumpON(){
+    jumpon=true;
+}
+
+float   Horse::yOnJump(float speed)
+{
+    float y,v0y;
+    float t;
+    const auto elapsed= horseplayerJumpTimer.getElapsedTime();
+    t=elapsed.asSeconds();
+//    v0y=speed;
+    v0y=VO_Y;
+    y=0.5*GRAVITY*pow(t,2)-v0y*t+pos.y;
+    if(y>=pos.y)
+    {
+        y=pos.y;
+        jumpon=false;
+        horseplayerJumpTimer.restart();
+    }
+//    std::cout<<"t: "<<t<<" y: "<<y<<std::endl;
+    return y;
 }
 
 unsigned int Horse::getTravelled() const
@@ -152,6 +180,9 @@ void Horse::move(float offsetX, float offsetY, float sec)
     oY = offsetY * speedFactor;
     travelled += abs(oX);
     AnimatedSprite::move(oX, oY);
+    if(jumpon)
+        //      oY=static_cast<float>(yOnJump(0));
+                setPosition(sf::Vector2f(pos.x,static_cast<float>(yOnJump(speed))));
     update(sf::seconds(sec));
 }
 

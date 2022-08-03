@@ -2,9 +2,12 @@
 #define HORSE_INCLUDE
 
 #include <SFML/Graphics.hpp>
+#include <cmath>
 #include "AnimatedSprite.hpp"
 #include "PropertyManager.hpp"
 
+#define GRAVITY 8*9.81
+#define VO_Y 100
 #define MAXSPEED 500.f
 #define SPEEDTHRESHOLD 100.f
 #define SPEEDFACTOR 10.f
@@ -34,6 +37,8 @@ public:
     int getMoney() const;
     void incMoney(int coin);
     bool decMoney();
+    float yOnJump(float speed);
+    void SetJumpON();
     void startPos(sf::Vector2f orig, sf::Vector2f pos);
     unsigned int getTravelled() const;
     float getTotalTravelled() const;
@@ -50,6 +55,9 @@ private:
     float agility;
     int life;
     int money;
+    sf::Vector2f pos;
+    bool jumpon;
+    sf::Clock horseplayerJumpTimer;
     void setPropHorse();
 };
 #endif // HORSE_INCLUDE
