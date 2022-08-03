@@ -2,11 +2,11 @@
 #include "Utility.hpp"
 #include <algorithm>
 
-Race::Race(Game* gamePtr, int* horseNumbers, const bool demo)
+Race::Race(Game* gamePtr, int* horseNumbers, Subject* subject, const bool demo)
 {
     game = gamePtr;
     this->demo = demo;
-    
+    this->subject=subject;
     gameoverstate = false;
     horseMaxYCreate();
     currentTrackIndex = 1;
@@ -41,6 +41,8 @@ Race::Race(Game* gamePtr, int* horseNumbers, const bool demo)
         game->music.openFromFile(getDBInstance()->getTrackProperty(currentTrackIndex, SOUND));
         game->music.play();
     }
+
+    subject->CreateMessage(std::to_string(horsePlayer->getLife()),LIFE_MSG);
 }
 
 void Race::update(sf::Time deltaTime)
@@ -246,6 +248,7 @@ void Race::collision()
                 weath.erase(i);
                 if(!horsePlayer->decLife())
                     gameoverstate=true;
+                subject->CreateMessage(std::to_string(horsePlayer->getLife()),LIFE_MSG);
                 break;
             }
         }

@@ -4,7 +4,8 @@ StateDemo::StateDemo(Game *gamePtr)
 {
     game = gamePtr;
     stateName = GameState::STATE_DEMO;
-    race = new Race(gamePtr, Utility::getRandom(1, getDBInstance()->getHorseCount(), HORSE_IN_RACE), true);
+    subject = new Subject;
+    race = new Race(gamePtr, Utility::getRandom(1, getDBInstance()->getHorseCount(), HORSE_IN_RACE),subject, true);
     
     startGameText = sf::Text(START_TEXT_MSG, game->font, game->fontSize);
     startGameText.setColor(game->fontColor);

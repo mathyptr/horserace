@@ -4,6 +4,8 @@ StateRace::StateRace(Game *gamePtr)
 {
     game = gamePtr;
     stateName = GameState::STATE_RACE;
+    subject = new Subject;
+    observerMenuRace = new Observer(*subject);
 
     int selectedHorseNumber = ((StateHorseMenu*)(game->getStatePointer(GameState::STATE_HORSE_MENU)))->getSelectedHorseIndex() + 1;
     std::vector<int> numbers = { selectedHorseNumber };
@@ -21,7 +23,7 @@ StateRace::StateRace(Game *gamePtr)
     for (int i = 0; i < HORSE_COUNT; i++)
         horseNumbers[i] = numbers.data()[i];        
 
-    race = new Race(game, horseNumbers, false);
+    race = new Race(game, horseNumbers,subject, false);
     rankingMenu = new RankingMenu(sf::Vector2f(GAME_VIEW_X / 2, GAME_VIEW_Y / 2), horseNumbers);
     rankingMenu->setRankingMode(RankingMode::NONE, nullptr);
     raceMenu = new RaceMenu(sf::Vector2f(GAME_VIEW_X / 2, GAME_VIEW_Y / 2));
@@ -41,7 +43,7 @@ void StateRace::update()
         race->update(game->getDeltaTime());
         raceMenu->update(game->getDeltaTime());
         raceMenu->setTrackText(race->track->getName());
-        raceMenu->setLifeText("Life: " + std::to_string(race->horsePlayer->getLife()));
+        raceMenu->setLifeText("Life: "+observerMenuRace->getMessage(LIFE_MSG));
         raceMenu->setMoneyText("Money: " + std::to_string(race->horsePlayer->getMoney()));
     }
     else

@@ -5,6 +5,7 @@
 #include "Game.hpp"
 #include "State.hpp"
 #include "Race.hpp"
+#include "Observer.hpp"
 
 #define TITLE_TEXT_X 400
 #define TITLE_TEXT_Y 100
@@ -26,6 +27,7 @@ public:
     GameState getStateName() const override;
 
 private:
+    Subject *subject ;
     sf::Text titleText;
     sf::Text startGameText;
     Race* race;

@@ -9,6 +9,7 @@
 #include "Race.hpp"
 #include "RankingMenu.hpp"
 #include "RaceMenu.hpp"
+#include "Observer.hpp"
 
 #define HORSE_IN_RACE 3
 
@@ -30,6 +31,8 @@ private:
     Race* race;
     RaceMenu* raceMenu;
     RankingMenu* rankingMenu;
+    Subject *subject ;
+    Observer *observerMenuRace ;
     int* horseNumbers;
     int globalRanking[HORSE_IN_RACE];
     void calculateRanking();

@@ -12,6 +12,7 @@
 #include "StateHorseMenu.hpp"
 #include "StateRace.hpp"
 #include "StateFinalResult.hpp"
+#include "Observer.hpp"
 
 #define GAME_VIEW_X 800
 #define GAME_VIEW_Y 600
@@ -37,6 +38,8 @@ public:
     State* getStatePointer(GameState state);
     sf::Texture* getScreenshot() const;
     void getScreenshot(sf::Texture& texture) const;
+    Subject *subject ;
+    Observer *observerMenuRace ;
 
     sf::Time getTime() const;
     sf::Time getDeltaTime() const;

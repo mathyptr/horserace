@@ -12,6 +12,7 @@
 #include "Menu.hpp"
 #include "PropertyManager.hpp"
 #include "AnimatedSprite.hpp"
+#include "Observer.hpp"
 
 #define HORSEZLEVELMIN 5
 #define HORSEZLEVELMAX 8
@@ -34,7 +35,7 @@ class Game;
 class Race
 {
 public:
-	Race(Game* gamePtr, int* horseNumbers, const bool demo = false);
+	Race(Game* gamePtr, int* horseNumbers,Subject* subject, const bool demo = false);
 	void update(sf::Time deltaTime);
 	void render(sf::RenderTarget &target);
 
@@ -68,6 +69,7 @@ private:
     float speedX;
     bool winstate;
     bool gameoverstate;
+    Subject* subject;
 
     void calculateRanking();
 	void collision();
