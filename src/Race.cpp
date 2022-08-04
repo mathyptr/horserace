@@ -52,6 +52,8 @@ Race::Race(Game* gamePtr, int* horseNumbers, Subject* subject, const bool demo)
     }
 
     subject->CreateMessage(std::to_string(horsePlayer->getLife()),LIFE_MSG);
+    subject->CreateMessage(track->getName(),TRACK_MSG);
+    subject->CreateMessage( std::to_string(horsePlayer->getMoney()),MONEY_MSG);
 }
 
 /*void Race::update(sf::Time deltaTime)
@@ -89,7 +91,7 @@ void Race::update(sf::Time deltaTime)
         if(!winstate){
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)&&!demo)
                 horsePlayer->SetJumpON();
-            else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || demo)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || demo)
                 horseMove(true, deltaTime);
             else
                 horseMove(false, deltaTime);
@@ -198,7 +200,7 @@ bool Race::loadNextTrack(bool restart)
     gameoverstate=false;
 
     track = std::make_unique<Track>(getDBInstance()->getTrackProperty(currentTrackIndex, "name"));
-    
+    subject->CreateMessage(track->getName(),TRACK_MSG);
     /*horsePlayer->startPos(sf::Vector2f(32, 16), sf::Vector2f(HORSE1_POS_X, HORSE1_POS_Y));
     horsePlayer2->startPos(sf::Vector2f(32 , 16), sf::Vector2f(HORSE2_POS_X, HORSE2_POS_Y));
     horsePlayer3->startPos(sf::Vector2f(32 , 16), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y));*/
@@ -206,7 +208,12 @@ bool Race::loadNextTrack(bool restart)
     horsePlayer2->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE2_POS_X, HORSE2_POS_Y));
     horsePlayer3->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y));
 
-     horsePlayer->incMoney(currentTrackIndex*5);
+   //horsePlayer->incMoney(currentTrackIndex*5);
+    for(int i=0;i<HORSE_COUNT;i++)
+        if(ranking[i]= horsePlayer->getNumber())
+            horsePlayer->incMoney(i);
+
+    subject->CreateMessage( std::to_string(horsePlayer->getMoney()),MONEY_MSG);
     if(demo)
         horsePlayer->setSpeed(-250);
 

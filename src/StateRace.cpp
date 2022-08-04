@@ -42,9 +42,11 @@ void StateRace::update()
     {
         race->update(game->getDeltaTime());
         raceMenu->update(game->getDeltaTime());
-        raceMenu->setTrackText(race->track->getName());
+      //  raceMenu->setTrackText(race->track->getName());
+        raceMenu->setTrackText( observerMenuRace->getMessage(TRACK_MSG));
         raceMenu->setLifeText("Life: "+observerMenuRace->getMessage(LIFE_MSG));
-        raceMenu->setMoneyText("Money: " + std::to_string(race->horsePlayer->getMoney()));
+       // raceMenu->setMoneyText("Money: " + std::to_string(race->horsePlayer->getMoney()));
+        raceMenu->setMoneyText("Money: " + observerMenuRace->getMessage(MONEY_MSG));
     }
     else
     {

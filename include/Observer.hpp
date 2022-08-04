@@ -11,6 +11,8 @@ using namespace std;
 
 #define TRACKNAME_MSG 0
 #define LIFE_MSG 1
+#define TRACK_MSG 2
+#define MONEY_MSG 3
 
 
 class IObserver {
