@@ -5,8 +5,9 @@ Horse::Horse()
 
 }
 
-Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z) : AnimatedSprite(sf::seconds(0.05f))
+Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z, bool mode) : AnimatedSprite(sf::seconds(0.05f))
 {
+    cpu=mode;
     horseNumber = number;
     horseName = getDBInstance()->getHorseProperty(horseNumber, "name");
     totalTravelled = 0;
@@ -80,7 +81,6 @@ void Horse::setSpeed(float sec)
 
 void Horse::incLife()
 {
-    if(life<10)
         life++;
 }
 
@@ -105,10 +105,10 @@ int Horse::getMoney() const
     return money;
 }
 
-bool Horse::decMoney()
+bool Horse::decMoney(int coin)
 {
-    if(money>0){
-        money--;
+    if(money>=coin){
+        money=money-coin;
         return true;
     }
     else
@@ -133,6 +133,11 @@ void Horse::move(bool go, float sec)
     else
         decSpeed(sec);
     travelled -= getSpeed() * sec;
+}
+
+bool Horse::CPU()
+{
+    return cpu;
 }
 
 void Horse::SetJumpON(){

@@ -17,8 +17,11 @@
 #define TITLE_MSG_RACE "Race ranking"
 #define TITLE_MSG_GLOBAL "Global ranking"
 #define TITLE_MSG_PODIUM "Podium"
+#define TITLE_MSG_REWARD "Congratulations! You have reached 5 coins so you have won a life!"
 #define TITLE_X 400
 #define TITLE_Y 150
+#define REWARD_X 230
+#define REWARD_Y 490
 #define PANEL_X 400
 #define PANEL_Y 50
 #define IN_SPACING_X 150
@@ -43,7 +46,7 @@ public:
     RankingMenu(const sf::Vector2f& position, int horseNumbers[HORSE_IN_RACE]);
     void update(sf::Time deltaTime);
     RankingMode getRankingMode() const;
-    void setRankingMode(RankingMode mode, const int* rank);
+    void setRankingMode(RankingMode mode, const int* rank,bool msg);
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
@@ -55,6 +58,7 @@ private:
 
     sf::Text title;
     sf::RectangleShape panel;
+    sf::Text reward;
 
     std::vector<sf::RectangleShape> horsePanels;
     std::vector<sf::Text> horseRankLabels;

@@ -25,8 +25,8 @@ StateRace::StateRace(Game *gamePtr)
 
     race = new Race(game, horseNumbers,subject, false);
     rankingMenu = new RankingMenu(sf::Vector2f(GAME_VIEW_X / 2, GAME_VIEW_Y / 2), horseNumbers);
-    rankingMenu->setRankingMode(RankingMode::NONE, nullptr);
-    raceMenu = new RaceMenu(sf::Vector2f(GAME_VIEW_X / 2, GAME_VIEW_Y / 2));
+    rankingMenu->setRankingMode(RankingMode::NONE, nullptr,false);
+    raceMenu = new RaceMenu(sf::Vector2f(GAME_VIEW_X / 2, GAME_VIEW_Y / 2),race->getCurrentTrackIndex());
 }
 
 void StateRace::draw(sf::RenderWindow &window) 
@@ -41,7 +41,7 @@ void StateRace::update()
     if(!race->horsePlayerFinished())
     {
         race->update(game->getDeltaTime());
-        raceMenu->update(game->getDeltaTime());
+        raceMenu->update(game->getDeltaTime(),race->getCurrentTrackIndex());
       //  raceMenu->setTrackText(race->track->getName());
         raceMenu->setTrackText( observerMenuRace->getMessage(TRACK_MSG));
         raceMenu->setLifeText("Life: "+observerMenuRace->getMessage(LIFE_MSG));
@@ -50,8 +50,11 @@ void StateRace::update()
     }
     else
     {
+        raceMenu->setLifeText("Life: "+observerMenuRace->getMessage(LIFE_MSG));
+        raceMenu->setMoneyText("Money: " + observerMenuRace->getMessage(MONEY_MSG));
+        bool msg=race->reward();
         if(rankingMenu->getRankingMode() == RankingMode::NONE)
-            rankingMenu->setRankingMode(RankingMode::RACE, race->getRanking());
+            rankingMenu->setRankingMode(RankingMode::RACE, race->getRanking(),msg);
         rankingMenu->update(game->getDeltaTime());
     }
 }
@@ -72,10 +75,10 @@ void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
                 {
                     case RankingMode::RACE:
                         calculateRanking();
-                        rankingMenu->setRankingMode(RankingMode::GLOBAL, getGlobalRanking());
+                        rankingMenu->setRankingMode(RankingMode::GLOBAL, getGlobalRanking(),race->reward());
                         break;
                     case RankingMode::GLOBAL:
-                        rankingMenu->setRankingMode(RankingMode::NONE, nullptr);
+                        rankingMenu->setRankingMode(RankingMode::NONE, nullptr,false);
                         if(!race->loadNextTrack(false))
                             game->changeState(GameState::STATE_FINAL_RESULT);
                         break;

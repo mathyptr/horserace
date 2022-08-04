@@ -5,11 +5,12 @@ RaceMenu::RaceMenu()
 
 }
 
-RaceMenu::RaceMenu(const sf::Vector2f& position)
+RaceMenu::RaceMenu(const sf::Vector2f& position, int index)
 {
-    font.loadFromFile("font/default_font.ttf");
-    fontColor = Utility::getColor(getDBInstance()->getTrackProperty(1, FONT_COLOR));    //calcolare il vero track index
-    fontSize = stoi(getDBInstance()->getTrackProperty(1, FONT_SIZE));                   //anche qua
+   // font.loadFromFile("font/default_font.ttf");
+    font.loadFromFile(getDBInstance()->getTrackProperty(index, FONT_FILE));
+    fontColor = Utility::getColor(getDBInstance()->getTrackProperty(index, FONT_COLOR));    //calcolare il vero track index
+    fontSize = stoi(getDBInstance()->getTrackProperty(index, FONT_SIZE));                   //anche qua
 
     trackText = sf::Text("Track", font, fontSize);
     trackText.setColor(fontColor);
@@ -22,9 +23,14 @@ RaceMenu::RaceMenu(const sf::Vector2f& position)
     moneyText.setPosition(MONEY_TEXT_POSITION);
 }
 
-void RaceMenu::update(sf::Time deltaTime)
+void RaceMenu::update(sf::Time deltaTime,int index)
 {
-    
+    font.loadFromFile(getDBInstance()->getTrackProperty(index, FONT_FILE));
+    fontColor = Utility::getColor(getDBInstance()->getTrackProperty(index, FONT_COLOR));    //calcolare il vero track index
+    fontSize = stoi(getDBInstance()->getTrackProperty(index, FONT_SIZE));                   //anche qua
+    trackText.setColor(fontColor);
+    lifeText.setColor(fontColor);
+    moneyText.setColor(fontColor);
 }
 
 void RaceMenu::setTrackText(std::string text)

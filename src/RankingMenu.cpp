@@ -22,6 +22,12 @@ RankingMenu::RankingMenu(const sf::Vector2f& position, int horseNumbers[HORSE_IN
     title.setPosition(TITLE_X, TITLE_Y);
     title.setScale(1.25, 1.25);
 
+    reward = sf::Text("", font, 12);
+    reward.setColor(fontColor);
+    reward.setOrigin(title.getLocalBounds().width / 2, title.getLocalBounds().height / 2);
+    reward.setPosition(REWARD_X, REWARD_Y);
+    reward.setScale(1.25, 1.25);
+
     for (int i = 0; i < HORSE_IN_RACE; i++)
     {
         horsePanels.push_back(sf::RectangleShape(sf::Vector2f(PANEL_X, PANEL_Y)));
@@ -56,6 +62,7 @@ RankingMenu::RankingMenu(const sf::Vector2f& position, int horseNumbers[HORSE_IN
 
 void RankingMenu::update(sf::Time deltaTime)
 {
+
     if(rankingMode != RankingMode::NONE)
         for (int i = 0; i < horses.size(); i++)
             horses[horseNumbers[i]]->update(deltaTime);
@@ -66,7 +73,7 @@ RankingMode RankingMenu::getRankingMode() const
     return rankingMode;
 }
 
-void RankingMenu::setRankingMode(RankingMode mode, const int* rank)
+void RankingMenu::setRankingMode(RankingMode mode, const int* rank,bool msg)
 {
     rankingMode = mode;
 
@@ -75,6 +82,15 @@ void RankingMenu::setRankingMode(RankingMode mode, const int* rank)
         case RankingMode::NONE:
             return;
         case RankingMode::RACE:
+            if(msg){
+                reward = sf::Text(TITLE_MSG_REWARD, font, 12);
+                reward.setColor(fontColor);
+                reward.setOrigin(title.getLocalBounds().width / 2, title.getLocalBounds().height / 2);
+                reward.setPosition(REWARD_X, REWARD_Y);
+                reward.setScale(1.25, 1.25);
+            }
+            else
+                reward.setString("");
             title.setString(TITLE_MSG_RACE);
             for (int i = 0; i < horses.size(); i++)
             {
@@ -139,4 +155,5 @@ void RankingMenu::draw(sf::RenderTarget &target, sf::RenderStates states) const
         horse->draw(target, states, 10);
 
     target.draw(title, states);
+    target.draw(reward, states);
 }

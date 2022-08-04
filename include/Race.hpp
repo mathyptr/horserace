@@ -47,6 +47,7 @@ public:
 	unsigned int getCurrentTrackIndex();
 	bool loadNextTrack(bool restart);
 	const int* getRanking() const;
+    bool reward();
     bool isTimeToJump(sf::FloatRect horsepos,sf::FloatRect obstaclepos);
 
     std::shared_ptr<Horse> horsePlayer, horsePlayer2,horsePlayer3;

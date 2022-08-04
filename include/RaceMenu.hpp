@@ -13,8 +13,8 @@ class RaceMenu : public sf::Drawable
 {
 public:
     RaceMenu();
-    RaceMenu(const sf::Vector2f& position);
-    void update(sf::Time deltaTime);
+    RaceMenu(const sf::Vector2f& position,int index);
+    void update(sf::Time deltaTime,int index);
     void setTrackText(std::string text);
     void setLifeText(std::string text);
     void setMoneyText(std::string text);

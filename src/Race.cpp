@@ -14,11 +14,11 @@ Race::Race(Game* gamePtr, int* horseNumbers, Subject* subject, const bool demo)
     winstate = false;
     weatherMoveSpeed = 40.f;
     int zlevel=HORSEZLEVELMIN;
-    horsePlayer = std::make_unique<Horse>(horseNumbers[0], sf::Vector2f(32, 16), sf::Vector2f(HORSE1_POS_X, HORSE1_POS_Y), zlevel);
+    horsePlayer = std::make_unique<Horse>(horseNumbers[0], sf::Vector2f(32, 16), sf::Vector2f(HORSE1_POS_X, HORSE1_POS_Y), zlevel, false);
     zlevel++;
-    horsePlayer2 = std::make_unique<Horse>(horseNumbers[1], sf::Vector2f(32, 16), sf::Vector2f(HORSE2_POS_X, HORSE2_POS_Y), zlevel);
+    horsePlayer2 = std::make_unique<Horse>(horseNumbers[1], sf::Vector2f(32, 16), sf::Vector2f(HORSE2_POS_X, HORSE2_POS_Y), zlevel, true);
     zlevel++;
-    horsePlayer3 = std::make_unique<Horse>(horseNumbers[2], sf::Vector2f(32, 16), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y), zlevel);
+    horsePlayer3 = std::make_unique<Horse>(horseNumbers[2], sf::Vector2f(32, 16), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y), zlevel, true);
 
     /*horsePlayer->startPos(sf::Vector2f(32, 16), sf::Vector2f(HORSE1_POS_X, HORSE1_POS_Y));
     horsePlayer2->startPos(sf::Vector2f(32 , 16), sf::Vector2f(HORSE2_POS_X, HORSE2_POS_Y));
@@ -210,10 +210,11 @@ bool Race::loadNextTrack(bool restart)
 
    //horsePlayer->incMoney(currentTrackIndex*5);
     for(int i=0;i<HORSE_COUNT;i++)
-        if(ranking[i]= horsePlayer->getNumber())
-            horsePlayer->incMoney(i);
+        if(ranking[i]== horsePlayer->getNumber())
+            horsePlayer->incMoney(HORSE_COUNT+1-i);
 
     subject->CreateMessage( std::to_string(horsePlayer->getMoney()),MONEY_MSG);
+    cout<<horsePlayer->getMoney();
     if(demo)
         horsePlayer->setSpeed(-250);
 
@@ -405,7 +406,8 @@ bool Race::collisionWeather(std::shared_ptr<Horse> horse,shared_ptr<Weather> w)
             collisiondetected=true;
             if(!horse->decLife())
                 gameoverstate=true;
-            subject->CreateMessage(std::to_string(horse->getLife()),LIFE_MSG);
+            if(!horse->CPU())
+                subject->CreateMessage(std::to_string(horse->getLife()),LIFE_MSG);
 
         }
     }
@@ -489,5 +491,18 @@ void Race::horseMaxYCreate()
 bool Race::isTimeToJump(sf::FloatRect horsepos,sf::FloatRect obstaclepos)
 {
     return horsepos.left>obstaclepos.left-100&&horsepos.left<obstaclepos.left;
+}
+
+bool Race::reward()
+{
+    if(horsePlayer->getMoney()>=5){
+        horsePlayer->incLife();
+        horsePlayer->decMoney(5);
+        subject->CreateMessage(std::to_string(horsePlayer->getLife()),LIFE_MSG);
+        subject->CreateMessage( std::to_string(horsePlayer->getMoney()),MONEY_MSG);
+        return true;
+    }
+    else
+        return false;
 }
 

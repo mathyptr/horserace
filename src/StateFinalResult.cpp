@@ -1,6 +1,6 @@
 #include "StateFinalResult.hpp"
 
-StateFinalResult::StateFinalResult(Game *gamePtr) 
+StateFinalResult::StateFinalResult(Game *gamePtr)
 {
     game = gamePtr;
     stateName = GameState::STATE_FINAL_RESULT;
@@ -8,7 +8,7 @@ StateFinalResult::StateFinalResult(Game *gamePtr)
 
     rankingMenu = new RankingMenu(sf::Vector2f(GAME_VIEW_X / 2, GAME_VIEW_Y / 2), sr->getHorseNumbers());
     ranking = sr->getGlobalRanking();
-    rankingMenu->setRankingMode(RankingMode::PODIUM, ranking);
+    rankingMenu->setRankingMode(RankingMode::PODIUM, ranking,false);
 
     game->music.stop();
     game->music.openFromFile(getDBInstance()->getMiscPath("podium_music"));

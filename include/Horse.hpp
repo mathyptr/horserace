@@ -8,8 +8,8 @@
 
 //#define GRAVITY 8*9.81
 //#define VO_Y 100
-#define GRAVITY 500
-#define VO_Y 400
+#define GRAVITY 600
+#define VO_Y 350
 #define MAXSPEED 500.f
 #define SPEEDTHRESHOLD 100.f
 #define SPEEDFACTOR 10.f
@@ -23,7 +23,7 @@ class Horse : public AnimatedSprite
 {
 public:
     Horse();
-    Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z);
+    Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned int z, bool mode=false);
     int getNumber() const;
     std::string getName() const;
     void setName(std::string name);
@@ -38,7 +38,8 @@ public:
     bool decLife();
     int getMoney() const;
     void incMoney(int coin);
-    bool decMoney();
+    bool decMoney(int coin);
+    bool CPU();
     float yOnJump(float speed);
     void SetJumpON();
     void startPos(sf::Vector2f orig, sf::Vector2f pos);
@@ -59,6 +60,7 @@ private:
     int money;
     sf::Vector2f pos;
     bool jumpon;
+    bool cpu;
     sf::Clock horseplayerJumpTimer;
     void setPropHorse();
 };
