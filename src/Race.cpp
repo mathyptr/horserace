@@ -87,9 +87,9 @@ void Race::update(sf::Time deltaTime)
             createWeather();
         animateExplosion();
         collision();
-        collisionObstacle();
+       //collisionObstacle();
         if(!winstate){
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)&&!demo)
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 horsePlayer->SetJumpON();
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right) || demo)
                 horseMove(true, deltaTime);
@@ -160,12 +160,12 @@ void Race::horseMove(bool move, sf::Time deltaTime)
         if(zlevel==horsePlayer2->getZLevel())
             if(isTimeToJump(horsePlayer2->getGlobalBounds(),obstacle_pos))
                 horsePlayer2->SetJumpON();
-        horsePlayer2->move(rspeed, 0,  deltaTime.asSeconds());
         if(zlevel==horsePlayer3->getZLevel())
             if(isTimeToJump(horsePlayer3->getGlobalBounds(),obstacle_pos))
                 horsePlayer3->SetJumpON();
-        horsePlayer3->move(rspeed, 0,  deltaTime.asSeconds());
     }
+    horsePlayer2->move(rspeed, 0,  deltaTime.asSeconds());
+    horsePlayer3->move(rspeed, 0,  deltaTime.asSeconds());
 }
 
 
@@ -209,12 +209,7 @@ bool Race::loadNextTrack(bool restart)
     horsePlayer3->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y));
 
    //horsePlayer->incMoney(currentTrackIndex*5);
-    for(int i=0;i<HORSE_COUNT;i++)
-        if(ranking[i]== horsePlayer->getNumber())
-            horsePlayer->incMoney(HORSE_COUNT+1-i);
 
-    subject->CreateMessage( std::to_string(horsePlayer->getMoney()),MONEY_MSG);
-    cout<<horsePlayer->getMoney();
     if(demo)
         horsePlayer->setSpeed(-250);
 
@@ -315,10 +310,26 @@ void Race::createObstacle()
 
     int posx = 800;
 
-    unsigned int zlevel = rand() % (HORSEZLEVELMAX - HORSEZLEVELMIN) + HORSEZLEVELMIN;
-//    zlevel= HORSEZLEVELMIN;
+    unsigned int zlevel;
     const auto spawnSome = obstacleSpawnTimer.getElapsedTime();
     const auto timeSinceStart = obstacleDeltaTime.getElapsedTime();
+
+    bool newobj=false;
+
+    while(!newobj&&obs.size()<HORSE_COUNT)
+    {
+        newobj=true;
+        zlevel= rand() % (HORSEZLEVELMAX - HORSEZLEVELMIN) + HORSEZLEVELMIN;
+        for (auto i = obs.begin(); i != obs.end(); i++)
+        {
+
+            if(zlevel== (*i)->getZLevel())
+            {
+                newobj=false;
+                break;
+            }
+        }
+    }
 
     sf::Time timerDifficulty = sf::seconds(1.f);
     if (spawnSome > timerDifficulty )
@@ -328,6 +339,7 @@ void Race::createObstacle()
             unsigned int maxy=horseposymax[zlevel-HORSEZLEVELMIN];
             auto obsptr = std::make_shared<Obstacle>(Obstacle(obstacletexture,rspeed,posx,maxy,zlevel,0));
             obs.push_back(obsptr);
+            cout<<"Create obstacle Object size:"<<obs.size()<<"\n";
         }
         obstacleSpawnTimer.restart();
 
@@ -350,8 +362,8 @@ void Race::createObstacle()
     ), obs.end());
 
     obstacleDeltaTime.restart();
-
 }
+
 
 /*void Race::collision()
 {
@@ -387,6 +399,36 @@ void Race::collision()
         else if(collisionWeather(horsePlayer3,*i))
             weath.erase(i);
     }
+    collisionObstacle(horsePlayer);
+    collisionObstacle(horsePlayer2);
+    collisionObstacle(horsePlayer3);
+    /*for (auto i = obs.begin(); i != obs.end(); i++)
+    {
+        if(collisionObstacle(horsePlayer,*i))
+        {
+            cout<<"Object size before erase:"<<obs.size()<<"\n";
+            obs.erase(i);
+            cout<<"Object size after erase:"<<obs.size()<<"\n";
+        }
+    }
+    for (auto i = obs.begin(); i != obs.end(); i++)
+    {
+        if(collisionObstacle(horsePlayer2,*i))
+        {
+            cout<<"Object size before erase:"<<obs.size()<<"\n";
+            obs.erase(i);
+            cout<<"Object size after erase:"<<obs.size()<<"\n";
+        }
+    }
+    for (auto i = obs.begin(); i != obs.end(); i++)
+    {
+        if(collisionObstacle(horsePlayer3,*i))
+        {
+            cout<<"Object size before erase:"<<obs.size()<<"\n";
+            obs.erase(i);
+            cout<<"Object size after erase:"<<obs.size()<<"\n";
+        }
+    }*/
 }
 
 bool Race::collisionWeather(std::shared_ptr<Horse> horse,shared_ptr<Weather> w)
@@ -413,35 +455,62 @@ bool Race::collisionWeather(std::shared_ptr<Horse> horse,shared_ptr<Weather> w)
     }
     return collisiondetected;
 }
-void Race::collisionObstacle()
+
+void Race::collisionObstacle(std::shared_ptr<Horse> horse)
 {
     for (auto i = obs.begin(); i != obs.end(); i++)
     {
-        if(horsePlayer->getZLevel()==(*i)->getZLevel())
+        if(horse->getZLevel()==(*i)->getZLevel())
         {
-            sf::FloatRect playerbox = horsePlayer->getGlobalBounds();
-            sf::FloatRect obstaclesbox = (*i)->getObstacleGlobalBounds();
-            int px,ox;
-            px=playerbox.left+playerbox.width;
-            ox=obstaclesbox.left+obstaclesbox.width;
-//            std::cout<<"playerx: "<<px<<" obstacle x:"<<ox<<"\n";
-            if (playerbox.intersects((*i)->getObstacleGlobalBounds()))//||obstaclesbox.intersects( playerbox))
-                //           if (px>=ox)
+            sf::FloatRect playerbox = horse->getGlobalBounds();
+            if (playerbox.intersects((*i)->getObstacleGlobalBounds()))
             {
                 auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
-                pExplosion->setPosition(horsePlayer->getPosition());
+                pExplosion->setPosition(horse->getPosition());
                 explosions.push_back(pExplosion);
                 speedX = 0;
                 cout<<"Hit Obstacle!!\n";
                 obs.erase(i);
-                if(!horsePlayer->decLife())
-                    gameoverstate=true;
-                subject->CreateMessage(std::to_string(horsePlayer->getLife()),LIFE_MSG);
+                bool state=horse->decLife();
+                if(!horse->CPU()){
+                    subject->CreateMessage(std::to_string(horse->getLife()),LIFE_MSG);
+                    if(state==false)
+                        gameoverstate=true;
+                }
                 break;
             }
         }
     }
 }
+
+/*COLLISIONE CHE DA ERRORE
+bool Race::collisionObstacle(std::shared_ptr<Horse> horse,shared_ptr<Obstacle> o)
+{
+    bool collisiondetected=false;
+        if(horse->getZLevel()==o->getZLevel())
+        {
+            sf::FloatRect playerbox = horse->getGlobalBounds();
+         //  sf::FloatRect obstaclesbox = o->getObstacleGlobalBounds();
+        //   int px,ox;
+          // px=playerbox.left+playerbox.width;
+            //ox=obstaclesbox.left+obstaclesbox.width;
+//            std::cout<<"playerx: "<<px<<" obstacle x:"<<ox<<"\n";
+           if (playerbox.intersects(o->getObstacleGlobalBounds()))//||obstaclesbox.intersects( playerbox))
+               {
+                auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
+                pExplosion->setPosition(horse->getPosition());
+                explosions.push_back(pExplosion);
+              //  speedX = 0;
+                cout<<"Hit obstacle horse "<<horse->getNumber()<<endl;
+                collisiondetected=true;
+                if(!horse->decLife())
+                    gameoverstate=true;
+                if(!horse->CPU())
+                    subject->CreateMessage(std::to_string(horse->getLife()),LIFE_MSG);
+            }
+        }
+    return collisiondetected;
+}*/
 
 void Race::drawWeather(sf::RenderTarget &window, unsigned int zlevel)
 {
@@ -490,11 +559,15 @@ void Race::horseMaxYCreate()
 
 bool Race::isTimeToJump(sf::FloatRect horsepos,sf::FloatRect obstaclepos)
 {
-    return horsepos.left>obstaclepos.left-100&&horsepos.left<obstaclepos.left;
+    return (horsepos.left>(obstaclepos.left-150))&&horsepos.left<obstaclepos.left;
 }
 
 bool Race::reward()
 {
+    for(int i=0;i<HORSE_COUNT;i++)
+        if(ranking[i]== horsePlayer->getNumber())
+            horsePlayer->incMoney(HORSE_COUNT+1-i);
+    subject->CreateMessage( std::to_string(horsePlayer->getMoney()),MONEY_MSG);
     if(horsePlayer->getMoney()>=5){
         horsePlayer->incLife();
         horsePlayer->decMoney(5);

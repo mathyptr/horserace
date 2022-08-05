@@ -50,11 +50,12 @@ void StateRace::update()
     }
     else
     {
-        raceMenu->setLifeText("Life: "+observerMenuRace->getMessage(LIFE_MSG));
-        raceMenu->setMoneyText("Money: " + observerMenuRace->getMessage(MONEY_MSG));
-        bool msg=race->reward();
-        if(rankingMenu->getRankingMode() == RankingMode::NONE)
+        if(rankingMenu->getRankingMode() == RankingMode::NONE){
+            msg=race->reward();
+            raceMenu->setLifeText("Life: "+observerMenuRace->getMessage(LIFE_MSG));
+            raceMenu->setMoneyText("Money: " + observerMenuRace->getMessage(MONEY_MSG));
             rankingMenu->setRankingMode(RankingMode::RACE, race->getRanking(),msg);
+    }
         rankingMenu->update(game->getDeltaTime());
     }
 }
@@ -75,7 +76,7 @@ void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
                 {
                     case RankingMode::RACE:
                         calculateRanking();
-                        rankingMenu->setRankingMode(RankingMode::GLOBAL, getGlobalRanking(),race->reward());
+                        rankingMenu->setRankingMode(RankingMode::GLOBAL, getGlobalRanking(),msg);
                         break;
                     case RankingMode::GLOBAL:
                         rankingMenu->setRankingMode(RankingMode::NONE, nullptr,false);

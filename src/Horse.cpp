@@ -184,11 +184,11 @@ void Horse::move(float offsetX, float offsetY, float sec)
     oX = speedFactor + offsetX / speedFactor;
     oY = offsetY * speedFactor;
     travelled += abs(oX);
-    AnimatedSprite::move(oX, oY);
-    if(jumpon)
-        //      oY=static_cast<float>(yOnJump(0));
-        //        setPosition(sf::Vector2f(pos.x,static_cast<float>(yOnJump(speed))));
+    if(jumpon){
         setPosition(sf::Vector2f(AnimatedSprite::getGlobalBounds().left,static_cast<float>(yOnJump(speed))));
+        oX =1;
+    }
+    AnimatedSprite::move(oX, oY);
     update(sf::seconds(sec));
 }
 

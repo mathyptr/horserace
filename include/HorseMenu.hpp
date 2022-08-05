@@ -8,7 +8,7 @@
 
 #define MENU_SIZE_X 600
 #define MENU_SIZE_Y 400
-#define MENU_BG_COLOR sf::Color::Color(220, 220, 220, 220)
+#define MENU_BG_COLOR sf::Color(220, 220, 220, 220)
 
 #define TITLE_MSG "Choose your horse"
 #define TITLE_X 400

@@ -33,6 +33,8 @@ private:
     RankingMenu* rankingMenu;
     Subject *subject ;
     Observer *observerMenuRace ;
+    bool msg;
+    bool typeW=false;
     int* horseNumbers;
     int globalRanking[HORSE_IN_RACE];
     void calculateRanking();

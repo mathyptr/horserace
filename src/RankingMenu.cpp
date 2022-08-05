@@ -82,14 +82,9 @@ void RankingMenu::setRankingMode(RankingMode mode, const int* rank,bool msg)
         case RankingMode::NONE:
             return;
         case RankingMode::RACE:
-            if(msg){
-                reward = sf::Text(TITLE_MSG_REWARD, font, 12);
-                reward.setColor(fontColor);
-                reward.setOrigin(title.getLocalBounds().width / 2, title.getLocalBounds().height / 2);
-                reward.setPosition(REWARD_X, REWARD_Y);
-                reward.setScale(1.25, 1.25);
-            }
-            else
+            if(msg)
+               reward.setString(TITLE_MSG_REWARD);
+           else
                 reward.setString("");
             title.setString(TITLE_MSG_RACE);
             for (int i = 0; i < horses.size(); i++)
@@ -110,7 +105,7 @@ void RankingMenu::setRankingMode(RankingMode mode, const int* rank,bool msg)
             break;
         case RankingMode::PODIUM:
             title.setString(TITLE_MSG_PODIUM);
-
+            title.setPosition(TITLE_X_PODIUM,TITLE_Y);
 
             std::cout << "RankingMenu.cpp - podium ranking and horse numbers: ";
             for (int i = 0; i < horses.size(); i++)
@@ -157,3 +152,16 @@ void RankingMenu::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(title, states);
     target.draw(reward, states);
 }
+
+/*void RankingMenu::typeWriter(){
+    string str=TITLE_MSG_REWARD;
+    sf::Clock timer;
+    if ((timer.getElapsedTime().asSeconds() > 0.01) && character < str.length())
+    {
+        character++;
+        if (timer.getElapsedTime() > sf::milliseconds(1)){
+        reward.setString(str.substr(0,character) );
+        timer.restart();
+        }
+    }
+}*/

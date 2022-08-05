@@ -11,14 +11,15 @@
 
 #define MENU_SIZE_X 600
 #define MENU_SIZE_Y 400
-#define MENU_BG_COLOR sf::Color::Color(220, 220, 220, 220)
-#define PODIUM_BG_COLOR sf::Color::Color(220, 220, 220, 255)
+#define MENU_BG_COLOR sf::Color(220, 220, 220, 220)
+#define PODIUM_BG_COLOR sf::Color(220, 220, 220, 255)
 
 #define TITLE_MSG_RACE "Race ranking"
 #define TITLE_MSG_GLOBAL "Global ranking"
 #define TITLE_MSG_PODIUM "Podium"
 #define TITLE_MSG_REWARD "Congratulations! You have reached 5 coins so you have won a life!"
 #define TITLE_X 400
+#define TITLE_X_PODIUM 430
 #define TITLE_Y 150
 #define REWARD_X 230
 #define REWARD_Y 490
@@ -47,6 +48,7 @@ public:
     void update(sf::Time deltaTime);
     RankingMode getRankingMode() const;
     void setRankingMode(RankingMode mode, const int* rank,bool msg);
+    void typeWriter();
     void draw(sf::RenderTarget &target, sf::RenderStates states) const override;
 
 private:
@@ -65,6 +67,7 @@ private:
     std::vector<sf::Text> horseNameLabels;
     std::map<int, unique_ptr<Horse>> horses;
     int horseNumbers[HORSE_IN_RACE];
+    unsigned int character=0;
 
     sf::Sprite podiumSprite;
     sf::Texture podiumTexture;

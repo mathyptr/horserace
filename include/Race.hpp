@@ -84,7 +84,8 @@ private:
     void calculateRanking();
 	void collision();
     bool collisionWeather(std::shared_ptr<Horse> horse,shared_ptr<Weather> w);
-    void collisionObstacle();
+    bool collisionObstacle(std::shared_ptr<Horse> horse,shared_ptr<Obstacle> o);
+    void collisionObstacle(std::shared_ptr<Horse> horse);
     bool checkFinalLine();
     void horseMaxYCreate();
     int createProbability();
