@@ -38,6 +38,8 @@ void StateRace::draw(sf::RenderWindow &window)
 
 void StateRace::update() 
 {
+    if(observerMenuRace->getMessage(LIFE_MSG)=="0")
+    game->changeState(GameState::STATE_FINAL_RESULT);
     if(!race->horsePlayerFinished())
     {
         race->update(game->getDeltaTime());

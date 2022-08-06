@@ -306,8 +306,8 @@ void Race::createObstacle()
     {
         if(obs.size()<HORSE_COUNT)
         {
-            unsigned int maxy=horseposymax[zlevel-HORSEZLEVELMIN];
-            auto obsptr = std::make_shared<Obstacle>(Obstacle(obstacletexture,rspeed,posx,maxy,zlevel,0));
+            unsigned int posy=horseposymax[zlevel-HORSEZLEVELMIN]+horsePlayer->getGlobalBounds().height-obstacletexture.getSize().y;
+            auto obsptr = std::make_shared<Obstacle>(Obstacle(obstacletexture,rspeed,posx,posy,zlevel,0));
             obs.push_back(obsptr);
             cout<<"Create obstacle Object size:"<<obs.size()<<"\n";
         }
@@ -395,8 +395,7 @@ bool Race::collisionObstacle(std::shared_ptr<Horse> horse,shared_ptr<Obstacle> o
             speedX = 0;
             cout<<"Hit Obstacle!!\n";
             collisiondetected=true;
-            if(!horse->decLife())
-                gameoverstate=true;
+            horse->decLife();
             subject->CreateMessage(std::to_string(horse->getLife()),LIFE_MSG);
 
         }
@@ -418,8 +417,7 @@ bool Race::collisionWeather(std::shared_ptr<Horse> horse,shared_ptr<Weather> w)
             explosions.push_back(pExplosion);
             cout<<"Hit "<<horse->getName()<<endl;
             collisiondetected=true;
-            if(!horse->decLife())
-                gameoverstate=true;
+            horse->decLife();
             if(!horse->CPU())
                 subject->CreateMessage(std::to_string(horse->getLife()),LIFE_MSG);
 

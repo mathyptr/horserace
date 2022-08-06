@@ -41,7 +41,7 @@ public:
 	Race(Game* gamePtr, int* horseNumbers,Subject* subject, const bool demo = false);
 	void update(sf::Time deltaTime);
 	void render(sf::RenderTarget &target);
-
+    int weatherId;
 	void horseMove(bool move, sf::Time deltaTime);
 	bool horsePlayerFinished();
 	unsigned int getCurrentTrackIndex();
@@ -49,6 +49,7 @@ public:
 	const int* getRanking() const;
     const int* getGlobalRanking() const;
     void calculateGlobalRanking();
+    void calculateRanking();
     bool reward();
     bool isTimeToJump(sf::FloatRect horsepos,sf::FloatRect obstaclepos);
 
@@ -63,7 +64,6 @@ private:
     int globalRanking[HORSE_COUNT];
     float rspeed;
     unsigned int horseposymax[HORSE_COUNT];
-	int weatherId;
     std::vector<std::shared_ptr<Weather>> weath;
     std::vector<std::shared_ptr<Obstacle>> obs;
     sf::Clock weatherDeltaTime;
@@ -83,8 +83,6 @@ private:
     bool winstate;
     bool gameoverstate;
     Subject* subject;
-
-    void calculateRanking();
 	void collision();
     bool collisionWeather(std::shared_ptr<Horse> horse,shared_ptr<Weather> w);
     bool collisionObstacle(std::shared_ptr<Horse> horse,shared_ptr<Obstacle> o);
