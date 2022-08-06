@@ -42,10 +42,8 @@ void StateRace::update()
     {
         race->update(game->getDeltaTime());
         raceMenu->update(game->getDeltaTime(),race->getCurrentTrackIndex());
-      //  raceMenu->setTrackText(race->track->getName());
         raceMenu->setTrackText( observerMenuRace->getMessage(TRACK_MSG));
         raceMenu->setLifeText("Life: "+observerMenuRace->getMessage(LIFE_MSG));
-       // raceMenu->setMoneyText("Money: " + std::to_string(race->horsePlayer->getMoney()));
         raceMenu->setMoneyText("Money: " + observerMenuRace->getMessage(MONEY_MSG));
     }
     else
@@ -54,7 +52,11 @@ void StateRace::update()
             msg=race->reward();
             raceMenu->setLifeText("Life: "+observerMenuRace->getMessage(LIFE_MSG));
             raceMenu->setMoneyText("Money: " + observerMenuRace->getMessage(MONEY_MSG));
-            rankingMenu->setRankingMode(RankingMode::RACE, race->getRanking(),msg);
+            int ranking[HORSE_COUNT];
+            ranking[0]=stoi(observerMenuRace->getMessage(FIRST_MSG));
+            ranking[1]=stoi(observerMenuRace->getMessage(SECOND_MSG));
+            ranking[2]=stoi(observerMenuRace->getMessage(THIRD_MSG));
+            rankingMenu->setRankingMode(RankingMode::RACE, ranking,msg);
     }
         rankingMenu->update(game->getDeltaTime());
     }
@@ -62,10 +64,6 @@ void StateRace::update()
 
 void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
 {
-    //ogni volta che la tappa finisce:
-    //si va alla successiva (negozio?)
-    //se sono finite, si va alla premiazione
-
     if(event.type == sf::Event::KeyReleased)
     {
         if(event.key.code == sf::Keyboard::Enter)
@@ -75,8 +73,8 @@ void StateRace::handleInput(sf::Event event, sf::RenderWindow &window)
                 switch (rankingMenu->getRankingMode())
                 {
                     case RankingMode::RACE:
-                        calculateRanking();
-                        rankingMenu->setRankingMode(RankingMode::GLOBAL, getGlobalRanking(),msg);
+                        getGlobalRanking();
+                        rankingMenu->setRankingMode(RankingMode::GLOBAL, globalRanking,msg);
                         break;
                     case RankingMode::GLOBAL:
                         rankingMenu->setRankingMode(RankingMode::NONE, nullptr,false);
@@ -94,23 +92,12 @@ GameState StateRace::getStateName() const
     return stateName;
 }
 
-void StateRace::calculateRanking()
+void StateRace::getGlobalRanking()
 {
-    race->horsePlayer->setTotalTravelled(race->horsePlayer->getPosition().x);
-    race->horsePlayer2->setTotalTravelled(race->horsePlayer2->getPosition().x);
-    race->horsePlayer3->setTotalTravelled(race->horsePlayer3->getPosition().x);
-
-    std::vector<float> distances = { race->horsePlayer->getTotalTravelled(), race->horsePlayer2->getTotalTravelled(), race->horsePlayer3->getTotalTravelled() };
-    map<float, int> pairs = { { race->horsePlayer->getTotalTravelled(), race->horsePlayer->getNumber() }, { race->horsePlayer2->getTotalTravelled(), race->horsePlayer2->getNumber() }, { race->horsePlayer3->getTotalTravelled(), race->horsePlayer3->getNumber() } };
-
-    std::sort(distances.begin(), distances.end());
-    for (int i = 0; i < HORSE_COUNT; i++)
-        globalRanking[HORSE_COUNT - i - 1] = pairs[distances[i]];
-}
-
-const int* StateRace::getGlobalRanking() const
-{
-    return globalRanking;
+    race->calculateGlobalRanking();
+    globalRanking[0]=stoi(observerMenuRace->getMessage(FIRST_MSG));
+    globalRanking[1]=stoi(observerMenuRace->getMessage(SECOND_MSG));
+    globalRanking[2]=stoi(observerMenuRace->getMessage(THIRD_MSG));
 }
 
 int* StateRace::getHorseNumbers() const

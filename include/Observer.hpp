@@ -13,6 +13,10 @@ using namespace std;
 #define LIFE_MSG 1
 #define TRACK_MSG 2
 #define MONEY_MSG 3
+#define FIRST_MSG 4
+#define SECOND_MSG 5
+#define THIRD_MSG 6
+
 
 
 class IObserver {

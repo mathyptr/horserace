@@ -7,7 +7,7 @@ StateFinalResult::StateFinalResult(Game *gamePtr)
     StateRace* sr = (StateRace*)(game->getStatePointer(GameState::STATE_RACE));
 
     rankingMenu = new RankingMenu(sf::Vector2f(GAME_VIEW_X / 2, GAME_VIEW_Y / 2), sr->getHorseNumbers());
-    ranking = sr->getGlobalRanking();
+    ranking = sr->globalRanking;
     rankingMenu->setRankingMode(RankingMode::PODIUM, ranking,false);
 
     game->music.stop();

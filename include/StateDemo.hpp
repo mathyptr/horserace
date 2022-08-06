@@ -27,6 +27,7 @@ public:
     GameState getStateName() const override;
 
 private:
+    Observer *observerMenuRace ;
     Subject *subject ;
     sf::Text titleText;
     sf::Text startGameText;

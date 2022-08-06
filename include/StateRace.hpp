@@ -23,8 +23,7 @@ public:
     void update() override;
     void handleInput(sf::Event event, sf::RenderWindow &window) override;
     GameState getStateName() const override;
-
-    const int* getGlobalRanking() const;
+    int globalRanking[HORSE_IN_RACE];
     int* getHorseNumbers() const;
 
 private:
@@ -36,8 +35,7 @@ private:
     bool msg;
     bool typeW=false;
     int* horseNumbers;
-    int globalRanking[HORSE_IN_RACE];
-    void calculateRanking();
+    void getGlobalRanking();
 };
 
 #endif // STATERACE_INCLUDE

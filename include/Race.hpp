@@ -47,6 +47,8 @@ public:
 	unsigned int getCurrentTrackIndex();
 	bool loadNextTrack(bool restart);
 	const int* getRanking() const;
+    const int* getGlobalRanking() const;
+    void calculateGlobalRanking();
     bool reward();
     bool isTimeToJump(sf::FloatRect horsepos,sf::FloatRect obstaclepos);
 
@@ -58,6 +60,7 @@ private:
     bool demo;
     unsigned int currentTrackIndex;
     int ranking[HORSE_COUNT];
+    int globalRanking[HORSE_COUNT];
     float rspeed;
     unsigned int horseposymax[HORSE_COUNT];
 	int weatherId;
@@ -85,7 +88,6 @@ private:
 	void collision();
     bool collisionWeather(std::shared_ptr<Horse> horse,shared_ptr<Weather> w);
     bool collisionObstacle(std::shared_ptr<Horse> horse,shared_ptr<Obstacle> o);
-    void collisionObstacle(std::shared_ptr<Horse> horse);
     bool checkFinalLine();
     void horseMaxYCreate();
     int createProbability();

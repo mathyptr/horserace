@@ -42,8 +42,6 @@ void Game::restart()
     finalResultState = nullptr;
     demoState = (StateDemo*)getStatePointer(GameState::STATE_DEMO);
     currentState = demoState;
-   // subject = new Subject;
-  //  observerMenuRace = new Observer(*subject);
 
     music.openFromFile(getDBInstance()->getMiscPath("intro_music"));
     music.setLoop(true);
@@ -53,7 +51,6 @@ void Game::restart()
     deltaTimeClock.restart();
 }
 
-//global events (not state-depending)
 void Game::processEvents()
 {
     sf::Event event;
