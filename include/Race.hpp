@@ -74,11 +74,14 @@ private:
     float weatherMoveSpeed;
     
     std::vector<std::shared_ptr<AnimatedSprite>> explosions;
+    std::vector<std::shared_ptr<AnimatedSprite>> explosionsObj;
     Animation explosionAnimation;
+    Animation explosionObsAnimation;
     sf::Texture explosionTexture;
     sf::Texture obstacletexture;
+    sf::Texture explosionObsTexture;
     sf::Clock explosionDeltaTimer;
-
+    sf::Clock explosionDeltaTimerObj;
     float speedX;
     bool winstate;
     bool gameoverstate;
@@ -94,6 +97,8 @@ private:
     void drawWeather(sf::RenderTarget &target,unsigned int zlevel);
     void drawObstacle(sf::RenderTarget &target, unsigned int zlevel);
     void animateExplosion();
+    void animateExplosionObs();
     void drawExplosions(sf::RenderTarget &target);
+    void drawExplosionsObj(sf::RenderTarget &window);
 };
 #endif

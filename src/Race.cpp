@@ -35,10 +35,16 @@ Race::Race(Game* gamePtr, int* horseNumbers, Subject* subject, const bool demo)
     explosionAnimation.setSpriteSheet(explosionTexture);
 
     obstacletexture.loadFromFile(getDBInstance()->getTrackProperty(currentTrackIndex, OBSTACLE_TEX));
+    explosionObsTexture.loadFromFile(getDBInstance()->getTrackProperty(currentTrackIndex, OBSTACLE_EXP_TEX));
+    explosionObsAnimation.setSpriteSheet(explosionObsTexture);
 
     for (unsigned y = 0; y < explosionTexture.getSize().y; y += EXP_SHEET_Y)
         for (unsigned x = 0; x < explosionTexture.getSize().x; x += EXP_SHEET_X)
             explosionAnimation.addFrameRect(sf::IntRect(x, y, EXP_SHEET_X, EXP_SHEET_Y));
+
+    for (unsigned y = 0; y < explosionObsTexture.getSize().y; y += EXP_SHEET_Y)
+        for (unsigned x = 0; x < explosionObsTexture.getSize().x; x += EXP_SHEET_X)
+            explosionObsAnimation.addFrameRect(sf::IntRect(x, y, EXP_SHEET_X, EXP_SHEET_Y));
 
     //per la corsa demo si usa la musica da intro, altrimenti la musica del percorso corrente
     if(!this->demo)
@@ -61,6 +67,7 @@ void Race::update(sf::Time deltaTime)
         for(unsigned int i=0;i<nmaxweather;i++)
             createWeather();
         animateExplosion();
+        animateExplosionObs();
         collision();
         if(!winstate){
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
@@ -90,11 +97,13 @@ void Race::render(sf::RenderTarget &window)
             horsePlayer2->draw(window, states, zlevel);
             horsePlayer3->draw(window, states, zlevel);
             drawExplosions(window);
+            drawExplosionsObj(window);
         }
         drawWeather(window,zlevel);
         drawObstacle(window,zlevel);
     }
     drawExplosions(window);
+    drawExplosionsObj(window);
 }
 
 void Race::horseMove(bool move, sf::Time deltaTime)
@@ -170,6 +179,7 @@ bool Race::loadNextTrack(bool restart)
     weathtexture.loadFromFile(getDBInstance()->getCurrentWeatherTexture(std::to_string(weatherId)));
     explosionTexture.loadFromFile(getDBInstance()->getCurrentWeatherExplosion(std::to_string(weatherId)));
     obstacletexture.loadFromFile(getDBInstance()->getTrackProperty(currentTrackIndex, OBSTACLE_TEX));
+    explosionObsTexture.loadFromFile(getDBInstance()->getTrackProperty(currentTrackIndex, OBSTACLE_EXP_TEX));
 
     if(!demo)
     {
@@ -237,6 +247,20 @@ void Race::animateExplosion()
     }
     explosions.erase(std::remove_if(explosions.begin(), explosions.end(),[this](const std::shared_ptr<AnimatedSprite>& o){ return !o->isAlive(); }), explosions.end());
     explosionDeltaTimer.restart();
+}
+
+
+void Race::animateExplosionObs()
+{
+    const auto explosionDeltaTime = explosionDeltaTimerObj.getElapsedTime();
+    for (auto i = explosionsObj.begin(); i != explosionsObj.end(); i++)
+    {
+        (*i)->play(explosionObsAnimation);
+        (*i)->update(explosionDeltaTime);
+        (*i)->move(speedX*explosionDeltaTime.asSeconds(),0);
+    }
+    explosionsObj.erase(std::remove_if(explosionsObj.begin(), explosionsObj.end(),[this](const std::shared_ptr<AnimatedSprite>& o){ return !o->isAlive(); }), explosionsObj.end());
+    explosionDeltaTimerObj.restart();
 }
 
 void Race::createWeather()
@@ -391,7 +415,7 @@ bool Race::collisionObstacle(std::shared_ptr<Horse> horse,shared_ptr<Obstacle> o
         {
             auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
             pExplosion->setPosition(horse->getPosition());
-            explosions.push_back(pExplosion);
+            explosionsObj.push_back(pExplosion);
             speedX = 0;
             cout<<"Hit Obstacle!!\n";
             collisiondetected=true;
@@ -446,12 +470,17 @@ void Race::drawExplosions(sf::RenderTarget &window)
         window.draw(*(*x));
 }
 
+void Race::drawExplosionsObj(sf::RenderTarget &window)
+{
+    for (auto x = explosionsObj.begin(); x != explosionsObj.end(); x++)
+        window.draw(*(*x));
+}
+
 int Race::createProbability()
 {
     int probability;
     int actprob;
     int prob[NMAXPROB];
-    int j=0;
     for(int i=1,j=0;i<4;i++){
         probability=std::stoi(getDBInstance()->getProbability(std::to_string(currentTrackIndex),std::to_string(i)));
         while(j<NMAXPROB&&probability>0){

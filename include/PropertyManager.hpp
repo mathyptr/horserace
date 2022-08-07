@@ -20,6 +20,7 @@ using namespace std;
 #define SOUND "sound"
 #define PATHLENGTH "length"
 #define OBSTACLE_TEX "obstacle_texture"
+#define OBSTACLE_EXP_TEX "obstacle_exp_texture"
 
 #define WEATHER_TEX "main_texture"
 #define WEATHER_EXP "explosion_texture"

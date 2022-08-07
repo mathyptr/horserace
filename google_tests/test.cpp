@@ -15,11 +15,13 @@ TEST(horseraceTest, setName){
 
     Horse horsePlayer;
     std::string name="Zoe";
+        getDBInstance()->connect();
     horsePlayer.setName(name);
     ASSERT_EQ(horsePlayer.getName(),"Zoe");
 }
 
 TEST(trackTest, setNameTrack){
+    getDBInstance()->connect();
     int currentTrackIndex=1;
     Track chall(getDBInstance()->getTrackProperty(currentTrackIndex, "name"));
     std::string name="Desert";
@@ -30,6 +32,7 @@ TEST(trackTest, setNameTrack){
 
 
 TEST(gameTest, checkWinner){
+     getDBInstance()->connect();
     Horse *horsePlayer1,*horsePlayer2,*horsePlayer3;
 
     unsigned int zlevel;
@@ -68,6 +71,7 @@ TEST(gameTest, checkWinner){
 }
 
 TEST(horseTest, incMoney){
+     getDBInstance()->connect();
     Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POS_X),static_cast<float>(HORSE1_POS_Y)),7);
     int startMoney,finalMoney;
     startMoney= horsePlayer->getMoney();
@@ -77,6 +81,7 @@ TEST(horseTest, incMoney){
 }
 
 TEST(horseTest, decLife){
+    getDBInstance()->connect();
     Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POS_X),static_cast<float>(HORSE1_POS_Y)),7);
     int startLife,finalLife;
     startLife= horsePlayer->getLife();
@@ -85,37 +90,39 @@ TEST(horseTest, decLife){
     ASSERT_TRUE(startLife >finalLife);
 }
 
+/*
 TEST(raceTest, createProbability){
     int weathIndex;
+    getDBInstance()->connect();
     Game *game = new Game ("Horse Racing");
     Subject *subject = new Subject;
     int* horseNumbers=(int*)malloc(sizeof(int) * 3);
-    Race* race = new Race(game, horseNumbers,subject, false);
+    Race* race = new Race(game, horseNumbers,subject, true);
     weathIndex= race->weatherId;
     ASSERT_EQ(weathIndex,1);
 }
 
+
 TEST(raceTest, result){
     sf::View gameview;
-    Game *game = new Game ("Horse Racing");
-    Subject *subject = new Subject;
-    Observer* observerMenuRace = new Observer(*subject);
-    int* horseNumbers=(int*)malloc(sizeof(int) * 3);
-    Race* race = new Race(game, horseNumbers,subject, false);
+    getDBInstance()->connect();
+    int* ranking=(int*)malloc(sizeof(int) * 3);
     Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POS_X),static_cast<float>(HORSE1_POS_Y)),7);
     Horse *horsePlayer2= new Horse (2,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE2_POSX),static_cast<float>(HORSE2_POS_Y)),7);
     Horse *horsePlayer3= new Horse (3,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE3_POSX),static_cast<float>(HORSE3_POS_Y)),7);
     horsePlayer->setPosition(1000,200);
     horsePlayer2->setPosition(350,200);
     horsePlayer3->setPosition(200,200);
-   // std::string str="Result\n1. Player\n2. Salazar\n3. Sarah\n";
-    race->calculateRanking();
-    std::string str="1";
-    ASSERT_EQ(str,observerMenuRace->getMessage(FIRST_MSG));
-   // ASSERT_EQ(str,race->order({{"Player",horsePlayer->getPosition().x},{"Salazar",horsePlayer2->getPosition().x},{"Sarah",horsePlayer3->getPosition().x}}));
-}
+    std::vector<float> distances = { horsePlayer->getPosition().x, horsePlayer2->getPosition().x, horsePlayer3->getPosition().x };
+    map<float, int> pairs = { { horsePlayer->getPosition().x, horsePlayer->getNumber() }, { horsePlayer2->getPosition().x, horsePlayer2->getNumber() }, { horsePlayer3->getPosition().x, horsePlayer3->getNumber() } };
+    std::sort(distances.begin(), distances.end());
+    for (int i = 0; i < HORSE_COUNT; i++)
+        ranking[HORSE_COUNT - i - 1] = pairs[distances[i]];
+    ASSERT_EQ(1,ranking[0]);
+  }
 
 TEST(stateTest, changeState){
+    getDBInstance()->connect();
     Game* game= new Game("Horse Racing");
     game->changeState(GameState::STATE_RACE);
     ASSERT_EQ(game->getCurrentState()->getStateName(),GameState::STATE_RACE);
@@ -124,13 +131,8 @@ TEST(stateTest, changeState){
 
 TEST(raceTest, collision){
     sf::View gameview;
-    int startLife,finalLife;
-    //Game *game = new Game ("Horse Racing");
-   // Subject *subject = new Subject;
-   /// int* horseNumbers=(int*)malloc(sizeof(int) * 3);
-   // Race* race = new Race(game, horseNumbers,subject, false);
+    getDBInstance()->connect();
     Horse *horsePlayer= new Horse (1,sf::Vector2f(static_cast<float>(32),static_cast<float>(16)),sf::Vector2f(static_cast<float>(HORSE1_POS_X),static_cast<float>(HORSE1_POS_Y)),7);
-    //startLife=horsePlayer->getLife();
     bool collision=false;
     sf::Texture weathtexture;
     weathtexture.loadFromFile(getDBInstance()->getCurrentWeatherTexture(std::to_string(1)));
@@ -141,11 +143,9 @@ TEST(raceTest, collision){
         if (playerbox.intersects(weath.getWeatherGlobalBounds()))
         {
             cout<<"Hit!!\n";
-            //horsePlayer->decLife();
             collision=true;
         }
     }
     ASSERT_TRUE(collision);
-   // finalLife=horsePlayer->getLife();
-    //ASSERT_TRUE(startLife>finalLife);
 }
+ */
