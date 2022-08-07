@@ -123,7 +123,7 @@ void Horse::incMoney(int coin)
 void Horse::move(bool go, float sec)
 {
     if(jumpon)
-        setPosition(sf::Vector2f(pos.x,static_cast<float>(yOnJump(speed))));
+        setPosition(sf::Vector2f(pos.x,static_cast<float>(yOnJump())));
 
     if (go)
     {
@@ -141,25 +141,25 @@ bool Horse::CPU()
 }
 
 void Horse::SetJumpON(){
+    if(jumpon==false)
+        horseplayerJumpTimer.restart();
     jumpon=true;
 }
 
-float   Horse::yOnJump(float speed)
+float   Horse::yOnJump()
 {
     float y,v0y;
     float t;
     const auto elapsed= horseplayerJumpTimer.getElapsedTime();
     t=elapsed.asSeconds();
-//    v0y=speed;
     v0y=VO_Y;
-    y=0.5*GRAVITY*pow(t,2)-v0y*t+pos.y;
+    y=0.5*GRAVITY*pow(t,PW)-v0y*t+pos.y;
     if(y>=pos.y)
     {
         y=pos.y;
         jumpon=false;
         horseplayerJumpTimer.restart();
     }
-//    std::cout<<"t: "<<t<<" y: "<<y<<std::endl;
     return y;
 }
 
@@ -185,8 +185,9 @@ void Horse::move(float offsetX, float offsetY, float sec)
     oY = offsetY * speedFactor;
     travelled += abs(oX);
     if(jumpon){
-        setPosition(sf::Vector2f(AnimatedSprite::getGlobalBounds().left,static_cast<float>(yOnJump(speed))));
-        oX =1;
+        setPosition(sf::Vector2f(AnimatedSprite::getGlobalBounds().left,static_cast<float>(yOnJump())));
+        if(offsetX!=0)
+           oX =0.05;
     }
     AnimatedSprite::move(oX, oY);
     update(sf::seconds(sec));

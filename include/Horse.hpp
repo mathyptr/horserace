@@ -8,8 +8,9 @@
 
 //#define GRAVITY 8*9.81
 //#define VO_Y 100
-#define GRAVITY 600
-#define VO_Y 350
+#define GRAVITY 2000
+#define VO_Y 800
+#define PW 2
 #define MAXSPEED 500.f
 #define SPEEDTHRESHOLD 100.f
 #define SPEEDFACTOR 10.f
@@ -40,7 +41,7 @@ public:
     void incMoney(int coin);
     bool decMoney(int coin);
     bool CPU();
-    float yOnJump(float speed);
+    float yOnJump();
     void SetJumpON();
     void startPos(sf::Vector2f orig, sf::Vector2f pos);
     unsigned int getTravelled() const;

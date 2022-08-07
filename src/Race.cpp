@@ -116,7 +116,7 @@ void Race::horseMove(bool move, sf::Time deltaTime)
         horsePlayer->move(true, deltaTime.asSeconds());
     }
     else
-    horsePlayer->move(false, deltaTime.asSeconds());// o un qualsiasi altro tasto
+    horsePlayer->move(false, deltaTime.asSeconds());
     speedX=horsePlayer->getSpeed();
     rspeed= deltaTime.asSeconds() * speedX;
     createObstacle();
@@ -502,7 +502,8 @@ void Race::horseMaxYCreate()
 
 bool Race::isTimeToJump(sf::FloatRect horsepos,sf::FloatRect obstaclepos)
 {
-    return (horsepos.left>(obstaclepos.left-150))&&horsepos.left<obstaclepos.left;
+    int dist=100-rand()%40;
+    return (horsepos.left>(obstaclepos.left-dist))&&horsepos.left<obstaclepos.left;
 }
 
 bool Race::reward()

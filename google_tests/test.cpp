@@ -1,16 +1,5 @@
 #include "./test.hpp"
 
-/*TEST(spriteTest, setZlevel){
-
-    AnimatedSprite sprite;
-    float posx,posy;
-    unsigned int zlevel=1;
-    posx=HORSE3_POSX;
-    posy=HORSE3_POS_Y;
-    sprite.setZLevel(zlevel);
-    ASSERT_EQ(sprite.getZLevel(),zlevel);
-}*/
-
 TEST(horseraceTest, setName){
 
     Horse horsePlayer;
@@ -30,11 +19,9 @@ TEST(trackTest, setNameTrack){
 }
 
 
-
 TEST(gameTest, checkWinner){
-     getDBInstance()->connect();
+    getDBInstance()->connect();
     Horse *horsePlayer1,*horsePlayer2,*horsePlayer3;
-
     unsigned int zlevel;
     float posx,posy,posx2,posy2,posx3,posy3;
 
@@ -90,16 +77,22 @@ TEST(horseTest, decLife){
     ASSERT_TRUE(startLife >finalLife);
 }
 
-/*
+
 TEST(raceTest, createProbability){
-    int weathIndex;
+    int probability;
+    int actprob;
+    int prob[NMAXPROB];
     getDBInstance()->connect();
-    Game *game = new Game ("Horse Racing");
-    Subject *subject = new Subject;
-    int* horseNumbers=(int*)malloc(sizeof(int) * 3);
-    Race* race = new Race(game, horseNumbers,subject, true);
-    weathIndex= race->weatherId;
-    ASSERT_EQ(weathIndex,1);
+    for(int i=1,j=0;i<4;i++){
+    probability=std::stoi(getDBInstance()->getProbability(std::to_string(1),std::to_string(i)));
+    while(j<NMAXPROB&&probability>0){
+        prob[j]=i;
+        probability--;
+        j++;
+    }
+    }
+    actprob=prob[rand()%(10-1)];
+    ASSERT_EQ(actprob,1);
 }
 
 
@@ -148,4 +141,11 @@ TEST(raceTest, collision){
     }
     ASSERT_TRUE(collision);
 }
- */
+
+TEST(observerTest, checkMsg){
+    Subject* subject = new Subject;
+    Observer * obsTest = new Observer(*subject);
+    subject->CreateMessage("2",LIFE_MSG);
+    string msg=obsTest->getMessage(LIFE_MSG);
+    ASSERT_EQ("2",msg);
+}

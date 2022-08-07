@@ -7,7 +7,6 @@ RaceMenu::RaceMenu()
 
 RaceMenu::RaceMenu(const sf::Vector2f& position, int index)
 {
-   // font.loadFromFile("font/default_font.ttf");
     font.loadFromFile(getDBInstance()->getTrackProperty(index, FONT_FILE));
     fontColor = Utility::getColor(getDBInstance()->getTrackProperty(index, FONT_COLOR));    //calcolare il vero track index
     fontSize = stoi(getDBInstance()->getTrackProperty(index, FONT_SIZE));                   //anche qua
