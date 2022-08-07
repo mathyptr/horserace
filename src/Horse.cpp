@@ -53,7 +53,8 @@ std::string Horse::getName() const
 
 void Horse::setPropHorse()
 {
-    speedFactor = horseNumber;
+//    speedFactor = horseNumber;
+    speedFactor = std::stoi(getDBInstance()->getHorse_Prop(horseNumber, "speed"));
 }
 
 float Horse::getSpeed() const
