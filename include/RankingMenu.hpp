@@ -68,11 +68,11 @@ private:
     std::map<int, unique_ptr<Horse>> horses;
     int horseNumbers[HORSE_IN_RACE];
     unsigned int character=0;
-
+    bool msgWin;
     sf::Sprite podiumSprite;
     sf::Texture podiumTexture;
     sf::RectangleShape podiumBackground;
-
+    sf::Clock timer;
     RankingMode rankingMode;
 };
 #endif

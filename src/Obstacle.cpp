@@ -5,9 +5,6 @@ Obstacle::Obstacle(const sf::Texture& texture, float enemeyMoveSpeed, float posx
     mDistanceTravelled(800),
     mMaximumDistance(0)
 {
- //   obstaclepic.loadFromFile("./img/player_right.png");
-//    mSprite.setTexture(obstaclepic);
-
     this->posx=posx;
     this->posy=posy;
     this->mSpeedPerSecond = enemeyMoveSpeed;
@@ -21,21 +18,10 @@ void Obstacle::updateObstacle(float rspeedX, float timeDelta)
 {
     auto distanceTravelledThisUpdate = mSpeedPerSecond * timeDelta;
     mDistanceTravelled += distanceTravelledThisUpdate;
-//    mSprite.move(distanceTravelledThisUpdate,speedX*timeDelta);
     float oX;
     oX = rspeedX / BOTTOM_SPEED_FACTOR;
     mSprite.move(oX,0);
-  /*  if (mSprite.getPosition().x > 1600)
-    {
-        mSprite.setPosition(-800, mSprite.getPosition().y);
-    }
-    if (mSprite.getPosition().x < -800)
-    {
-        mSprite.setPosition(1600, mSprite.getPosition().y);
-    }*/
     posx=mSprite.getPosition().x;
-//  std::cout<<"Speed: "<<rspeedX<<" Posx: "<<posx<<" Posy: "<<posy<<std::endl;
- //   std::cout<<"Speed: "<<rspeedX<<" Posx: "<<mSprite.getPosition().x<<" Posy: "<<mSprite.getPosition().y<<std::endl;
 
 }
 
@@ -56,10 +42,7 @@ unsigned int Obstacle::getZLevel() const
 
 bool Obstacle::isObstacleAlive() const
 {
-    //return true;
-    //return mDistanceTravelled > 0;
     return posx>10;
-//    return posx>0;
 }
 
 void Obstacle::draw(sf::RenderTarget &target, sf::RenderStates states) const

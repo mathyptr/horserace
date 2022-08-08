@@ -96,6 +96,7 @@ private:
     void createObstacle();
     void drawWeather(sf::RenderTarget &target,unsigned int zlevel);
     void drawObstacle(sf::RenderTarget &target, unsigned int zlevel);
+    void obstacleMove(sf::Time deltaTime);
     void animateExplosion();
     void animateExplosionObs();
     void drawExplosions(sf::RenderTarget &target);

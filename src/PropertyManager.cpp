@@ -59,9 +59,9 @@ std::string PropertyManager::getHorseProperty(int horseID, std::string propName)
     return sendQuery(sql);
 }
 
-std::string PropertyManager::getHorse_Prop(int horseID, std::string propName)
+std::string PropertyManager::getHorse_Prop(int horseID, std::string propName,int trackId)
 {
-    std::string sql = "select " + propName + " from horse_prop where horse_prop.horse_id = " + std::to_string(horseID) + " LIMIT 1;";
+    std::string sql = "select " + propName + " from horse_prop where horse_prop.horse_id = " + std::to_string(horseID) + " AND horse_prop.track_id= "+ std::to_string(trackId)+";";
     return sendQuery(sql);
 }
 

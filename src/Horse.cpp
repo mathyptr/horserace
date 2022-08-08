@@ -12,12 +12,12 @@ Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned 
     horseName = getDBInstance()->getHorseProperty(horseNumber, "name");
     totalTravelled = 0;
     jumpon= false;
-    setPropHorse();
+    setPropHorse(1);
     zLevel = z;
     life = 10;
     money = 0;
     this->pos=pos;
-    startPos(orig, pos);
+    startPos(orig, pos, 1);
     sf::Texture* tex = new sf::Texture();
     tex->setSmooth(true);
     tex->loadFromFile(getDBInstance()->getHorseProperty(horseNumber, "texture"));
@@ -28,8 +28,9 @@ Horse::Horse(unsigned int number, sf::Vector2f orig, sf::Vector2f pos, unsigned 
     play(*an);
 }
 
-void Horse::startPos(sf::Vector2f orig, sf::Vector2f pos)
+void Horse::startPos(sf::Vector2f orig, sf::Vector2f pos,int indexTrack)
 {
+    setPropHorse(indexTrack);
     speed = 0;
     travelled = 0;
     setPosition(pos);
@@ -51,10 +52,9 @@ std::string Horse::getName() const
     return horseName;
 }
 
-void Horse::setPropHorse()
+void Horse::setPropHorse(int indexTrack)
 {
-//    speedFactor = horseNumber;
-    speedFactor = std::stoi(getDBInstance()->getHorse_Prop(horseNumber, "speed"));
+    speedFactor = std::stoi(getDBInstance()->getHorse_Prop(horseNumber, "speed",indexTrack));
 }
 
 float Horse::getSpeed() const

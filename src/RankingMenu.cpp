@@ -62,7 +62,8 @@ RankingMenu::RankingMenu(const sf::Vector2f& position, int horseNumbers[HORSE_IN
 
 void RankingMenu::update(sf::Time deltaTime)
 {
-
+    if(msgWin)
+        typeWriter();
     if(rankingMode != RankingMode::NONE)
         for (int i = 0; i < horses.size(); i++)
             horses[horseNumbers[i]]->update(deltaTime);
@@ -76,16 +77,17 @@ RankingMode RankingMenu::getRankingMode() const
 void RankingMenu::setRankingMode(RankingMode mode, const int* rank,bool msg)
 {
     rankingMode = mode;
-
+    msgWin=msg;
+    if(msgWin==false) {
+        character=0;
+        reward.setString("");
+    }
     switch (rankingMode)
     {
         case RankingMode::NONE:
             return;
         case RankingMode::RACE:
-            if(msg)
-               reward.setString(TITLE_MSG_REWARD);
-           else
-                reward.setString("");
+
             title.setString(TITLE_MSG_RACE);
             for (int i = 0; i < horses.size(); i++)
             {
@@ -153,9 +155,9 @@ void RankingMenu::draw(sf::RenderTarget &target, sf::RenderStates states) const
     target.draw(reward, states);
 }
 
-/*void RankingMenu::typeWriter(){
+void RankingMenu::typeWriter(){
     string str=TITLE_MSG_REWARD;
-    sf::Clock timer;
+//    sf::Clock timer;
     if ((timer.getElapsedTime().asSeconds() > 0.01) && character < str.length())
     {
         character++;
@@ -164,4 +166,4 @@ void RankingMenu::draw(sf::RenderTarget &target, sf::RenderStates states) const
         timer.restart();
         }
     }
-}*/
+}

@@ -20,9 +20,9 @@ Race::Race(Game* gamePtr, int* horseNumbers, Subject* subject, const bool demo)
     zlevel++;
     horsePlayer3 = std::make_unique<Horse>(horseNumbers[2], sf::Vector2f(32, 16), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y), zlevel, true);
 
-    horsePlayer->startPos(sf::Vector2f(0, 0), sf::Vector2f(HORSE1_POS_X, HORSE1_POS_Y));
-    horsePlayer2->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE2_POS_X, HORSE2_POS_Y));
-    horsePlayer3->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y));
+    horsePlayer->startPos(sf::Vector2f(0, 0), sf::Vector2f(HORSE1_POS_X, HORSE1_POS_Y),currentTrackIndex);
+    horsePlayer2->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE2_POS_X, HORSE2_POS_Y),currentTrackIndex);
+    horsePlayer3->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y),currentTrackIndex);
 
     if(demo)
         horsePlayer->setSpeed(-250);
@@ -113,10 +113,11 @@ void Race::horseMove(bool move, sf::Time deltaTime)
     if (move)
     {
         track->move(deltaTime);
+        obstacleMove(deltaTime);
         horsePlayer->move(true, deltaTime.asSeconds());
     }
     else
-    horsePlayer->move(false, deltaTime.asSeconds());
+        horsePlayer->move(false, deltaTime.asSeconds());
     speedX=horsePlayer->getSpeed();
     rspeed= deltaTime.asSeconds() * speedX;
     createObstacle();
@@ -135,7 +136,11 @@ void Race::horseMove(bool move, sf::Time deltaTime)
     horsePlayer3->move(rspeed, 0,  deltaTime.asSeconds());
 }
 
-
+void Race::obstacleMove( sf::Time deltaTime)
+{
+    for (auto i = obs.begin(); i != obs.end(); i++)
+        (*i)->updateObstacle(rspeed, deltaTime.asSeconds());
+}
 bool Race::horsePlayerFinished()
 {
     if (horsePlayer->getTravelled() >= track->getPathLength())
@@ -168,9 +173,9 @@ bool Race::loadNextTrack(bool restart)
 
     track = std::make_unique<Track>(getDBInstance()->getTrackProperty(currentTrackIndex, "name"));
     subject->CreateMessage(track->getName(),TRACK_MSG);
-    horsePlayer->startPos(sf::Vector2f(0, 0), sf::Vector2f(HORSE1_POS_X, HORSE1_POS_Y));
-    horsePlayer2->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE2_POS_X, HORSE2_POS_Y));
-    horsePlayer3->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y));
+    horsePlayer->startPos(sf::Vector2f(0, 0), sf::Vector2f(HORSE1_POS_X, HORSE1_POS_Y),currentTrackIndex);
+    horsePlayer2->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE2_POS_X, HORSE2_POS_Y),currentTrackIndex);
+    horsePlayer3->startPos(sf::Vector2f(0 , 0), sf::Vector2f(HORSE3_POS_X, HORSE3_POS_Y),currentTrackIndex);
 
     if(demo)
         horsePlayer->setSpeed(-250);
@@ -338,9 +343,10 @@ void Race::createObstacle()
         obstacleSpawnTimer.restart();
 
     }
+/*
     for (auto i = obs.begin(); i != obs.end(); i++)
         (*i)->updateObstacle(rspeed, timeSinceStart.asSeconds());
-
+*/
     obs.erase(std::remove_if(obs.begin(), obs.end(),[this](const std::shared_ptr<Obstacle> o)
                              {
                                  if (!(*o).isObstacleAlive())

@@ -43,7 +43,7 @@ public:
     bool CPU();
     float yOnJump();
     void SetJumpON();
-    void startPos(sf::Vector2f orig, sf::Vector2f pos);
+    void startPos(sf::Vector2f orig, sf::Vector2f pos, int indexTrack);
     unsigned int getTravelled() const;
     float getTotalTravelled() const;
     void setTotalTravelled(float inc);
@@ -63,6 +63,6 @@ private:
     bool jumpon;
     bool cpu;
     sf::Clock horseplayerJumpTimer;
-    void setPropHorse();
+    void setPropHorse(int indexTrack);
 };
 #endif // HORSE_INCLUDE
