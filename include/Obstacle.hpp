@@ -1,17 +1,11 @@
 #ifndef OBSTACLE_INCLUDE
 #define OBSTACLE_INCLUDE
+#define ADJUST 1.6
 
 #include <SFML/Graphics.hpp>
 #include <Track.hpp>
 #include <iostream>
-/*
-#define  HORSE1_POSX 400
-#define  HORSE1_POSY 472
-#define  HORSE2_POSX 400
-#define  HORSE2_POSY 522
-#define  HORSE3_POSX 400
-#define  HORSE3_POSY 562
-*/
+
 
 
 class Obstacle : public sf::Drawable

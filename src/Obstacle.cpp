@@ -19,7 +19,7 @@ void Obstacle::updateObstacle(float rspeedX, float timeDelta)
     auto distanceTravelledThisUpdate = mSpeedPerSecond * timeDelta;
     mDistanceTravelled += distanceTravelledThisUpdate;
     float oX;
-    oX = rspeedX / BOTTOM_SPEED_FACTOR;
+    oX = rspeedX *ADJUST/ BOTTOM_SPEED_FACTOR;
     mSprite.move(oX,0);
     posx=mSprite.getPosition().x;
 
