@@ -68,7 +68,8 @@ void Race::update(sf::Time deltaTime)
             createWeather();
         animateExplosion();
         animateExplosionObs();
-        collision();
+        if(demo==false)
+            collision();
         if(!winstate){
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
                 horsePlayer->SetJumpON();
@@ -94,8 +95,10 @@ void Race::render(sf::RenderTarget &window)
         if(!winstate && !gameoverstate)
         {
             horsePlayer->draw(window, states, zlevel);
-            horsePlayer2->draw(window, states, zlevel);
-            horsePlayer3->draw(window, states, zlevel);
+            if(horsePlayer2->getLife()!=0)
+                horsePlayer2->draw(window, states, zlevel);
+            if(horsePlayer3->getLife()!=0)
+                horsePlayer3->draw(window, states, zlevel);
             drawExplosions(window);
             drawExplosionsObj(window);
         }
@@ -131,6 +134,9 @@ void Race::horseMove(bool move, sf::Time deltaTime)
         if(zlevel==horsePlayer3->getZLevel())
             if(isTimeToJump(horsePlayer3->getGlobalBounds(),obstacle_pos))
                 horsePlayer3->SetJumpON();
+        if(demo&&zlevel==horsePlayer->getZLevel())
+            if(isTimeToJump(horsePlayer->getGlobalBounds(),obstacle_pos))
+                horsePlayer->SetJumpON();
     }
     horsePlayer2->move(rspeed, 0,  deltaTime.asSeconds());
     horsePlayer3->move(rspeed, 0,  deltaTime.asSeconds());
@@ -338,15 +344,10 @@ void Race::createObstacle()
             unsigned int posy=horseposymax[zlevel-HORSEZLEVELMIN]+horsePlayer->getGlobalBounds().height-obstacletexture.getSize().y;
             auto obsptr = std::make_shared<Obstacle>(Obstacle(obstacletexture,rspeed,posx,posy,zlevel,0));
             obs.push_back(obsptr);
-            cout<<"Create obstacle Object size:"<<obs.size()<<"\n";
         }
         obstacleSpawnTimer.restart();
 
     }
-/*
-    for (auto i = obs.begin(); i != obs.end(); i++)
-        (*i)->updateObstacle(rspeed, timeSinceStart.asSeconds());
-*/
     obs.erase(std::remove_if(obs.begin(), obs.end(),[this](const std::shared_ptr<Obstacle> o)
                              {
                                  if (!(*o).isObstacleAlive())
@@ -369,44 +370,43 @@ void Race::collision()
 {
     for (auto i = weath.begin(); i != weath.end(); i++)
     {
-        if(collisionWeather(horsePlayer,*i))
-            weath.erase(i);
-        else if(collisionWeather(horsePlayer2,*i))
-            weath.erase(i);
-        else if(collisionWeather(horsePlayer3,*i))
-            weath.erase(i);
+            if(collisionWeather(horsePlayer,*i))
+                weath.erase(i);
+        if(horsePlayer2->getLife()>0)
+            if(collisionWeather(horsePlayer2,*i)) //era else if
+                weath.erase(i);
+        if(horsePlayer3->getLife()>0)
+            if(collisionWeather(horsePlayer3,*i))
+                weath.erase(i);
     }
 
     for (auto i = obs.begin(); i != obs.end(); i++)
     {
-        if(collisionObstacle(horsePlayer,*i))
-        {
-            cout<<"Before Canc Obstacle on horsePlayer!! obs size= "<<obs.size()<<"\n";
-            obs.erase(i);
-            cout<<"After Canc Obstacle on horsePlayer!! obs size= "<<obs.size()<<"\n";
-            break;
-        }
+            if(collisionObstacle(horsePlayer,*i))
+            {
+                 obs.erase(i);
+                 break;
+            }
     }
-    for (auto i = obs.begin(); i != obs.end(); i++)
-    {
-        if(collisionObstacle(horsePlayer2,*i))
-        {
-            cout<<"Before Canc Obstacle on Horse2!! obs size= "<<obs.size()<<"\n";
-            obs.erase(i);
-            cout<<"After Canc Obstacle on Horse2!! obs size= "<<obs.size()<<"\n";
-            break;
-        }
-    }
-    for (auto i = obs.begin(); i != obs.end(); i++)
-    {
 
-        if(collisionObstacle(horsePlayer3,*i))
-        {
-            cout<<"Before Canc Obstacle on Horse2!! obs size= "<<obs.size()<<"\n";
-            obs.erase(i);
-            cout<<"After Canc Obstacle on Horse2!! obs size= "<<obs.size()<<"\n";
-            break;
-        }
+    for (auto i = obs.begin(); i != obs.end(); i++)
+    {
+        if(horsePlayer2->getLife()>0)
+            if(collisionObstacle(horsePlayer2,*i))
+            {
+                obs.erase(i);
+                break;
+            }
+    }
+
+    for (auto i = obs.begin(); i != obs.end(); i++)
+    {
+        if(horsePlayer3->getLife()>0)
+            if(collisionObstacle(horsePlayer3,*i))
+            {
+                obs.erase(i);
+                break;
+            }
     }
 }
 
@@ -423,11 +423,10 @@ bool Race::collisionObstacle(std::shared_ptr<Horse> horse,shared_ptr<Obstacle> o
             pExplosion->setPosition(horse->getPosition());
             explosionsObj.push_back(pExplosion);
             speedX = 0;
-            cout<<"Hit Obstacle!!\n";
             collisiondetected=true;
             horse->decLife();
-            subject->CreateMessage(std::to_string(horse->getLife()),LIFE_MSG);
-
+            if(!horse->CPU())
+                subject->CreateMessage(std::to_string(horse->getLife()),LIFE_MSG);
         }
     }
     return collisiondetected;
@@ -445,7 +444,6 @@ bool Race::collisionWeather(std::shared_ptr<Horse> horse,shared_ptr<Weather> w)
             auto pExplosion = std::make_shared<AnimatedSprite>(AnimatedSprite(sf::seconds(0.05f),false,false));
             pExplosion->setPosition(horse->getPosition());
             explosions.push_back(pExplosion);
-            cout<<"Hit "<<horse->getName()<<endl;
             collisiondetected=true;
             horse->decLife();
             if(!horse->CPU())

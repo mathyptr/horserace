@@ -25,6 +25,7 @@ public:
     GameState getStateName() const override;
     int globalRanking[HORSE_IN_RACE];
     int* getHorseNumbers() const;
+    void getGlobalRanking();
 
 private:
     Race* race;
@@ -35,7 +36,6 @@ private:
     bool msg;
     bool typeW=false;
     int* horseNumbers;
-    void getGlobalRanking();
 };
 
 #endif // STATERACE_INCLUDE

@@ -42,17 +42,6 @@ void Track::initLayer()
     layerFront->setPosition(LAYER_FRONT_POSX,LAYER_FRONT_POSY);
 }
 
-/* void Track:: move(float speed)
-{
-    layerBottom->move(speed,0);
-    if(finalLineState)
-        layerFinalLine->move(speed,0);
-    layerCenter->move(speed,0);
-    layerTop->move(speed,0);
-    layerAtmo->move(speed,0);
-    layerFront->move(speed,0);
-} */
-
 void Track::move(sf::Time sec)
 {
     layerBottom->update(sec);

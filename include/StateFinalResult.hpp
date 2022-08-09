@@ -15,7 +15,6 @@ public:
     void draw(sf::RenderWindow& window) override;
     void update() override;
     void handleInput(sf::Event event, sf::RenderWindow &window) override;
-    /* void typeWriter(); */
     GameState getStateName() const override;
 
 private:
