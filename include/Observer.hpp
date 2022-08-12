@@ -22,6 +22,7 @@ using namespace std;
 class IObserver {
 public:
     virtual void Update(const std::string &message_from_subject,int msgid) = 0;
+    virtual ~IObserver();
 };
 
 class ISubject {
@@ -29,6 +30,7 @@ public:
     virtual void Attach(IObserver *observer) = 0;
     virtual void Detach(IObserver *observer) = 0;
     virtual void Notify(int msgid) = 0;
+    virtual ~ISubject();
 };
 
 class Subject : public ISubject {
@@ -37,6 +39,7 @@ public:
     void Detach(IObserver *observer) override;
     void Notify(int msgid) override;
     void CreateMessage(std::string message = "Empty",int msgid=0);
+    virtual ~Subject();
 
 private:
     std::list<IObserver *> list_observer_;
@@ -49,6 +52,7 @@ public:
     void Update(const std::string &message_from_subject, int msgid) override ;
     void RemoveMeFromTheList();
     std::string getMessage(int msgid);
+    virtual ~Observer();
 
 private:
     std::string message_from_subject_;
